@@ -223,6 +223,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
   const sortBtnRef = useRef<HTMLButtonElement>(null);
   const [searchPopupStyle, setSearchPopupStyle] = useState<React.CSSProperties | null>(null);
   const [folderPopupStyle, setFolderPopupStyle] = useState<React.CSSProperties | null>(null);
+  const [sortPopupStyle, setSortPopupStyle] = useState<React.CSSProperties | null>(null);
   const [timelineVisible, setTimelineVisible] = useState(false);
   const timelineHideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const timelineScrubRef = useRef<HTMLDivElement>(null);
@@ -278,6 +279,24 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
     const maxHeight = Math.max(120, bounds.bottom - top - pad);
     setFolderPopupStyle({ position: 'fixed', top, left, width: w, maxHeight, zIndex: 10001, overflowY: 'auto' });
   }, [folderPopup, getVisibleBounds]);
+
+  useLayoutEffect(() => {
+    if (!sortPopup || !sortBtnRef.current) { setSortPopupStyle(null); return; }
+    const bounds = getVisibleBounds();
+    if (!bounds || bounds.width < 50) { setSortPopupStyle(null); return; }
+    const rect = sortBtnRef.current.getBoundingClientRect();
+    const pad = 8;
+    const w = 160;
+    let left = rect.left;
+    if (left + w > bounds.right - pad) left = bounds.right - w - pad;
+    if (left < bounds.left + pad) left = bounds.left + pad;
+    let top = rect.bottom + pad;
+    const popupH = 280;
+    if (top + popupH > bounds.bottom - pad) top = Math.max(bounds.top + pad, bounds.bottom - popupH - pad);
+    if (top < bounds.top + pad) top = bounds.top + pad;
+    const maxHeight = Math.max(120, bounds.bottom - top - pad);
+    setSortPopupStyle({ position: 'fixed', top, left, width: w, maxHeight, zIndex: 10001, overflowY: 'auto', padding: 4 });
+  }, [sortPopup, getVisibleBounds]);
 
   // Fermeture au clic à l'extérieur (listener global car l'overlay peut ne pas recevoir les clics sous Obsidian)
   useEffect(() => {
@@ -1818,30 +1837,40 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                 <polyline points="19 12 12 19 5 12" />
               </svg>
             </button>
-            {sortPopup && (
-              <>
-                <div className="fixed inset-0 z-[99]" onClick={() => setSortPopup(false)} />
-                <div className="gal-popup" style={{ width: 160 }}>
-                  {SORT_OPTIONS.map((opt) => {
-                    const isActive = settings.sortBy === opt.val;
-                    return (
-                    <button
-                      key={opt.val}
-                      type="button"
-                      className="gal-sort-opt"
-                      style={isActive ? { color: 'var(--gal-accent)', fontWeight: 600, background: 'var(--background-modifier-hover)', borderLeft: '3px solid var(--gal-accent)', paddingLeft: 7 } : undefined}
-                      onClick={() => {
-                        setSettings((s) => ({ ...s, sortBy: opt.val }));
-                        saveState(true);
-                        setSortPopup(false);
-                      }}
-                    >
-                      {t(locale, opt.labelKey)}
-                    </button>
-                  );})}
-                </div>
-              </>
-            )}
+            {sortPopup &&
+              sortPopupStyle &&
+              createPortal(
+                <div className="gal-portal-root">
+                  <div
+                    className="fixed inset-0"
+                    style={{ zIndex: 99998, cursor: 'default' }}
+                    onClick={() => setSortPopup(false)}
+                    onPointerDown={() => setSortPopup(false)}
+                    aria-hidden
+                  />
+                  <div className="gal-popup gal-popup-sort" style={sortPopupStyle}>
+                    {SORT_OPTIONS.map((opt) => {
+                      const isActive = settings.sortBy === opt.val;
+                      return (
+                        <button
+                          key={opt.val}
+                          type="button"
+                          className="gal-sort-opt"
+                          style={isActive ? { color: 'var(--gal-accent)', fontWeight: 600, background: 'var(--background-modifier-hover)', borderLeft: '3px solid var(--gal-accent)', paddingLeft: 7 } : undefined}
+                          onClick={() => {
+                            setSettings((s) => ({ ...s, sortBy: opt.val }));
+                            saveState(true);
+                            setSortPopup(false);
+                          }}
+                        >
+                          {t(locale, opt.labelKey)}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>,
+                document.body
+              )}
           </div>
           <div style={{ position: 'relative' }}>
             <button
