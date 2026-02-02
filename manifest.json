@@ -3,7 +3,8 @@
   "name": "Lumina",
   "version": "1.0.0",
   "minAppVersion": "0.15.0",
-  "description": "Galerie photo haute performance pour votre coffre Obsidian. Mises en page justifiées, carrée, panorama, lightbox, diaporama.",
+  "description": "High-performance photo & video gallery for Obsidian. Justified, square, panorama layouts. Lightbox, slideshow, drag-to-note, persistent cache.",
   "author": "Infinition",
+  "authorUrl": "https://github.com/infinition/obsidian-lumina",
   "isDesktopOnly": false
 }

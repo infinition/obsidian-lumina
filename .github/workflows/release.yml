@@ -1,0 +1,39 @@
+name: Release Plugin
+
+on:
+  push:
+    tags:
+      - "*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout
+      - uses: actions/checkout@v3
+
+      # 2️⃣ Node
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      # 3️⃣ Install deps
+      - run: npm install
+
+      # 4️⃣ Build (src → main.js)
+      - run: npm run build
+
+      # 5️⃣ Create GitHub Release (BRAT-compatible)
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            main.js
+            manifest.json
+            styles.css
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

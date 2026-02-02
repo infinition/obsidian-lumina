@@ -25,6 +25,7 @@ export class LuminaView extends ItemView {
   }
 
   async onOpen() {
+    this.containerEl.addClass('lumina-leaf');
     const container = this.containerEl.children[1] as HTMLElement;
     container.empty();
     container.addClass('lumina-view-container');
@@ -35,6 +36,7 @@ export class LuminaView extends ItemView {
   }
 
   async onClose() {
+    this.containerEl.removeClass('lumina-leaf');
     this.root?.unmount();
     this.root = null;
   }

@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+
+# Build outputs (commit main.js, worker.js for distribution; uncomment to ignore)
+# main.js
+# worker.js
+
+# Local / vault-specific
+data.json
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Source maps (generated in dev)
+*.map
+
+# Env
+.env
+.env.local
+.env.*.local

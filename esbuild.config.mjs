@@ -13,7 +13,10 @@ const prod = (process.argv[2] === "production");
 
 const context = await esbuild.context({
     banner: { js: banner },
-    entryPoints: ["src/main.ts"],
+    entryPoints: {
+        "main": "src/main.ts",
+        "worker": "src/workers/imageWorker.ts",
+    },
     bundle: true,
     external: [
         "obsidian",
@@ -33,7 +36,7 @@ const context = await esbuild.context({
     logLevel: "info",
     sourcemap: prod ? false : "inline",
     treeShaking: true,
-    outfile: "main.js",
+    outdir: ".",
 });
 
 if (prod) {

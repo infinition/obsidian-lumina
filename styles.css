@@ -1,0 +1,82 @@
+/* Lumina - Vue plein écran */
+.lumina-leaf .view-content,
+.workspace-leaf-content[data-type="lumina-view"] .view-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+}
+
+.lumina-view-container {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.lumina-view-root {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Layout utilitaire (remplace Tailwind) */
+.gal-container {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+/* Fullscreen : occuper tout l'écran même si le plugin est dans un panneau latéral */
+.gal-container:fullscreen,
+.gal-container:-webkit-full-screen,
+.gal-container:-moz-full-screen,
+.gal-container:-ms-fullscreen {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  max-height: none !important;
+  inset: 0 !important;
+}
+
+
+.gal-flex-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gal-flex-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Boutons et icônes plus visibles */
+.gal-btn {
+  min-width: 36px;
+  min-height: 36px;
+  padding: 6px 8px;
+}
+
+.gal-btn svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.gal-btn.gal-btn-folder svg {
+  width: 20px;
+  height: 20px;
+}
