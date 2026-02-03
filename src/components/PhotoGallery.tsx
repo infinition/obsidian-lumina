@@ -101,6 +101,38 @@ function isGif(path: string): boolean {
   return path.toLowerCase().endsWith('.gif');
 }
 
+interface EmbedData {
+  url: string;
+  embedSrc: string;
+  embedHtml: string;
+}
+
+/** Convert YouTube (or other) URL to embed. Returns null if not supported. */
+function urlToEmbed(input: string): EmbedData | null {
+  const raw = input.trim();
+  try {
+    const url = raw.startsWith('http') ? raw : `https://${raw}`;
+    const u = new URL(url);
+    const host = u.hostname.replace(/^www\./, '');
+    // YouTube: watch?v=ID or youtu.be/ID
+    if (host === 'youtube.com' && u.pathname === '/watch' && u.searchParams.get('v')) {
+      const id = u.searchParams.get('v')!;
+      const embedSrc = `https://www.youtube.com/embed/${id}`;
+      const embedHtml = `<iframe width="560" height="315" src="${embedSrc}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+      return { url, embedSrc, embedHtml };
+    }
+    if (host === 'youtu.be' && u.pathname.length > 1) {
+      const id = u.pathname.slice(1).split('?')[0];
+      const embedSrc = `https://www.youtube.com/embed/${id}`;
+      const embedHtml = `<iframe width="560" height="315" src="${embedSrc}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+      return { url, embedSrc, embedHtml };
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 interface LayoutItem {
   x: number;
   y: number;
@@ -158,6 +190,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
   const [isEditMode, setIsEditMode] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [lightboxEmbed, setLightboxEmbed] = useState<EmbedData | null>(null);
   const [lbUiVisible, setLbUiVisible] = useState(true);
   const [lbZoom, setLbZoom] = useState(1);
   const [lbPan, setLbPan] = useState({ x: 0, y: 0 });
@@ -1269,6 +1302,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
     lbPointerDownRef.current = false;
     lbDraggingRef.current = false;
     setLightboxOpen(false);
+    setLightboxEmbed(null);
     setLbZoom(1);
     setLbPan({ x: 0, y: 0 });
     lbZoomRef.current = 1;
@@ -1449,6 +1483,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
     if (!el) return;
     const dist = (a: Touch, b: Touch) => Math.hypot(b.clientX - a.clientX, b.clientY - a.clientY);
     const onWheel = (e: WheelEvent) => {
+      if (!e.ctrlKey) return;
       e.preventDefault();
       setLbZoom((z) => Math.max(1, Math.min(5, z - e.deltaY * 0.002)));
     };
@@ -2187,8 +2222,40 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
       <div
         ref={galMainRef}
         className="gal-main"
+        tabIndex={0}
+        title={t(locale, 'pasteVideoUrl')}
         onPointerMove={canShowTimeline ? handleTimelineZonePointerMove : undefined}
         onPointerLeave={canShowTimeline ? handleTimelineZonePointerLeave : undefined}
+        onDragOver={(e) => {
+          if (e.dataTransfer.types.includes('text/plain')) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+          }
+        }}
+        onDrop={(e) => {
+          e.preventDefault();
+          const text = e.dataTransfer.getData('text/plain');
+          const embed = text ? urlToEmbed(text) : null;
+          if (embed) {
+            setLightboxEmbed(embed);
+            setLightboxOpen(true);
+            setLbZoom(1);
+            setLbPan({ x: 0, y: 0 });
+          }
+        }}
+        onPaste={(e) => {
+          const text = e.clipboardData?.getData('text/plain');
+          if (text) {
+            const embed = urlToEmbed(text);
+            if (embed) {
+              e.preventDefault();
+              setLightboxEmbed(embed);
+              setLightboxOpen(true);
+              setLbZoom(1);
+              setLbPan({ x: 0, y: 0 });
+            }
+          }
+        }}
       >
         {isSlideshowActive && filteredImages.length > 0 && (() => {
           const slide = filteredImages[Math.min(slideshowIndex, filteredImages.length - 1)];
@@ -2522,7 +2589,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
       </div>
 
       {/* Lightbox */}
-      {lightboxOpen && currentImage && (
+      {lightboxOpen && (currentImage || lightboxEmbed) && (
         <div
           className="gal-lightbox"
           onClick={(e) => {
@@ -2535,57 +2602,73 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
         >
           <div
             ref={lightboxViewerRef}
-            className={`gal-lightbox-viewer-wrap gal-lightbox-viewer ${lbDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+            className={`gal-lightbox-viewer-wrap gal-lightbox-viewer ${!lightboxEmbed && lbDragging ? 'cursor-grabbing' : !lightboxEmbed ? 'cursor-grab' : ''}`}
             style={{ flex: 1 }}
-            onPointerDown={onLbPointerDown}
-            onPointerMove={onLbPointerMove}
-            onPointerUp={onLbPointerUp}
-            onPointerCancel={onLbPointerCancel}
+            onPointerDown={lightboxEmbed ? undefined : onLbPointerDown}
+            onPointerMove={lightboxEmbed ? undefined : onLbPointerMove}
+            onPointerUp={lightboxEmbed ? undefined : onLbPointerUp}
+            onPointerCancel={lightboxEmbed ? undefined : onLbPointerCancel}
             onDoubleClick={(e) => {
               e.stopPropagation();
               closeLightbox();
             }}
           >
-            <div
-              draggable
-              onDragStart={(e) => {
-                e.dataTransfer.setData('text/plain', `![[${currentImage.name}]]`);
-                e.dataTransfer.effectAllowed = 'copy';
-              }}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                maxWidth: '100%',
-                maxHeight: '100%',
-                cursor: 'grab'
-              }}
-            >
-              {currentImage.mediaType === 'video' ? (
-                <video
-                  src={currentImage.url}
-                  controls
-                  autoPlay
-                  loop
-                  playsInline
-                  className="max-w-full max-h-full object-contain select-none"
-                  style={{
-                    transform: `translate(${lbPan.x}px, ${lbPan.y}px) scale(${lbZoom})`,
-                    pointerEvents: 'auto'
-                  }}
+            {lightboxEmbed ? (
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', padding: 24 }}>
+                <iframe
+                  width="560"
+                  height="315"
+                  src={lightboxEmbed.embedSrc}
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                  style={{ maxWidth: '100%', maxHeight: '100%', aspectRatio: '16/9' }}
                 />
-              ) : (
-                <img
-                  src={currentImage.url}
-                  alt={currentImage.name}
-                  className="max-w-full max-h-full object-contain select-none pointer-events-none"
-                  style={{
-                    transform: `translate(${lbPan.x}px, ${lbPan.y}px) scale(${lbZoom})`
-                  }}
-                  draggable={false}
-                />
-              )}
-            </div>
+              </div>
+            ) : currentImage ? (
+              <div
+                draggable
+                onDragStart={(e) => {
+                  e.dataTransfer.setData('text/plain', `![[${currentImage.name}]]`);
+                  e.dataTransfer.effectAllowed = 'copy';
+                }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  maxWidth: '100%',
+                  maxHeight: '100%',
+                  cursor: 'grab'
+                }}
+              >
+                {currentImage.mediaType === 'video' ? (
+                  <video
+                    src={currentImage.url}
+                    controls
+                    autoPlay
+                    loop
+                    playsInline
+                    className="max-w-full max-h-full object-contain select-none"
+                    style={{
+                      transform: `translate(${lbPan.x}px, ${lbPan.y}px) scale(${lbZoom})`,
+                      pointerEvents: 'auto'
+                    }}
+                  />
+                ) : (
+                  <img
+                    src={currentImage.url}
+                    alt={currentImage.name}
+                    className="max-w-full max-h-full object-contain select-none pointer-events-none"
+                    style={{
+                      transform: `translate(${lbPan.x}px, ${lbPan.y}px) scale(${lbZoom})`
+                    }}
+                    draggable={false}
+                  />
+                )}
+              </div>
+            ) : null}
           </div>
           <div
             className={`gal-lightbox-ui ${!lbUiVisible ? 'gal-lightbox-ui-hidden' : ''}`}
@@ -2603,40 +2686,42 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
             >
               ✕
             </button>
-            <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, transform: 'translateY(-50%)', display: 'flex', justifyContent: 'space-between', pointerEvents: 'none' }}>
-              <button
-                type="button"
-                aria-label={t(locale, 'previous')}
-                className="gal-lightbox-nav gal-lightbox-nav-prev"
-                style={{ pointerEvents: lbUiVisible ? 'auto' : 'none' }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  scheduleLbUiHide();
-                  setLightboxIndex((i) => (i <= 0 ? filteredImages.length - 1 : i - 1));
-                  setLbZoom(1);
-                  setLbPan({ x: 0, y: 0 });
-                }}
-                onDoubleClick={(e) => e.stopPropagation()}
-              >
-                ❮
-              </button>
-              <button
-                type="button"
-                aria-label={t(locale, 'next')}
-                className="gal-lightbox-nav gal-lightbox-nav-next"
-                style={{ pointerEvents: lbUiVisible ? 'auto' : 'none' }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  scheduleLbUiHide();
-                  setLightboxIndex((i) => (i >= filteredImages.length - 1 ? 0 : i + 1));
-                  setLbZoom(1);
-                  setLbPan({ x: 0, y: 0 });
-                }}
-                onDoubleClick={(e) => e.stopPropagation()}
-              >
-                ❯
-              </button>
-            </div>
+            {!lightboxEmbed && (
+              <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, transform: 'translateY(-50%)', display: 'flex', justifyContent: 'space-between', pointerEvents: 'none' }}>
+                <button
+                  type="button"
+                  aria-label={t(locale, 'previous')}
+                  className="gal-lightbox-nav gal-lightbox-nav-prev"
+                  style={{ pointerEvents: lbUiVisible ? 'auto' : 'none' }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    scheduleLbUiHide();
+                    setLightboxIndex((i) => (i <= 0 ? filteredImages.length - 1 : i - 1));
+                    setLbZoom(1);
+                    setLbPan({ x: 0, y: 0 });
+                  }}
+                  onDoubleClick={(e) => e.stopPropagation()}
+                >
+                  ❮
+                </button>
+                <button
+                  type="button"
+                  aria-label={t(locale, 'next')}
+                  className="gal-lightbox-nav gal-lightbox-nav-next"
+                  style={{ pointerEvents: lbUiVisible ? 'auto' : 'none' }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    scheduleLbUiHide();
+                    setLightboxIndex((i) => (i >= filteredImages.length - 1 ? 0 : i + 1));
+                    setLbZoom(1);
+                    setLbPan({ x: 0, y: 0 });
+                  }}
+                  onDoubleClick={(e) => e.stopPropagation()}
+                >
+                  ❯
+                </button>
+              </div>
+            )}
             <div
               className="py-5 text-center text-white"
               style={{
@@ -2644,48 +2729,68 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                 background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)'
               }}
             >
-              <div>{currentImage.name}</div>
-              <div className="text-sm opacity-80">
-                {(currentImage.size / 1024 / 1024).toFixed(2)} MB •{' '}
-                {new Date(currentImage.mtime).toLocaleString()}
-              </div>
-              <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginTop: 8 }}>
-                <button
-                  type="button"
-                  className="px-3 py-1 rounded bg-white/20 hover:bg-white/30 text-sm"
-                  onClick={async () => {
-                    await navigator.clipboard.writeText(`![[${currentImage.name}]]`);
-                    alert(t(locale, 'copied'));
-                  }}
-                >
-                  {t(locale, 'copyLink')}
-                </button>
-                <button
-                  type="button"
-                  className="px-3 py-1 rounded bg-white/20 hover:bg-white/30 text-sm"
-                  onClick={() => {
-                    setSelection(new Set([currentImage.path]));
-                    setNoteModal(true);
-                  }}
-                >
-                  {t(locale, 'addToNote')}
-                </button>
-                <button
-                  type="button"
-                  className="gal-lightbox-btn-delete px-3 py-1 rounded text-sm"
-                  onClick={async () => {
-                    if (!confirm(t(locale, 'deleteConfirmSingle', { name: currentImage.name }))) return;
-                    const file = app.vault.getAbstractFileByPath(currentImage.path);
-                    if (file) {
-                      await app.vault.trash(file, true);
-                      closeLightbox();
-                      refreshGallery();
-                    }
-                  }}
-                >
-                  {t(locale, 'delete')}
-                </button>
-              </div>
+              {lightboxEmbed ? (
+                <>
+                  <div className="text-sm truncate px-4" title={lightboxEmbed.url}>{lightboxEmbed.url}</div>
+                  <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginTop: 8 }}>
+                    <button
+                      type="button"
+                      className="px-3 py-1 rounded bg-white/20 hover:bg-white/30 text-sm"
+                      onClick={async () => {
+                        await navigator.clipboard.writeText(lightboxEmbed.embedHtml);
+                        alert(t(locale, 'copied'));
+                      }}
+                    >
+                      {t(locale, 'copyEmbedHtml')}
+                    </button>
+                  </div>
+                </>
+              ) : currentImage ? (
+                <>
+                  <div>{currentImage.name}</div>
+                  <div className="text-sm opacity-80">
+                    {(currentImage.size / 1024 / 1024).toFixed(2)} MB •{' '}
+                    {new Date(currentImage.mtime).toLocaleString()}
+                  </div>
+                  <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginTop: 8 }}>
+                    <button
+                      type="button"
+                      className="px-3 py-1 rounded bg-white/20 hover:bg-white/30 text-sm"
+                      onClick={async () => {
+                        await navigator.clipboard.writeText(`![[${currentImage.name}]]`);
+                        alert(t(locale, 'copied'));
+                      }}
+                    >
+                      {t(locale, 'copyLink')}
+                    </button>
+                    <button
+                      type="button"
+                      className="px-3 py-1 rounded bg-white/20 hover:bg-white/30 text-sm"
+                      onClick={() => {
+                        setSelection(new Set([currentImage.path]));
+                        setNoteModal(true);
+                      }}
+                    >
+                      {t(locale, 'addToNote')}
+                    </button>
+                    <button
+                      type="button"
+                      className="gal-lightbox-btn-delete px-3 py-1 rounded text-sm"
+                      onClick={async () => {
+                        if (!confirm(t(locale, 'deleteConfirmSingle', { name: currentImage.name }))) return;
+                        const file = app.vault.getAbstractFileByPath(currentImage.path);
+                        if (file) {
+                          await app.vault.trash(file, true);
+                          closeLightbox();
+                          refreshGallery();
+                        }
+                      }}
+                    >
+                      {t(locale, 'delete')}
+                    </button>
+                  </div>
+                </>
+              ) : null}
             </div>
           </div>
         </div>

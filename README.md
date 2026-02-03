@@ -38,6 +38,7 @@
 | **Filter** | By folder, media type (photos/videos), full-text search |
 | **Sort** | By modification date, creation date, date taken, file extension, name, or size |
 | **Timeline scrubber** | Google Photos-style vertical scrubber for quick navigation |
+| **YouTube / embed** | Drag a YouTube URL onto the gallery or **Ctrl+V** to open the video in the lightbox as an embed (no CORS); copy embed HTML to paste into notes |
 
 ### Performance
 
@@ -61,12 +62,11 @@
 
 ## Installation
 
-### From Obsidian Community Plugins
+### BRAT
 
-1. Open **Settings** → **Community plugins**
-2. Turn off **Restricted mode** if needed
-3. Click **Browse** and search for **Lumina**
-4. Install and enable
+1. Install [BRAT](https://github.com/TfTHacker/obsidian42-brat) (Settings → Community plugins → Browse → search “BRAT”)
+2. **Settings** → **BRAT** → **Add beta plugin** → enter: `infinition/obsidian-lumina`
+3. Enable **Lumina** in **Settings** → **Community plugins**
 
 ### Manual
 
@@ -82,6 +82,7 @@
 2. **Filter** by folder (or enable **All Vault**) and toggle **Photos** / **Videos**
 3. **Choose layout** — justified (default), square, or panorama
 4. **Double-click** any item to open in lightbox; use **Ctrl+Click** for edit mode
+5. **Paste** a YouTube URL (Ctrl+V) or **drag** it onto the gallery to open the video in the lightbox; use **Copy embed HTML** to insert the iframe into a note
 
 ---
 
@@ -100,18 +101,22 @@
 
 ## Lightbox
 
-Full-screen preview for photos and videos.
+Full-screen preview for photos, videos, and **YouTube embeds**.
 
 | Action | Method |
 |--------|--------|
 | Open | Double-click or right-click on item |
+| Open video from URL | **Drag** a YouTube URL onto the gallery or **Ctrl+V** (paste) with focus on the gallery |
 | Close | Escape, double-click background, or close button |
-| Navigate | Left/right arrows, or swipe |
-| Zoom | Mouse wheel (lightbox active) |
-| Pan | Click and drag |
+| Navigate | Left/right arrows, or swipe (photos/videos only) |
+| Zoom | **Ctrl+Wheel** (lightbox active; photos/videos only) |
+| Pan | Click and drag (photos/videos only) |
 | Copy link | Copy Link button (wikilink format) |
+| Copy embed HTML | When viewing a pasted/dropped YouTube URL: copies full `<iframe>...</iframe>` for use in notes |
 | Add to note | Add to Note button |
 | Delete | Delete button |
+
+**YouTube / embed** — URLs are converted to the embed form immediately (e.g. `youtube.com/watch?v=...` → embed iframe), so playback works without CORS. Supported: `youtube.com/watch?v=ID` and `youtu.be/ID`.
 
 **UI auto-hide** — Controls fade after 5s of inactivity; move mouse to reveal.
 
@@ -182,9 +187,11 @@ Full-screen preview for photos and videos.
 | Context | Shortcut | Action |
 |---------|----------|--------|
 | Gallery | Arrow keys | Scroll |
-| Gallery | Ctrl+Wheel | Zoom |
+| Gallery | Ctrl+Wheel | Zoom grid |
+| Gallery | Ctrl+V | Paste YouTube URL → open in lightbox (when gallery focused) |
 | Lightbox | Escape | Close |
 | Lightbox | Arrow keys | Navigate |
+| Lightbox | Ctrl+Wheel | Zoom content |
 | Edit mode | Escape | Exit |
 | Slideshow | Arrow keys | Navigate |
 
@@ -193,7 +200,7 @@ Full-screen preview for photos and videos.
 ## Touch Support
 
 - **Pan** — Swipe to scroll
-- **Pinch** — Zoom grid (gallery) or content (lightbox)
+- **Pinch** — Zoom grid (gallery) or content (lightbox); **Ctrl+Wheel** for zoom in lightbox on desktop
 - **Tap** — Select (edit mode) / open lightbox (double-tap)
 - **Long-press** — Context menu (platform-dependent)
 

@@ -70,7 +70,9 @@ export type StringKey =
   | 'previous'
   | 'next'
   | 'language'
-  | 'settingsTitle';
+  | 'settingsTitle'
+  | 'copyEmbedHtml'
+  | 'pasteVideoUrl';
 
 const en: Record<StringKey, string> = {
   openLumina: 'Open Lumina',
@@ -135,6 +137,8 @@ const en: Record<StringKey, string> = {
   next: 'Next',
   language: 'Language',
   settingsTitle: 'Lumina Settings',
+  copyEmbedHtml: 'Copy embed HTML',
+  pasteVideoUrl: 'Paste or drag a YouTube URL (Ctrl+V) to open in player',
 };
 
 const fr: Record<StringKey, string> = {
@@ -200,6 +204,8 @@ const fr: Record<StringKey, string> = {
   next: 'Suivant',
   language: 'Langue',
   settingsTitle: 'Paramètres Lumina',
+  copyEmbedHtml: 'Copier le HTML embed',
+  pasteVideoUrl: 'Coller ou glisser une URL YouTube (Ctrl+V) pour ouvrir le lecteur',
 };
 
 const de: Record<StringKey, string> = {
@@ -265,6 +271,8 @@ const de: Record<StringKey, string> = {
   next: 'Weiter',
   language: 'Sprache',
   settingsTitle: 'Lumina-Einstellungen',
+  copyEmbedHtml: 'Embed-HTML kopieren',
+  pasteVideoUrl: 'YouTube-URL einfügen oder ziehen (Strg+V) zum Abspielen',
 };
 
 const es: Record<StringKey, string> = {
@@ -330,6 +338,8 @@ const es: Record<StringKey, string> = {
   next: 'Siguiente',
   language: 'Idioma',
   settingsTitle: 'Ajustes de Lumina',
+  copyEmbedHtml: 'Copiar HTML de inserción',
+  pasteVideoUrl: 'Pegar o arrastrar URL de YouTube (Ctrl+V) para abrir en el reproductor',
 };
 
 const zh: Record<StringKey, string> = {
@@ -395,6 +405,8 @@ const zh: Record<StringKey, string> = {
   next: '下一个',
   language: '语言',
   settingsTitle: 'Lumina 设置',
+  copyEmbedHtml: '复制嵌入 HTML',
+  pasteVideoUrl: '粘贴或拖放 YouTube 链接 (Ctrl+V) 在播放器中打开',
 };
 
 const LOCALES: Record<LocaleKey, Record<StringKey, string>> = { en, fr, de, es, zh };

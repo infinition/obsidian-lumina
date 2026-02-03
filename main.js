@@ -24786,7 +24786,9 @@ var en = {
   previous: "Previous",
   next: "Next",
   language: "Language",
-  settingsTitle: "Lumina Settings"
+  settingsTitle: "Lumina Settings",
+  copyEmbedHtml: "Copy embed HTML",
+  pasteVideoUrl: "Paste or drag a YouTube URL (Ctrl+V) to open in player"
 };
 var fr = {
   openLumina: "Ouvrir Lumina",
@@ -24850,7 +24852,9 @@ var fr = {
   previous: "Pr\xE9c\xE9dent",
   next: "Suivant",
   language: "Langue",
-  settingsTitle: "Param\xE8tres Lumina"
+  settingsTitle: "Param\xE8tres Lumina",
+  copyEmbedHtml: "Copier le HTML embed",
+  pasteVideoUrl: "Coller ou glisser une URL YouTube (Ctrl+V) pour ouvrir le lecteur"
 };
 var de = {
   openLumina: "Lumina \xF6ffnen",
@@ -24914,7 +24918,9 @@ var de = {
   previous: "Zur\xFCck",
   next: "Weiter",
   language: "Sprache",
-  settingsTitle: "Lumina-Einstellungen"
+  settingsTitle: "Lumina-Einstellungen",
+  copyEmbedHtml: "Embed-HTML kopieren",
+  pasteVideoUrl: "YouTube-URL einf\xFCgen oder ziehen (Strg+V) zum Abspielen"
 };
 var es = {
   openLumina: "Abrir Lumina",
@@ -24978,7 +24984,9 @@ var es = {
   previous: "Anterior",
   next: "Siguiente",
   language: "Idioma",
-  settingsTitle: "Ajustes de Lumina"
+  settingsTitle: "Ajustes de Lumina",
+  copyEmbedHtml: "Copiar HTML de inserci\xF3n",
+  pasteVideoUrl: "Pegar o arrastrar URL de YouTube (Ctrl+V) para abrir en el reproductor"
 };
 var zh = {
   openLumina: "\u6253\u5F00 Lumina",
@@ -25042,7 +25050,9 @@ var zh = {
   previous: "\u4E0A\u4E00\u4E2A",
   next: "\u4E0B\u4E00\u4E2A",
   language: "\u8BED\u8A00",
-  settingsTitle: "Lumina \u8BBE\u7F6E"
+  settingsTitle: "Lumina \u8BBE\u7F6E",
+  copyEmbedHtml: "\u590D\u5236\u5D4C\u5165 HTML",
+  pasteVideoUrl: "\u7C98\u8D34\u6216\u62D6\u653E YouTube \u94FE\u63A5 (Ctrl+V) \u5728\u64AD\u653E\u5668\u4E2D\u6253\u5F00"
 };
 var LOCALES = { en, fr, de, es, zh };
 function t(locale, key, params) {
@@ -25102,6 +25112,29 @@ function getMediaType(ext) {
 function isGif(path) {
   return path.toLowerCase().endsWith(".gif");
 }
+function urlToEmbed(input) {
+  const raw = input.trim();
+  try {
+    const url = raw.startsWith("http") ? raw : `https://${raw}`;
+    const u = new URL(url);
+    const host = u.hostname.replace(/^www\./, "");
+    if (host === "youtube.com" && u.pathname === "/watch" && u.searchParams.get("v")) {
+      const id = u.searchParams.get("v");
+      const embedSrc = `https://www.youtube.com/embed/${id}`;
+      const embedHtml = `<iframe width="560" height="315" src="${embedSrc}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+      return { url, embedSrc, embedHtml };
+    }
+    if (host === "youtu.be" && u.pathname.length > 1) {
+      const id = u.pathname.slice(1).split("?")[0];
+      const embedSrc = `https://www.youtube.com/embed/${id}`;
+      const embedHtml = `<iframe width="560" height="315" src="${embedSrc}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+      return { url, embedSrc, embedHtml };
+    }
+    return null;
+  } catch (e) {
+    return null;
+  }
+}
 var PhotoGalleryWidget = ({
   api,
   instanceId
@@ -25125,6 +25158,7 @@ var PhotoGalleryWidget = ({
   const [isEditMode, setIsEditMode] = (0, import_react.useState)(false);
   const [lightboxOpen, setLightboxOpen] = (0, import_react.useState)(false);
   const [lightboxIndex, setLightboxIndex] = (0, import_react.useState)(0);
+  const [lightboxEmbed, setLightboxEmbed] = (0, import_react.useState)(null);
   const [lbUiVisible, setLbUiVisible] = (0, import_react.useState)(true);
   const [lbZoom, setLbZoom] = (0, import_react.useState)(1);
   const [lbPan, setLbPan] = (0, import_react.useState)({ x: 0, y: 0 });
@@ -25190,6 +25224,7 @@ var PhotoGalleryWidget = ({
   const sortBtnRef = (0, import_react.useRef)(null);
   const [searchPopupStyle, setSearchPopupStyle] = (0, import_react.useState)(null);
   const [folderPopupStyle, setFolderPopupStyle] = (0, import_react.useState)(null);
+  const [sortPopupStyle, setSortPopupStyle] = (0, import_react.useState)(null);
   const [timelineVisible, setTimelineVisible] = (0, import_react.useState)(false);
   const timelineHideTimeoutRef = (0, import_react.useRef)(null);
   const timelineScrubRef = (0, import_react.useRef)(null);
@@ -25253,6 +25288,29 @@ var PhotoGalleryWidget = ({
     const maxHeight = Math.max(120, bounds.bottom - top - pad);
     setFolderPopupStyle({ position: "fixed", top, left, width: w, maxHeight, zIndex: 10001, overflowY: "auto" });
   }, [folderPopup, getVisibleBounds]);
+  (0, import_react.useLayoutEffect)(() => {
+    if (!sortPopup || !sortBtnRef.current) {
+      setSortPopupStyle(null);
+      return;
+    }
+    const bounds = getVisibleBounds();
+    if (!bounds || bounds.width < 50) {
+      setSortPopupStyle(null);
+      return;
+    }
+    const rect = sortBtnRef.current.getBoundingClientRect();
+    const pad = 8;
+    const w = 160;
+    let left = rect.left;
+    if (left + w > bounds.right - pad) left = bounds.right - w - pad;
+    if (left < bounds.left + pad) left = bounds.left + pad;
+    let top = rect.bottom + pad;
+    const popupH = 280;
+    if (top + popupH > bounds.bottom - pad) top = Math.max(bounds.top + pad, bounds.bottom - popupH - pad);
+    if (top < bounds.top + pad) top = bounds.top + pad;
+    const maxHeight = Math.max(120, bounds.bottom - top - pad);
+    setSortPopupStyle({ position: "fixed", top, left, width: w, maxHeight, zIndex: 10001, overflowY: "auto", padding: 4 });
+  }, [sortPopup, getVisibleBounds]);
   (0, import_react.useEffect)(() => {
     if (!searchExpanded && !folderPopup && !sortPopup) return;
     const handleOutside = (e) => {
@@ -26121,6 +26179,7 @@ var PhotoGalleryWidget = ({
     lbPointerDownRef.current = false;
     lbDraggingRef.current = false;
     setLightboxOpen(false);
+    setLightboxEmbed(null);
     setLbZoom(1);
     setLbPan({ x: 0, y: 0 });
     lbZoomRef.current = 1;
@@ -26285,6 +26344,7 @@ var PhotoGalleryWidget = ({
     if (!el) return;
     const dist = (a, b) => Math.hypot(b.clientX - a.clientX, b.clientY - a.clientY);
     const onWheel = (e) => {
+      if (!e.ctrlKey) return;
       e.preventDefault();
       setLbZoom((z) => Math.max(1, Math.min(5, z - e.deltaY * 2e-3)));
     };
@@ -26665,27 +26725,39 @@ var PhotoGalleryWidget = ({
                         ] })
                       }
                     ),
-                    sortPopup && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "fixed inset-0 z-[99]", onClick: () => setSortPopup(false) }),
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "gal-popup", style: { width: 160 }, children: SORT_OPTIONS.map((opt) => {
-                        const isActive = settings.sortBy === opt.val;
-                        return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-                          "button",
+                    sortPopup && sortPopupStyle && (0, import_react_dom.createPortal)(
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "gal-portal-root", children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                          "div",
                           {
-                            type: "button",
-                            className: "gal-sort-opt",
-                            style: isActive ? { color: "var(--gal-accent)", fontWeight: 600, background: "var(--background-modifier-hover)", borderLeft: "3px solid var(--gal-accent)", paddingLeft: 7 } : void 0,
-                            onClick: () => {
-                              setSettings((s) => ({ ...s, sortBy: opt.val }));
-                              saveState(true);
-                              setSortPopup(false);
+                            className: "fixed inset-0",
+                            style: { zIndex: 99998, cursor: "default" },
+                            onClick: () => setSortPopup(false),
+                            onPointerDown: () => setSortPopup(false),
+                            "aria-hidden": true
+                          }
+                        ),
+                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "gal-popup gal-popup-sort", style: sortPopupStyle, children: SORT_OPTIONS.map((opt) => {
+                          const isActive = settings.sortBy === opt.val;
+                          return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                            "button",
+                            {
+                              type: "button",
+                              className: "gal-sort-opt",
+                              style: isActive ? { color: "var(--gal-accent)", fontWeight: 600, background: "var(--background-modifier-hover)", borderLeft: "3px solid var(--gal-accent)", paddingLeft: 7 } : void 0,
+                              onClick: () => {
+                                setSettings((s) => ({ ...s, sortBy: opt.val }));
+                                saveState(true);
+                                setSortPopup(false);
+                              },
+                              children: t(locale, opt.labelKey)
                             },
-                            children: t(locale, opt.labelKey)
-                          },
-                          opt.val
-                        );
-                      }) })
-                    ] })
+                            opt.val
+                          );
+                        }) })
+                      ] }),
+                      document.body
+                    )
                   ] }),
                   /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { position: "relative" }, children: [
                     /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
@@ -27044,8 +27116,41 @@ var PhotoGalleryWidget = ({
           {
             ref: galMainRef,
             className: "gal-main",
+            tabIndex: 0,
+            title: t(locale, "pasteVideoUrl"),
             onPointerMove: canShowTimeline ? handleTimelineZonePointerMove : void 0,
             onPointerLeave: canShowTimeline ? handleTimelineZonePointerLeave : void 0,
+            onDragOver: (e) => {
+              if (e.dataTransfer.types.includes("text/plain")) {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = "copy";
+              }
+            },
+            onDrop: (e) => {
+              e.preventDefault();
+              const text = e.dataTransfer.getData("text/plain");
+              const embed = text ? urlToEmbed(text) : null;
+              if (embed) {
+                setLightboxEmbed(embed);
+                setLightboxOpen(true);
+                setLbZoom(1);
+                setLbPan({ x: 0, y: 0 });
+              }
+            },
+            onPaste: (e) => {
+              var _a2;
+              const text = (_a2 = e.clipboardData) == null ? void 0 : _a2.getData("text/plain");
+              if (text) {
+                const embed = urlToEmbed(text);
+                if (embed) {
+                  e.preventDefault();
+                  setLightboxEmbed(embed);
+                  setLightboxOpen(true);
+                  setLbZoom(1);
+                  setLbPan({ x: 0, y: 0 });
+                }
+              }
+            },
             children: [
               isSlideshowActive && filteredImages.length > 0 && (() => {
                 const slide = filteredImages[Math.min(slideshowIndex, filteredImages.length - 1)];
@@ -27409,7 +27514,7 @@ var PhotoGalleryWidget = ({
             ]
           }
         ),
-        lightboxOpen && currentImage && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+        lightboxOpen && (currentImage || lightboxEmbed) && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
           "div",
           {
             className: "gal-lightbox",
@@ -27425,17 +27530,30 @@ var PhotoGalleryWidget = ({
                 "div",
                 {
                   ref: lightboxViewerRef,
-                  className: `gal-lightbox-viewer-wrap gal-lightbox-viewer ${lbDragging ? "cursor-grabbing" : "cursor-grab"}`,
+                  className: `gal-lightbox-viewer-wrap gal-lightbox-viewer ${!lightboxEmbed && lbDragging ? "cursor-grabbing" : !lightboxEmbed ? "cursor-grab" : ""}`,
                   style: { flex: 1 },
-                  onPointerDown: onLbPointerDown,
-                  onPointerMove: onLbPointerMove,
-                  onPointerUp: onLbPointerUp,
-                  onPointerCancel: onLbPointerCancel,
+                  onPointerDown: lightboxEmbed ? void 0 : onLbPointerDown,
+                  onPointerMove: lightboxEmbed ? void 0 : onLbPointerMove,
+                  onPointerUp: lightboxEmbed ? void 0 : onLbPointerUp,
+                  onPointerCancel: lightboxEmbed ? void 0 : onLbPointerCancel,
                   onDoubleClick: (e) => {
                     e.stopPropagation();
                     closeLightbox();
                   },
-                  children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                  children: lightboxEmbed ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "100%", padding: 24 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                    "iframe",
+                    {
+                      width: "560",
+                      height: "315",
+                      src: lightboxEmbed.embedSrc,
+                      title: "YouTube video player",
+                      frameBorder: "0",
+                      allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
+                      referrerPolicy: "strict-origin-when-cross-origin",
+                      allowFullScreen: true,
+                      style: { maxWidth: "100%", maxHeight: "100%", aspectRatio: "16/9" }
+                    }
+                  ) }) : currentImage ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
                     "div",
                     {
                       draggable: true,
@@ -27478,7 +27596,7 @@ var PhotoGalleryWidget = ({
                         }
                       )
                     }
-                  )
+                  ) : null
                 }
               ),
               /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
@@ -27509,7 +27627,7 @@ var PhotoGalleryWidget = ({
                         children: "\u2715"
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { position: "absolute", top: "50%", left: 0, right: 0, transform: "translateY(-50%)", display: "flex", justifyContent: "space-between", pointerEvents: "none" }, children: [
+                    !lightboxEmbed && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { position: "absolute", top: "50%", left: 0, right: 0, transform: "translateY(-50%)", display: "flex", justifyContent: "space-between", pointerEvents: "none" }, children: [
                       /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
                         "button",
                         {
@@ -27547,7 +27665,7 @@ var PhotoGalleryWidget = ({
                         }
                       )
                     ] }),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
                       "div",
                       {
                         className: "py-5 text-center text-white",
@@ -27555,7 +27673,21 @@ var PhotoGalleryWidget = ({
                           pointerEvents: lbUiVisible ? "auto" : "none",
                           background: "linear-gradient(to top, rgba(0,0,0,0.8), transparent)"
                         },
-                        children: [
+                        children: lightboxEmbed ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "text-sm truncate px-4", title: lightboxEmbed.url, children: lightboxEmbed.url }),
+                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", marginTop: 8 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                            "button",
+                            {
+                              type: "button",
+                              className: "px-3 py-1 rounded bg-white/20 hover:bg-white/30 text-sm",
+                              onClick: async () => {
+                                await navigator.clipboard.writeText(lightboxEmbed.embedHtml);
+                                alert(t(locale, "copied"));
+                              },
+                              children: t(locale, "copyEmbedHtml")
+                            }
+                          ) })
+                        ] }) : currentImage ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
                           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { children: currentImage.name }),
                           /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "text-sm opacity-80", children: [
                             (currentImage.size / 1024 / 1024).toFixed(2),
@@ -27606,7 +27738,7 @@ var PhotoGalleryWidget = ({
                               }
                             )
                           ] })
-                        ]
+                        ] }) : null
                       }
                     )
                   ]
