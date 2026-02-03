@@ -1570,7 +1570,7 @@
                     }
                 }
 
-                STATE.rootMdFiles = rootMdFiles.length > 0 ? rootMdFiles : (CONFIG.features.showRootReadme ? [{ title: CONFIG.ui.rootReadmeTitle || 'Project Home', filename: 'README.md' }] : []);
+                STATE.rootMdFiles = rootMdFiles.length > 0 ? rootMdFiles : (CONFIG.features.showRootReadme ? [{ title: 'README.md'.replace(/\.md$/, '').replace(/_/g, ' '), filename: 'README.md' }] : []);
                 if (STATE.rootMdFiles.length > 0) {
                     const rootObj = Object.fromEntries(STATE.rootMdFiles.map(f => [f.title, f.filename]));
                     STATE.wikiData = { __root__: rootObj, ...structure };
@@ -1847,7 +1847,7 @@
          *  Au rechargement (F5), le suffixe est toujours retiré si le format correspond, pour éviter "Page Not Found". */
         function pageParamToRealForRoot(pageParam) {
             if (!pageParam || !pageParam.endsWith('.md')) return pageParam;
-            const m = pageParam.match(/^(.+)_([a-z0-9]{6,12})\.md$/);
+            const m = pageParam.match(/^(.+)_([a-z0-9]+)\.md$/);
             if (m) return m[1] + '.md';
             return pageParam;
         }
@@ -3026,7 +3026,7 @@
         document.getElementById('menu-btn').onclick = openMenu;
         document.getElementById('close-sidebar-btn').onclick = closeMenu;
         document.getElementById('close-toc-btn').onclick = closeTOC;
-        document.getElementById('toc-btn-desktop').onclick = openTOC;
+        document.getElementById('toc-btn-desktop')?.addEventListener('click', openTOC);
         document.getElementById('kb-mobile-toggle')?.addEventListener('click', openMenu);
         document.getElementById('kb-mobile-toc-toggle')?.addEventListener('click', openTOC);
 
