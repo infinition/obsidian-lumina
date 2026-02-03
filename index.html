@@ -43,7 +43,7 @@
 
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
 
@@ -372,6 +372,26 @@
         .markdown-body strong {
             color: var(--text-heading);
             font-weight: 700;
+        }
+
+        .markdown-body table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        .markdown-body table th,
+        .markdown-body table td {
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 0.75rem;
+            text-align: left;
+        }
+        .markdown-body table th {
+            font-weight: 600;
+            background: var(--accent-dim);
+            color: var(--text-heading);
+        }
+        .markdown-body table tr:hover td {
+            background: var(--accent-dim);
         }
 
         .markdown-body img {
@@ -1098,8 +1118,18 @@
             return `<img src="${href}" alt="${text || ''}" title="${title || ''}" loading="lazy" class="rounded-lg border border-hack-border bg-black/20">`;
         };
 
+        // --- TABLE RENDERER (compatible marked 4.x ; en 5+ le token est un objet) ---
         renderer.table = function (header, body) {
-            return `<div class="overflow-x-auto my-4 border border-hack-border rounded-lg"><table class="w-full text-left text-sm border-collapse"><thead>${header}</thead><tbody>${body}</tbody></table></div>`;
+            const wrap = (html) => `<div class="overflow-x-auto my-4 border border-hack-border rounded-lg">${html}</div>`;
+            if (typeof header === 'object' && header !== null) {
+                const token = header;
+                const thead = (typeof token.header === 'string') ? token.header : (Array.isArray(token.rows) ? token.rows[0] || '' : '');
+                const rows = Array.isArray(token.rows) ? token.rows.slice(1).join('') : (typeof body === 'string' ? body : '');
+                return wrap(`<table class="w-full text-left text-sm border-collapse"><thead>${thead}</thead><tbody>${rows}</tbody></table>`);
+            }
+            const h = typeof header === 'string' ? header : '';
+            const b = typeof body === 'string' ? body : '';
+            return wrap(`<table class="w-full text-left text-sm border-collapse"><thead>${h}</thead><tbody>${b}</tbody></table>`);
         };
 
         marked.use({ renderer });
