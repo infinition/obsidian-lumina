@@ -2008,18 +2008,38 @@
                         } else {
                             throw new Error("404");
                         }
-                    } catch (e) {
-                        // Try fallback if not root
-                        if (!isRoot) {
-                            const path2 = `./wiki/docs/${filename}`;
-                            const res2 = await fetch(path2);
-                            if (res2.ok) {
-                                text = await res2.text();
-                            } else {
-                                throw new Error(`Content not found.`);
+                        // Pour les fichiers racine : si vide ou HTML (ex. Jekyll sur GitHub Pages), charger via raw GitHub
+                        if (isRoot && (!text || !text.trim() || text.trim().startsWith('<')) && STATE.repo && STATE.branch) {
+                            const rawUrl = `https://raw.githubusercontent.com/${STATE.repo}/${STATE.branch}/${filename}`;
+                            const resRaw = await fetch(rawUrl);
+                            if (resRaw.ok) {
+                                const rawText = await resRaw.text();
+                                if (rawText && !rawText.trim().startsWith('<')) text = rawText;
                             }
-                        } else {
-                            throw e;
+                        }
+                    } catch (e) {
+                        // Pour les fichiers racine : repli sur raw GitHub
+                        if (isRoot && STATE.repo && STATE.branch) {
+                            try {
+                                const rawUrl = `https://raw.githubusercontent.com/${STATE.repo}/${STATE.branch}/${filename}`;
+                                const resRaw = await fetch(rawUrl);
+                                if (resRaw.ok) {
+                                    text = await resRaw.text();
+                                }
+                            } catch (e2) { /* ignore */ }
+                        }
+                        if (!text) {
+                            if (!isRoot) {
+                                const path2 = `./wiki/docs/${filename}`;
+                                const res2 = await fetch(path2);
+                                if (res2.ok) {
+                                    text = await res2.text();
+                                } else {
+                                    throw new Error(`Content not found.`);
+                                }
+                            } else {
+                                throw e;
+                            }
                         }
                     }
 
