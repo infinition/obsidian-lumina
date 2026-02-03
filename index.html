@@ -174,9 +174,12 @@
         #theme-toggle-mobile,
         .badge-sm,
         .pagination-card,
-        #toc-btn-mobile,
         #toc-btn-desktop,
-        #clear-highlight-btn {
+        #search-btn-mobile,
+        #clear-highlight-btn,
+        .kb-mobile-toggle,
+        .kb-mobile-toc-toggle,
+        .kb-scroll-top-btn {
             position: relative;
             overflow: hidden;
         }
@@ -190,9 +193,12 @@
         #theme-toggle-mobile::after,
         .badge-sm::after,
         .pagination-card::after,
-        #toc-btn-mobile::after,
         #toc-btn-desktop::after,
-        #clear-highlight-btn::after {
+        #search-btn-mobile::after,
+        #clear-highlight-btn::after,
+        .kb-mobile-toggle::after,
+        .kb-mobile-toc-toggle::after,
+        .kb-scroll-top-btn::after {
             content: '';
             position: absolute;
             inset: 0;
@@ -211,9 +217,12 @@
         #theme-toggle-mobile:hover::after,
         .badge-sm:hover::after,
         .pagination-card:hover::after,
-        #toc-btn-mobile:hover::after,
         #toc-btn-desktop:hover::after,
-        #clear-highlight-btn:hover::after {
+        #search-btn-mobile:hover::after,
+        #clear-highlight-btn:hover::after,
+        .kb-mobile-toggle:hover::after,
+        .kb-mobile-toc-toggle:hover::after,
+        .kb-scroll-top-btn:hover::after {
             opacity: 1;
         }
 
@@ -516,14 +525,100 @@
             opacity: 1;
         }
 
-        #scroll-top-btn {
+        /* Bottom bar: Menu | Scroll to top (center) | TOC — aligne les 3 boutons à la même hauteur */
+        .kb-bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 1.5rem;
+            padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+            padding-left: calc(1.5rem + env(safe-area-inset-left, 0px));
+            padding-right: calc(1.5rem + env(safe-area-inset-right, 0px));
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 80;
+            pointer-events: none;
+        }
+        .kb-bottom-bar-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 50px;
+            height: 50px;
+            pointer-events: auto;
+        }
+        .kb-bottom-bar-left { justify-content: flex-start; }
+        .kb-bottom-bar-center { flex: 1; justify-content: center; }
+        .kb-bottom-bar-right { justify-content: flex-end; }
+
+        .kb-bottom-bar-btn {
+            width: 50px;
+            height: 50px;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: var(--bg-sidebar);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .kb-bottom-bar-btn:hover {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+        .kb-bottom-bar-btn.kb-bottom-bar-btn-hidden {
+            visibility: hidden;
+            pointer-events: none;
+            opacity: 0;
+        }
+        .kb-scroll-top-btn {
             transition: opacity 0.3s, transform 0.3s;
         }
-
-        #scroll-top-btn.hidden {
+        #scroll-top-btn:not(.visible) {
             opacity: 0;
             pointer-events: none;
-            transform: translateY(20px);
+            transform: translateY(8px);
+        }
+        #scroll-top-btn.visible {
+            opacity: 0.9;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+        /* Menu (gauche) : visible uniquement en mobile (sidebar masquée) */
+        .kb-mobile-toggle {
+            display: flex;
+        }
+        @media (min-width: 769px) {
+            .kb-bottom-bar-left .kb-mobile-toggle {
+                display: none !important;
+            }
+            .kb-bottom-bar-left {
+                min-width: 0;
+                width: 0;
+                overflow: hidden;
+            }
+        }
+        /* TOC (droite) : visible en mobile et quand la TOC sidebar n'est pas affichée (< xl) */
+        .kb-mobile-toc-toggle {
+            display: flex;
+        }
+        @media (min-width: 1280px) {
+            .kb-bottom-bar-right .kb-mobile-toc-toggle {
+                display: none !important;
+            }
+            .kb-bottom-bar-right {
+                min-width: 0;
+                width: 0;
+                overflow: hidden;
+            }
         }
 
         /* --- CLEAR HIGHLIGHT BTN (NEW) --- */
@@ -602,7 +697,7 @@
             #mobile-toc-sidebar,
             header,
             #theme-toggle-desktop,
-            #scroll-top-btn,
+            #kb-bottom-bar,
             #reading-progress-bar,
             #overlay,
             .copy-btn,
@@ -872,14 +967,33 @@
                 <span id="label-menu" class="text-xs font-mono font-bold uppercase tracking-wider">Menu</span>
                 <i data-lucide="menu" class="w-5 h-5 text-hack-green"></i>
             </button>
-            <button id="toc-btn-mobile" class="text-gray-400 hover:text-hack-green p-2 transition-colors"
-                aria-label="Toggle Table of Contents">
-                <i data-lucide="hash" class="w-5 h-5"></i>
+            <button id="search-btn-mobile" type="button" class="text-gray-400 hover:text-hack-green p-2 transition-colors"
+                title="Search (Ctrl+K)" aria-label="Search" onclick="openSearch()">
+                <i data-lucide="search" class="w-5 h-5"></i>
             </button>
         </div>
     </header>
 
     <div id="overlay" class="fixed inset-0 bg-black/80 backdrop-blur-[2px] z-[65] hidden transition-opacity opacity-0">
+    </div>
+
+    <!-- Bottom bar: Menu (left) | Scroll to top (center) | TOC (right) -->
+    <div id="kb-bottom-bar" class="kb-bottom-bar">
+        <div class="kb-bottom-bar-cell kb-bottom-bar-left">
+            <button id="kb-mobile-toggle" type="button" class="kb-bottom-bar-btn kb-mobile-toggle" title="Menu" aria-label="Open Menu">
+                <i data-lucide="menu" class="w-5 h-5"></i>
+            </button>
+        </div>
+        <div class="kb-bottom-bar-cell kb-bottom-bar-center">
+            <button id="scroll-top-btn" type="button" class="kb-bottom-bar-btn kb-scroll-top-btn p-3 rounded-full bg-hack-greenDim border border-hack-border text-hack-green hover:bg-hack-green hover:text-white shadow-lg" title="Back to Top" aria-label="Back to Top">
+                <i data-lucide="arrow-up" class="w-5 h-5"></i>
+            </button>
+        </div>
+        <div class="kb-bottom-bar-cell kb-bottom-bar-right">
+            <button id="kb-mobile-toc-toggle" type="button" class="kb-bottom-bar-btn kb-mobile-toc-toggle" title="Table of Contents" aria-label="Toggle Table of Contents">
+                <i data-lucide="list" class="w-5 h-5"></i>
+            </button>
+        </div>
     </div>
 
     <aside id="sidebar"
@@ -1044,12 +1158,6 @@
             title="Clear Search Highlights" aria-label="Clear Search Highlights">
             <i data-lucide="eraser" class="w-5 h-5"></i>
         </button>
-
-        <button id="scroll-top-btn"
-            class="absolute bottom-6 right-6 p-3 rounded-full bg-hack-greenDim border border-hack-border text-hack-green hover:bg-hack-green hover:text-white shadow-lg hidden z-30"
-            title="Back to Top" aria-label="Back to Top">
-            <i data-lucide="arrow-up" class="w-5 h-5"></i>
-        </button>
     </div>
 
     <div id="search-modal-overlay"
@@ -1195,6 +1303,10 @@
             const searchTrigger = document.querySelector('[onclick="openSearch()"]');
             if (searchTrigger) {
                 searchTrigger.style.display = CONFIG.features.showSearch ? 'block' : 'none';
+            }
+            const searchBtnMobile = document.getElementById('search-btn-mobile');
+            if (searchBtnMobile) {
+                searchBtnMobile.style.display = CONFIG.features.showSearch ? '' : 'none';
             }
 
             const socialSection = document.getElementById('social-section');
@@ -1731,10 +1843,12 @@
             }
         }
 
+        /** Convertit une URL virtuelle ?page=README_ik5745.md en nom réel README.md pour la recherche.
+         *  Au rechargement (F5), le suffixe est toujours retiré si le format correspond, pour éviter "Page Not Found". */
         function pageParamToRealForRoot(pageParam) {
-            if (!STATE.wikiId || !pageParam || !pageParam.endsWith('.md')) return pageParam;
-            const m = pageParam.match(/^(.+)_([a-z0-9]+)\.md$/);
-            if (m && m[2] === STATE.wikiId) return m[1] + '.md';
+            if (!pageParam || !pageParam.endsWith('.md')) return pageParam;
+            const m = pageParam.match(/^(.+)_([a-z0-9]{6,12})\.md$/);
+            if (m) return m[1] + '.md';
             return pageParam;
         }
 
@@ -2868,14 +2982,19 @@
         const tocSidebar = document.getElementById('mobile-toc-sidebar');
         const overlay = document.getElementById('overlay');
 
+        const kbMobileToggleBtn = document.getElementById('kb-mobile-toggle');
+        const kbMobileTocToggleBtn = document.getElementById('kb-mobile-toc-toggle');
+
         function openMenu() {
             sidebar.classList.remove('-translate-x-full');
             closeTOC(); // Close TOC if open
             overlay.classList.remove('hidden');
             setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+            kbMobileToggleBtn?.classList.add('kb-bottom-bar-btn-hidden');
         }
         function closeMenu() {
             sidebar.classList.add('-translate-x-full');
+            kbMobileToggleBtn?.classList.remove('kb-bottom-bar-btn-hidden');
             checkOverlay();
         }
 
@@ -2888,9 +3007,11 @@
             closeMenu(); // Close Menu if open
             overlay.classList.remove('hidden');
             setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+            kbMobileTocToggleBtn?.classList.add('kb-bottom-bar-btn-hidden');
         }
         function closeTOC() {
             tocSidebar.classList.add('translate-x-full');
+            kbMobileTocToggleBtn?.classList.remove('kb-bottom-bar-btn-hidden');
             checkOverlay();
         }
 
@@ -2905,8 +3026,9 @@
         document.getElementById('menu-btn').onclick = openMenu;
         document.getElementById('close-sidebar-btn').onclick = closeMenu;
         document.getElementById('close-toc-btn').onclick = closeTOC;
-        document.getElementById('toc-btn-mobile').onclick = openTOC;
         document.getElementById('toc-btn-desktop').onclick = openTOC;
+        document.getElementById('kb-mobile-toggle')?.addEventListener('click', openMenu);
+        document.getElementById('kb-mobile-toc-toggle')?.addEventListener('click', openTOC);
 
         // Unified overlay click closes whichever is open
         overlay.onclick = () => {
@@ -2936,32 +3058,27 @@
             const progressBar = document.getElementById('reading-progress-bar');
             const scrollBtn = document.getElementById('scroll-top-btn');
 
-            if (scrollContainer && progressBar) {
+            function updateScrollUI() {
+                if (!scrollContainer) return;
+                const scrollTop = scrollContainer.scrollTop;
+                const scrollHeight = scrollContainer.scrollHeight - scrollContainer.clientHeight;
+                const scrollPercent = (scrollHeight > 0) ? (scrollTop / scrollHeight) * 100 : 0;
+                if (progressBar) progressBar.style.width = scrollPercent + '%';
+                scrollBtn?.classList.toggle('visible', scrollTop > 200);
                 const breadcrumbContainer = document.getElementById('breadcrumb-sticky-container');
-                scrollContainer.addEventListener('scroll', () => {
-                    const scrollTop = scrollContainer.scrollTop;
-                    const scrollHeight = scrollContainer.scrollHeight - scrollContainer.clientHeight;
-                    const scrollPercent = (scrollHeight > 0) ? (scrollTop / scrollHeight) * 100 : 0;
-                    progressBar.style.width = scrollPercent + '%';
-
-                    if (scrollTop > 300) scrollBtn.classList.remove('hidden');
-                    else scrollBtn.classList.add('hidden');
-
-                    if (breadcrumbContainer && CONFIG.features.stickyBreadcrumbs) {
-                        // Use a small threshold and requestAnimationFrame for smoothness
-                        if (scrollTop > 20) {
-                            breadcrumbContainer.classList.add('stuck');
-                        } else {
-                            breadcrumbContainer.classList.remove('stuck');
-                        }
-                    } else if (breadcrumbContainer) {
-                        breadcrumbContainer.classList.remove('stuck');
-                    }
-
-                    updateTOCActiveState();
-                });
+                if (breadcrumbContainer && typeof CONFIG !== 'undefined' && CONFIG.features.stickyBreadcrumbs) {
+                    breadcrumbContainer.classList.toggle('stuck', scrollTop > 20);
+                } else if (breadcrumbContainer) {
+                    breadcrumbContainer.classList.remove('stuck');
+                }
+                if (typeof updateTOCActiveState === 'function') updateTOCActiveState();
             }
-            if (scrollBtn) {
+
+            if (scrollContainer) {
+                scrollContainer.addEventListener('scroll', updateScrollUI);
+                updateScrollUI();
+            }
+            if (scrollBtn && scrollContainer) {
                 scrollBtn.onclick = () => scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
@@ -3067,7 +3184,7 @@
 
             // Mouse tracking for glow effects
             document.addEventListener('mousemove', (e) => {
-                const target = e.target.closest('.nav-link, .section-header, .copy-btn, .search-result-item, #menu-btn, #theme-toggle-desktop, #theme-toggle-mobile, .badge-sm, .pagination-card, #toc-btn-mobile, #toc-btn-desktop, #clear-highlight-btn');
+                const target = e.target.closest('.nav-link, .section-header, .copy-btn, .search-result-item, #menu-btn, #theme-toggle-desktop, #theme-toggle-mobile, .badge-sm, .pagination-card, #toc-btn-desktop, #search-btn-mobile, #clear-highlight-btn, .kb-mobile-toggle, .kb-mobile-toc-toggle, .kb-scroll-top-btn');
                 if (target) {
                     const rect = target.getBoundingClientRect();
                     const x = ((e.clientX - rect.left) / rect.width) * 100;
