@@ -1127,6 +1127,7 @@
         let STATE = {
             wikiData: {},
             rootMdFiles: [],
+            wikiId: '',
             contentCache: {},
             searchIndex: [],
             expandedSections: new Set(),
@@ -1140,6 +1141,13 @@
         if (typeof CONFIG !== 'undefined') {
             STATE.repo = CONFIG.repo;
             STATE.branch = CONFIG.branch;
+            // Identifiant unique par repo pour éviter conflits de cache localStorage entre différentes GitHub Pages
+            const shortHash = (str) => {
+                let h = 0;
+                for (let i = 0; i < str.length; i++) { h = ((h << 5) - h) + str.charCodeAt(i); h |= 0; }
+                return Math.abs(h).toString(36).slice(0, 12);
+            };
+            STATE.wikiId = (CONFIG.repo && shortHash(CONFIG.repo)) || '';
         } else {
             console.error("CRITICAL: CONFIG not loaded from wiki/config.js");
         }
@@ -1723,6 +1731,13 @@
             }
         }
 
+        function pageParamToRealForRoot(pageParam) {
+            if (!STATE.wikiId || !pageParam || !pageParam.endsWith('.md')) return pageParam;
+            const m = pageParam.match(/^(.+)_([a-z0-9]+)\.md$/);
+            if (m && m[2] === STATE.wikiId) return m[1] + '.md';
+            return pageParam;
+        }
+
         function handleInitialRoute() {
             const urlParams = new URLSearchParams(window.location.search);
             const pageParam = urlParams.get('page');
@@ -1731,7 +1746,11 @@
                 toggleVersionsPage(null, false);
             } else if (pageParam) {
                 const flatList = getFlatPageList();
-                const found = flatList.find(item => `${item.folder}/${item.file}` === pageParam || item.file === pageParam);
+                const paramForRoot = pageParamToRealForRoot(pageParam);
+                const found = flatList.find(item => {
+                    if (item.folder === '') return item.file === paramForRoot || item.file === pageParam;
+                    return `${item.folder}/${item.file}` === pageParam || item.file === pageParam;
+                });
 
                 if (found) {
                     loadContent(found.folder, found.title, found.file, false);
@@ -1968,8 +1987,8 @@
 
             try {
                 let text;
-                const cacheKey = `${folder}/${filename}`;
-                const storageKey = `bjorn_content_${cacheKey}`;
+                const cacheKey = (isRoot && STATE.wikiId) ? `__root__${STATE.wikiId}/${filename}` : `${folder}/${filename}`;
+                const storageKey = `bjorn_content_${cacheKey.replace(/\//g, '_')}`;
                 const now = Date.now();
                 const TTL = 3600 * 1000 * 24; // 24 Hours Cache
 
@@ -2073,7 +2092,9 @@
                 renderPagination(folder, title);
 
                 if (pushHistory) {
-                    const newUrl = folder ? `?page=${folder}/${filename}` : `?page=${filename}`;
+                    const newUrl = folder
+                        ? `?page=${folder}/${filename}`
+                        : (STATE.wikiId ? `?page=${filename.replace(/\.md$/, `_${STATE.wikiId}.md`)}` : `?page=${filename}`);
                     window.history.pushState({ folder, title, filename }, "", newUrl);
                 }
 
@@ -2166,7 +2187,7 @@
                 return;
             }
 
-            const CACHE_KEY = `bjorn_upd_${folder}_${filename}`;
+            const CACHE_KEY = STATE.wikiId ? `bjorn_upd_${STATE.wikiId}_${folder}_${filename}`.replace(/\//g, '_') : `bjorn_upd_${folder}_${filename}`;
             const now = Date.now();
 
             const cached = localStorage.getItem(CACHE_KEY);
@@ -2197,18 +2218,16 @@
             const idx = flatList.findIndex(item => item.folder === currentFolder && item.title === currentTitle);
 
             [idx - 1, idx + 1].forEach(i => {
-                if (flatList[i]) {
-                    const url = `./wiki/docs/${flatList[i].folder}/${flatList[i].file}`;
-                    const cacheKey = `${flatList[i].folder}/${flatList[i].file}`;
-
-                    // Check persistent cache first to avoid fetch
-                    const storageKey = `bjorn_content_${cacheKey}`;
-                    if (localStorage.getItem(storageKey)) return;
-
-                    fetch(url).then(r => r.text()).then(t => {
-                        STATE.contentCache[cacheKey] = t;
-                    }).catch(() => { });
-                }
+                if (!flatList[i]) return;
+                const item = flatList[i];
+                const isRoot = item.folder === '';
+                const cacheKey = (isRoot && STATE.wikiId) ? `__root__${STATE.wikiId}/${item.file}` : `${item.folder}/${item.file}`;
+                const storageKey = `bjorn_content_${cacheKey.replace(/\//g, '_')}`;
+                if (localStorage.getItem(storageKey)) return;
+                const url = isRoot ? `./${item.file}` : `./wiki/docs/${item.folder}/${item.file}`;
+                fetch(url).then(r => r.text()).then(t => {
+                    STATE.contentCache[cacheKey] = t;
+                }).catch(() => { });
             });
         }
 
@@ -2535,7 +2554,9 @@
                         const filename = value;
                         const link = document.createElement('a');
                         const isRootFile = currentPath === '__root__';
-                        const fullPath = isRootFile ? filename : (currentPath ? `${currentPath}/${filename}` : filename);
+                        const fullPath = isRootFile
+                            ? (STATE.wikiId ? filename.replace(/\.md$/, `_${STATE.wikiId}.md`) : filename)
+                            : (currentPath ? `${currentPath}/${filename}` : filename);
                         link.href = `?page=${fullPath}`;
 
                         const linkFolder = isRootFile ? '' : currentPath;
