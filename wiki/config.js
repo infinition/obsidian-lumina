@@ -12,7 +12,7 @@ const CONFIG = {
     // Versioning Settings
     versioning: {
         type: "local",
-        manualVersion: "v0.2.0",
+        manualVersion: "v0.3.0",
         manualDate: "2026-02-03"
     },
 
