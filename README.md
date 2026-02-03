@@ -1,8 +1,58 @@
-# Lumina
+<p align="center">
+  <img
+    width="200"
+    height="220"
+    alt="lumina"
+    src="https://github.com/user-attachments/assets/a90c6180-0e51-43e8-8622-b4879a6c44be"
+  />
+</p>
 
-**High-performance photo & video gallery for Obsidian.** Browse, organize, and manage your media with professional layouts, lightbox preview, slideshow, and seamless integration with your vault.
+<h1 align="center">Lumina</h1>
 
----
+<p align="center">
+  <strong>High-performance photo & video gallery for Obsidian.</strong><br/>
+  Browse, organize, and manage your media with professional layouts,
+  lightbox preview, slideshow, and seamless integration with your vault.
+</p>
+
+<hr/>
+
+<p align="center">
+  <img
+    width="1523"
+    height="852"
+    alt="Lumina2"
+    src="https://github.com/user-attachments/assets/80e32221-36d1-427b-87f0-2f3198aa4525"
+  />
+</p>
+
+<p align="center">
+  <img
+    width="932"
+    height="534"
+    alt="Lumina3"
+    src="https://github.com/user-attachments/assets/22043fb1-9886-4995-bc89-cd1c27403104"
+  />
+</p>
+
+<p align="center">
+  <img
+    width="2557"
+    height="1389"
+    alt="Lumina1"
+    src="https://github.com/user-attachments/assets/1f088b8c-79b5-47dd-8721-fb2dfe31974e"
+  />
+</p>
+
+<p align="center">
+  <img
+    width="525"
+    height="516"
+    alt="Lumina4"
+    src="https://github.com/user-attachments/assets/fccc204d-153e-443d-b291-2740ecddbc5f"
+  />
+</p>
+
 
 ## Table of Contents
 
