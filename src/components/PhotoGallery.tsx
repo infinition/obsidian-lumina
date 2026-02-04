@@ -261,6 +261,25 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
   const timelineHideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const timelineScrubRef = useRef<HTMLDivElement>(null);
 
+  // Détecter le fullscreen pour augmenter le z-index des popups
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  useEffect(() => {
+    const checkFullscreen = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    checkFullscreen();
+    document.addEventListener('fullscreenchange', checkFullscreen);
+    document.addEventListener('webkitfullscreenchange', checkFullscreen);
+    document.addEventListener('mozfullscreenchange', checkFullscreen);
+    return () => {
+      document.removeEventListener('fullscreenchange', checkFullscreen);
+      document.removeEventListener('webkitfullscreenchange', checkFullscreen);
+      document.removeEventListener('mozfullscreenchange', checkFullscreen);
+    };
+  }, []);
+
+  const popupZIndex = isFullscreen ? 2000000 : 10001;
+
   // Calcul des bornes visibles (intersection conteneur + viewport)
   const getVisibleBounds = useCallback(() => {
     if (!containerRef.current) return null;
@@ -292,8 +311,8 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
     if (top + popupH > bounds.bottom - pad) top = Math.max(bounds.top + pad, bounds.bottom - popupH - pad);
     if (top < bounds.top + pad) top = bounds.top + pad;
     const maxHeight = Math.max(80, bounds.bottom - top - pad);
-    setSearchPopupStyle({ position: 'fixed', top, left, width: w, maxHeight, zIndex: 10001, overflowY: 'auto' });
-  }, [searchExpanded, getVisibleBounds]);
+    setSearchPopupStyle({ position: 'fixed', top, left, width: w, maxHeight, zIndex: popupZIndex, overflowY: 'auto' });
+  }, [searchExpanded, getVisibleBounds, popupZIndex]);
 
   useLayoutEffect(() => {
     if (!folderPopup || !folderBtnRef.current) { setFolderPopupStyle(null); return; }
@@ -310,8 +329,8 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
     if (top + popupH > bounds.bottom - pad) top = Math.max(bounds.top + pad, bounds.bottom - popupH - pad);
     if (top < bounds.top + pad) top = bounds.top + pad;
     const maxHeight = Math.max(120, bounds.bottom - top - pad);
-    setFolderPopupStyle({ position: 'fixed', top, left, width: w, maxHeight, zIndex: 10001, overflowY: 'auto' });
-  }, [folderPopup, getVisibleBounds]);
+    setFolderPopupStyle({ position: 'fixed', top, left, width: w, maxHeight, zIndex: popupZIndex, overflowY: 'auto' });
+  }, [folderPopup, getVisibleBounds, popupZIndex]);
 
   useLayoutEffect(() => {
     if (!sortPopup || !sortBtnRef.current) { setSortPopupStyle(null); return; }
@@ -328,8 +347,8 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
     if (top + popupH > bounds.bottom - pad) top = Math.max(bounds.top + pad, bounds.bottom - popupH - pad);
     if (top < bounds.top + pad) top = bounds.top + pad;
     const maxHeight = Math.max(120, bounds.bottom - top - pad);
-    setSortPopupStyle({ position: 'fixed', top, left, width: w, maxHeight, zIndex: 10001, overflowY: 'auto', padding: 4 });
-  }, [sortPopup, getVisibleBounds]);
+    setSortPopupStyle({ position: 'fixed', top, left, width: w, maxHeight, zIndex: popupZIndex, overflowY: 'auto', padding: 4 });
+  }, [sortPopup, getVisibleBounds, popupZIndex]);
 
   // Fermeture au clic à l'extérieur (listener global car l'overlay peut ne pas recevoir les clics sous Obsidian)
   useEffect(() => {
@@ -1199,9 +1218,10 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
         if (c <= 1) {
           isSlideshowActiveRef.current = true;
           setIsSlideshowActive(true);
-          setSlideshowIndex(0);
-          slideshowIndexRef.current = 0;
-          if (layoutDataRef.current.length > 0) setTargetScroll(Math.max(0, layoutDataRef.current[0].y - GAP));
+          const randomIdx = layoutDataRef.current.length > 0 ? Math.floor(Math.random() * layoutDataRef.current.length) : 0;
+          setSlideshowIndex(randomIdx);
+          slideshowIndexRef.current = randomIdx;
+          if (layoutDataRef.current.length > 0 && layoutDataRef.current[randomIdx]) setTargetScroll(Math.max(0, layoutDataRef.current[randomIdx].y - GAP));
           return 0;
         }
         return c - 1;
@@ -1223,10 +1243,11 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
       if (Date.now() - lastActivityRef.current >= ms) {
         isSlideshowActiveRef.current = true;
         setIsSlideshowActive(true);
-        setSlideshowIndex(0);
-        slideshowIndexRef.current = 0;
+        const randomIdx = layoutDataRef.current.length > 0 ? Math.floor(Math.random() * layoutDataRef.current.length) : 0;
+        setSlideshowIndex(randomIdx);
+        slideshowIndexRef.current = randomIdx;
         const layout = layoutDataRef.current;
-        if (layout.length > 0) setTargetScroll(Math.max(0, layout[0].y - GAP));
+        if (layout.length > 0 && layout[randomIdx]) setTargetScroll(Math.max(0, layout[randomIdx].y - GAP));
       }
     }, 1000);
     inactivityCheckRef.current = interval;
@@ -1429,6 +1450,19 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
 
   const lbHasMovedRef = useRef(false);
 
+  // Limiter le pan de la lightbox pour que l'image reste visible
+  const clampLbPan = useCallback((pan: { x: number; y: number }, zoom: number, imgW: number, imgH: number, viewW: number, viewH: number) => {
+    if (zoom <= 1) return { x: 0, y: 0 };
+    const scaledW = imgW * zoom;
+    const scaledH = imgH * zoom;
+    const maxX = Math.max(0, (scaledW - viewW) / 2);
+    const maxY = Math.max(0, (scaledH - viewH) / 2);
+    return {
+      x: Math.max(-maxX, Math.min(maxX, pan.x)),
+      y: Math.max(-maxY, Math.min(maxY, pan.y))
+    };
+  }, []);
+
   // Lightbox : pan par drag (gauche uniquement, ne démarre que si mouvement)
   const onLbPointerDown = useCallback((e: React.PointerEvent) => {
     if (e.button !== 0) return;
@@ -1449,10 +1483,24 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
     if (lbDraggingRef.current) {
       const dx = e.clientX - lbStartXRef.current;
       const dy = e.clientY - lbStartYRef.current;
-      setLbPan({
+      const newPan = {
         x: lbStartPanRef.current.x + dx,
         y: lbStartPanRef.current.y + dy
-      });
+      };
+      // Récupérer les dimensions de l'image actuelle pour clamper
+      if (currentImage && lightboxViewerRef.current) {
+        const cached = cacheRef.current.get(currentImage.path);
+        if (cached && cached !== 'loading') {
+          const { w: imgW, h: imgH } = getImageDimensions(cached as CachedImage);
+          const viewRect = lightboxViewerRef.current.getBoundingClientRect();
+          const clamped = clampLbPan(newPan, lbZoomRef.current, imgW, imgH, viewRect.width, viewRect.height);
+          setLbPan(clamped);
+        } else {
+          setLbPan(newPan);
+        }
+      } else {
+        setLbPan(newPan);
+      }
       return;
     }
     if (!lbHasMovedRef.current && (Math.abs(e.clientX - lbStartXRef.current) > 5 || Math.abs(e.clientY - lbStartYRef.current) > 5)) {
@@ -1461,7 +1509,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
       setLbDragging(true);
       (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
     }
-  }, []);
+  }, [clampLbPan, currentImage]);
   const onLbPointerUp = useCallback((e: React.PointerEvent) => {
     if (e.button !== 0) return;
     lbPointerDownRef.current = false;
@@ -1483,9 +1531,24 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
     if (!el) return;
     const dist = (a: Touch, b: Touch) => Math.hypot(b.clientX - a.clientX, b.clientY - a.clientY);
     const onWheel = (e: WheelEvent) => {
-      if (!e.ctrlKey) return;
       e.preventDefault();
-      setLbZoom((z) => Math.max(1, Math.min(5, z - e.deltaY * 0.002)));
+      setLbZoom((z) => {
+        const delta = e.deltaY > 0 ? -0.1 : 0.1;
+        const newZoom = Math.max(1, Math.min(5, z + delta));
+        // Clamper le pan avec le nouveau zoom
+        if (currentImage && el) {
+          const cached = cacheRef.current.get(currentImage.path);
+          if (cached && cached !== 'loading') {
+            const { w: imgW, h: imgH } = getImageDimensions(cached as CachedImage);
+            const viewRect = el.getBoundingClientRect();
+            const clamped = clampLbPan(lbPan, newZoom, imgW, imgH, viewRect.width, viewRect.height);
+            if (clamped.x !== lbPan.x || clamped.y !== lbPan.y) {
+              setLbPan(clamped);
+            }
+          }
+        }
+        return newZoom;
+      });
     };
     const onTouchStart = (e: TouchEvent) => {
       if (e.touches.length === 2) {
@@ -1499,7 +1562,20 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
         const d = dist(e.touches[0], e.touches[1]);
         const ratio = d / lbPinchRef.current.initialDist;
         const z = lbPinchRef.current.initialZoom * ratio;
-        setLbZoom(Math.max(1, Math.min(5, z)));
+        const newZoom = Math.max(1, Math.min(5, z));
+        setLbZoom(newZoom);
+        // Clamper le pan avec le nouveau zoom
+        if (currentImage && el) {
+          const cached = cacheRef.current.get(currentImage.path);
+          if (cached && cached !== 'loading') {
+            const { w: imgW, h: imgH } = getImageDimensions(cached as CachedImage);
+            const viewRect = el.getBoundingClientRect();
+            const clamped = clampLbPan(lbPan, newZoom, imgW, imgH, viewRect.width, viewRect.height);
+            if (clamped.x !== lbPan.x || clamped.y !== lbPan.y) {
+              setLbPan(clamped);
+            }
+          }
+        }
       }
     };
     const onTouchEnd = () => { lbPinchRef.current = null; };
@@ -1515,7 +1591,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
       el.removeEventListener('touchend', onTouchEnd);
       el.removeEventListener('touchcancel', onTouchEnd);
     };
-  }, [lightboxOpen]);
+  }, [lightboxOpen, currentImage, lbPan, clampLbPan]);
 
   // Folders list for popup
   const foldersList = useMemo(() => {
@@ -1631,7 +1707,8 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
       <style>{`
         .gal-container, .gal-portal-root { --gal-bg: var(--background-primary); --gal-header: var(--background-secondary); --gal-accent: var(--interactive-accent); --gal-text: var(--text-normal); --gal-muted: var(--text-muted); --gal-border: var(--background-modifier-border); }
         .gal-container { position: relative; overflow: hidden; background: var(--gal-bg); border-radius: 8px; }
-        .gal-container:fullscreen, .gal-container:-webkit-full-screen, .gal-container:-moz-full-screen, .gal-container:-ms-fullscreen { width: 100vw !important; height: 100vh !important; max-width: none !important; max-height: none !important; inset: 0 !important; }
+        .gal-container:fullscreen, .gal-container:-webkit-full-screen, .gal-container:-moz-full-screen, .gal-container:-ms-fullscreen { width: 100vw !important; height: 100vh !important; max-width: none !important; max-height: none !important; inset: 0 !important; z-index: 999999 !important; }
+        .gal-container:fullscreen .gal-header, .gal-container:-webkit-full-screen .gal-header, .gal-container:-moz-full-screen .gal-header { z-index: 1000001 !important; }
         .gal-header { padding: 10px 14px; background: var(--gal-header); display: flex; flex-wrap: wrap; align-items: center; justify-content: center; border-bottom: 1px solid var(--gal-border); z-index: 10; gap: 8px; flex-shrink: 0; min-height: 52px; cursor: pointer; }
         .gal-main { flex: 1; display: flex; position: relative; overflow: hidden; background: #000; min-height: 0; transition: height 0.2s ease-out; touch-action: none; -webkit-user-select: none; user-select: none; }
         .gal-zoom-slider { cursor: pointer; width: 120px; accent-color: var(--gal-accent); }
@@ -1820,7 +1897,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                 <div className="gal-portal-root">
                   <div
                     className="fixed inset-0"
-                    style={{ zIndex: 99998, cursor: 'default' }}
+                    style={{ zIndex: popupZIndex - 1, cursor: 'default' }}
                     onClick={() => setSearchExpanded(false)}
                     onPointerDown={() => setSearchExpanded(false)}
                     aria-hidden
@@ -1856,7 +1933,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                     </div>
                   </div>
                 </div>,
-                document.body
+                (isFullscreen && containerRef.current) ? containerRef.current : document.body
               )}
           </div>
           <div style={{ position: 'relative' }}>
@@ -1878,7 +1955,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                 <div className="gal-portal-root">
                   <div
                     className="fixed inset-0"
-                    style={{ zIndex: 99998, cursor: 'default' }}
+                    style={{ zIndex: popupZIndex - 1, cursor: 'default' }}
                     onClick={() => setSortPopup(false)}
                     onPointerDown={() => setSortPopup(false)}
                     aria-hidden
@@ -1904,7 +1981,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                     })}
                   </div>
                 </div>,
-                document.body
+                (isFullscreen && containerRef.current) ? containerRef.current : document.body
               )}
           </div>
           <div style={{ position: 'relative' }}>
@@ -1925,7 +2002,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                 <div className="gal-portal-root">
                   <div
                     className="fixed inset-0"
-                    style={{ zIndex: 99998, cursor: 'default' }}
+                    style={{ zIndex: popupZIndex - 1, cursor: 'default' }}
                     onClick={() => setFolderPopup(false)}
                     onPointerDown={() => setFolderPopup(false)}
                     aria-hidden
@@ -2004,7 +2081,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                     </div>
                   </div>
                 </div>,
-                document.body
+                (isFullscreen && containerRef.current) ? containerRef.current : document.body
               )}
           </div>
           <button
@@ -2223,7 +2300,6 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
         ref={galMainRef}
         className="gal-main"
         tabIndex={0}
-        title={t(locale, 'pasteVideoUrl')}
         onPointerMove={canShowTimeline ? handleTimelineZonePointerMove : undefined}
         onPointerLeave={canShowTimeline ? handleTimelineZonePointerLeave : undefined}
         onDragOver={(e) => {
@@ -2376,9 +2452,16 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                       top: layout.y,
                       width: layout.w,
                       height: layout.h,
-                      pointerEvents: isEditMode || imgData.mediaType === 'video' || isGif(imgData.path) ? 'auto' : 'none'
+                      pointerEvents: isEditMode || imgData.mediaType === 'video' || isGif(imgData.path) ? 'auto' : 'none',
+                      cursor: isEditMode ? 'grab' : 'default'
                     }}
                     className="gal-media-overlay-item"
+                    draggable={isEditMode}
+                    onDragStart={isEditMode ? (e) => {
+                      e.stopPropagation();
+                      e.dataTransfer.setData('text/plain', linksText);
+                      e.dataTransfer.effectAllowed = 'copy';
+                    } : undefined}
                     onClick={isEditMode ? (e) => {
                       e.stopPropagation();
                       e.preventDefault();
@@ -2457,28 +2540,6 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                         }
                       : {})}
                   >
-                    {isEditMode && (
-                      <div
-                        draggable
-                        onDragStart={(e) => {
-                          e.stopPropagation();
-                          e.dataTransfer.setData('text/plain', linksText);
-                          e.dataTransfer.effectAllowed = 'copy';
-                        }}
-                        onClick={(e) => e.stopPropagation()}
-                        onDoubleClick={(e) => e.stopPropagation()}
-                        style={{
-                          position: 'absolute', top: 4, right: 4, zIndex: 2,
-                          width: 28, height: 28, cursor: 'grab',
-                          background: 'rgba(0,0,0,0.5)', borderRadius: 6,
-                          display: 'flex', alignItems: 'center', justifyContent: 'center',
-                          fontSize: 14, color: 'white'
-                        }}
-                        title={t(locale, 'dragHandle')}
-                      >
-                        ⋮⋮
-                      </div>
-                    )}
                     {imgData.mediaType === 'video' ? (
                       <video
                         src={imgData.url}
@@ -2576,19 +2637,31 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
               borderRadius: 6,
               boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
               pointerEvents: 'none',
-              maxWidth: 280
+              maxWidth: 320,
+              lineHeight: 1.4
             }}
           >
-            <div style={{ fontWeight: 600, marginBottom: 4, wordBreak: 'break-all' }}>{nameTooltip.imgData.name}</div>
-            <div style={{ opacity: 0.9 }}>
-              {new Date(nameTooltip.imgData.mtime).toLocaleDateString(locale.startsWith('zh') ? 'zh-CN' : locale, { dateStyle: 'medium' })} • {(nameTooltip.imgData.size / 1024) < 1024 ? `${(nameTooltip.imgData.size / 1024).toFixed(1)} KB` : `${(nameTooltip.imgData.size / 1024 / 1024).toFixed(2)} MB`}
+            <div style={{ fontWeight: 600, marginBottom: 6, wordBreak: 'break-all' }}>{nameTooltip.imgData.name}</div>
+            <div style={{ fontSize: 11, opacity: 0.85, marginBottom: 3 }}>{nameTooltip.imgData.path}</div>
+            <div style={{ fontSize: 11, opacity: 0.9, display: 'flex', flexWrap: 'wrap', gap: '4px 8px' }}>
+              <span>{new Date(nameTooltip.imgData.mtime).toLocaleDateString(locale.startsWith('zh') ? 'zh-CN' : locale, { dateStyle: 'medium' })}</span>
+              <span>•</span>
+              <span>{(nameTooltip.imgData.size / 1024) < 1024 ? `${(nameTooltip.imgData.size / 1024).toFixed(1)} KB` : `${(nameTooltip.imgData.size / 1024 / 1024).toFixed(2)} MB`}</span>
+              <span>•</span>
+              <span>.{(nameTooltip.imgData.path.split('.').pop() || '').toLowerCase()}</span>
+              {(() => {
+                const cached = cacheRef.current.get(nameTooltip.imgData.path);
+                if (cached && cached !== 'loading') {
+                  const { w, h } = getImageDimensions(cached as CachedImage);
+                  return <><span>•</span><span>{w} × {h}</span></>;
+                }
+                return null;
+              })()}
             </div>
           </div>,
-          document.body
+          (isFullscreen && containerRef.current) ? containerRef.current : document.body
         )}
-      </div>
-
-      {/* Lightbox */}
+      </div>      {/* Lightbox */}
       {lightboxOpen && (currentImage || lightboxEmbed) && (
         <div
           className="gal-lightbox"
@@ -2629,18 +2702,14 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
               </div>
             ) : currentImage ? (
               <div
-                draggable
-                onDragStart={(e) => {
-                  e.dataTransfer.setData('text/plain', `![[${currentImage.name}]]`);
-                  e.dataTransfer.effectAllowed = 'copy';
-                }}
+                draggable={false}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   maxWidth: '100%',
                   maxHeight: '100%',
-                  cursor: 'grab'
+                  cursor: lbZoom > 1 ? (lbDragging ? 'grabbing' : 'grab') : 'default'
                 }}
               >
                 {currentImage.mediaType === 'video' ? (
@@ -2650,6 +2719,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                     autoPlay
                     loop
                     playsInline
+                    draggable={false}
                     className="max-w-full max-h-full object-contain select-none"
                     style={{
                       transform: `translate(${lbPan.x}px, ${lbPan.y}px) scale(${lbZoom})`,
@@ -2660,11 +2730,11 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                   <img
                     src={currentImage.url}
                     alt={currentImage.name}
+                    draggable={false}
                     className="max-w-full max-h-full object-contain select-none pointer-events-none"
                     style={{
                       transform: `translate(${lbPan.x}px, ${lbPan.y}px) scale(${lbZoom})`
                     }}
-                    draggable={false}
                   />
                 )}
               </div>

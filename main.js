@@ -25228,6 +25228,22 @@ var PhotoGalleryWidget = ({
   const [timelineVisible, setTimelineVisible] = (0, import_react.useState)(false);
   const timelineHideTimeoutRef = (0, import_react.useRef)(null);
   const timelineScrubRef = (0, import_react.useRef)(null);
+  const [isFullscreen, setIsFullscreen] = (0, import_react.useState)(false);
+  (0, import_react.useEffect)(() => {
+    const checkFullscreen = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    checkFullscreen();
+    document.addEventListener("fullscreenchange", checkFullscreen);
+    document.addEventListener("webkitfullscreenchange", checkFullscreen);
+    document.addEventListener("mozfullscreenchange", checkFullscreen);
+    return () => {
+      document.removeEventListener("fullscreenchange", checkFullscreen);
+      document.removeEventListener("webkitfullscreenchange", checkFullscreen);
+      document.removeEventListener("mozfullscreenchange", checkFullscreen);
+    };
+  }, []);
+  const popupZIndex = isFullscreen ? 2e6 : 10001;
   const getVisibleBounds = (0, import_react.useCallback)(() => {
     if (!containerRef.current) return null;
     const cr = containerRef.current.getBoundingClientRect();
@@ -25263,8 +25279,8 @@ var PhotoGalleryWidget = ({
     if (top + popupH > bounds.bottom - pad) top = Math.max(bounds.top + pad, bounds.bottom - popupH - pad);
     if (top < bounds.top + pad) top = bounds.top + pad;
     const maxHeight = Math.max(80, bounds.bottom - top - pad);
-    setSearchPopupStyle({ position: "fixed", top, left, width: w, maxHeight, zIndex: 10001, overflowY: "auto" });
-  }, [searchExpanded, getVisibleBounds]);
+    setSearchPopupStyle({ position: "fixed", top, left, width: w, maxHeight, zIndex: popupZIndex, overflowY: "auto" });
+  }, [searchExpanded, getVisibleBounds, popupZIndex]);
   (0, import_react.useLayoutEffect)(() => {
     if (!folderPopup || !folderBtnRef.current) {
       setFolderPopupStyle(null);
@@ -25286,8 +25302,8 @@ var PhotoGalleryWidget = ({
     if (top + popupH > bounds.bottom - pad) top = Math.max(bounds.top + pad, bounds.bottom - popupH - pad);
     if (top < bounds.top + pad) top = bounds.top + pad;
     const maxHeight = Math.max(120, bounds.bottom - top - pad);
-    setFolderPopupStyle({ position: "fixed", top, left, width: w, maxHeight, zIndex: 10001, overflowY: "auto" });
-  }, [folderPopup, getVisibleBounds]);
+    setFolderPopupStyle({ position: "fixed", top, left, width: w, maxHeight, zIndex: popupZIndex, overflowY: "auto" });
+  }, [folderPopup, getVisibleBounds, popupZIndex]);
   (0, import_react.useLayoutEffect)(() => {
     if (!sortPopup || !sortBtnRef.current) {
       setSortPopupStyle(null);
@@ -25309,8 +25325,8 @@ var PhotoGalleryWidget = ({
     if (top + popupH > bounds.bottom - pad) top = Math.max(bounds.top + pad, bounds.bottom - popupH - pad);
     if (top < bounds.top + pad) top = bounds.top + pad;
     const maxHeight = Math.max(120, bounds.bottom - top - pad);
-    setSortPopupStyle({ position: "fixed", top, left, width: w, maxHeight, zIndex: 10001, overflowY: "auto", padding: 4 });
-  }, [sortPopup, getVisibleBounds]);
+    setSortPopupStyle({ position: "fixed", top, left, width: w, maxHeight, zIndex: popupZIndex, overflowY: "auto", padding: 4 });
+  }, [sortPopup, getVisibleBounds, popupZIndex]);
   (0, import_react.useEffect)(() => {
     if (!searchExpanded && !folderPopup && !sortPopup) return;
     const handleOutside = (e) => {
@@ -26088,9 +26104,10 @@ var PhotoGalleryWidget = ({
         if (c <= 1) {
           isSlideshowActiveRef.current = true;
           setIsSlideshowActive(true);
-          setSlideshowIndex(0);
-          slideshowIndexRef.current = 0;
-          if (layoutDataRef.current.length > 0) setTargetScroll(Math.max(0, layoutDataRef.current[0].y - GAP));
+          const randomIdx = layoutDataRef.current.length > 0 ? Math.floor(Math.random() * layoutDataRef.current.length) : 0;
+          setSlideshowIndex(randomIdx);
+          slideshowIndexRef.current = randomIdx;
+          if (layoutDataRef.current.length > 0 && layoutDataRef.current[randomIdx]) setTargetScroll(Math.max(0, layoutDataRef.current[randomIdx].y - GAP));
           return 0;
         }
         return c - 1;
@@ -26110,10 +26127,11 @@ var PhotoGalleryWidget = ({
       if (Date.now() - lastActivityRef.current >= ms) {
         isSlideshowActiveRef.current = true;
         setIsSlideshowActive(true);
-        setSlideshowIndex(0);
-        slideshowIndexRef.current = 0;
+        const randomIdx = layoutDataRef.current.length > 0 ? Math.floor(Math.random() * layoutDataRef.current.length) : 0;
+        setSlideshowIndex(randomIdx);
+        slideshowIndexRef.current = randomIdx;
         const layout = layoutDataRef.current;
-        if (layout.length > 0) setTargetScroll(Math.max(0, layout[0].y - GAP));
+        if (layout.length > 0 && layout[randomIdx]) setTargetScroll(Math.max(0, layout[randomIdx].y - GAP));
       }
     }, 1e3);
     inactivityCheckRef.current = interval;
@@ -26293,6 +26311,17 @@ var PhotoGalleryWidget = ({
     return () => window.removeEventListener("keydown", onKey);
   }, [lightboxOpen, isSlideshowActive, settings.layout, clampScroll]);
   const lbHasMovedRef = (0, import_react.useRef)(false);
+  const clampLbPan = (0, import_react.useCallback)((pan, zoom, imgW, imgH, viewW, viewH) => {
+    if (zoom <= 1) return { x: 0, y: 0 };
+    const scaledW = imgW * zoom;
+    const scaledH = imgH * zoom;
+    const maxX = Math.max(0, (scaledW - viewW) / 2);
+    const maxY = Math.max(0, (scaledH - viewH) / 2);
+    return {
+      x: Math.max(-maxX, Math.min(maxX, pan.x)),
+      y: Math.max(-maxY, Math.min(maxY, pan.y))
+    };
+  }, []);
   const onLbPointerDown = (0, import_react.useCallback)((e) => {
     if (e.button !== 0) return;
     lbPointerDownRef.current = true;
@@ -26312,10 +26341,23 @@ var PhotoGalleryWidget = ({
     if (lbDraggingRef.current) {
       const dx = e.clientX - lbStartXRef.current;
       const dy = e.clientY - lbStartYRef.current;
-      setLbPan({
+      const newPan = {
         x: lbStartPanRef.current.x + dx,
         y: lbStartPanRef.current.y + dy
-      });
+      };
+      if (currentImage && lightboxViewerRef.current) {
+        const cached = cacheRef.current.get(currentImage.path);
+        if (cached && cached !== "loading") {
+          const { w: imgW, h: imgH } = getImageDimensions(cached);
+          const viewRect = lightboxViewerRef.current.getBoundingClientRect();
+          const clamped = clampLbPan(newPan, lbZoomRef.current, imgW, imgH, viewRect.width, viewRect.height);
+          setLbPan(clamped);
+        } else {
+          setLbPan(newPan);
+        }
+      } else {
+        setLbPan(newPan);
+      }
       return;
     }
     if (!lbHasMovedRef.current && (Math.abs(e.clientX - lbStartXRef.current) > 5 || Math.abs(e.clientY - lbStartYRef.current) > 5)) {
@@ -26324,7 +26366,7 @@ var PhotoGalleryWidget = ({
       setLbDragging(true);
       e.currentTarget.setPointerCapture(e.pointerId);
     }
-  }, []);
+  }, [clampLbPan, currentImage]);
   const onLbPointerUp = (0, import_react.useCallback)((e) => {
     if (e.button !== 0) return;
     lbPointerDownRef.current = false;
@@ -26344,9 +26386,23 @@ var PhotoGalleryWidget = ({
     if (!el) return;
     const dist = (a, b) => Math.hypot(b.clientX - a.clientX, b.clientY - a.clientY);
     const onWheel = (e) => {
-      if (!e.ctrlKey) return;
       e.preventDefault();
-      setLbZoom((z) => Math.max(1, Math.min(5, z - e.deltaY * 2e-3)));
+      setLbZoom((z) => {
+        const delta = e.deltaY > 0 ? -0.1 : 0.1;
+        const newZoom = Math.max(1, Math.min(5, z + delta));
+        if (currentImage && el) {
+          const cached = cacheRef.current.get(currentImage.path);
+          if (cached && cached !== "loading") {
+            const { w: imgW, h: imgH } = getImageDimensions(cached);
+            const viewRect = el.getBoundingClientRect();
+            const clamped = clampLbPan(lbPan, newZoom, imgW, imgH, viewRect.width, viewRect.height);
+            if (clamped.x !== lbPan.x || clamped.y !== lbPan.y) {
+              setLbPan(clamped);
+            }
+          }
+        }
+        return newZoom;
+      });
     };
     const onTouchStart = (e) => {
       if (e.touches.length === 2) {
@@ -26360,7 +26416,19 @@ var PhotoGalleryWidget = ({
         const d = dist(e.touches[0], e.touches[1]);
         const ratio = d / lbPinchRef.current.initialDist;
         const z = lbPinchRef.current.initialZoom * ratio;
-        setLbZoom(Math.max(1, Math.min(5, z)));
+        const newZoom = Math.max(1, Math.min(5, z));
+        setLbZoom(newZoom);
+        if (currentImage && el) {
+          const cached = cacheRef.current.get(currentImage.path);
+          if (cached && cached !== "loading") {
+            const { w: imgW, h: imgH } = getImageDimensions(cached);
+            const viewRect = el.getBoundingClientRect();
+            const clamped = clampLbPan(lbPan, newZoom, imgW, imgH, viewRect.width, viewRect.height);
+            if (clamped.x !== lbPan.x || clamped.y !== lbPan.y) {
+              setLbPan(clamped);
+            }
+          }
+        }
       }
     };
     const onTouchEnd = () => {
@@ -26378,7 +26446,7 @@ var PhotoGalleryWidget = ({
       el.removeEventListener("touchend", onTouchEnd);
       el.removeEventListener("touchcancel", onTouchEnd);
     };
-  }, [lightboxOpen]);
+  }, [lightboxOpen, currentImage, lbPan, clampLbPan]);
   const foldersList = (0, import_react.useMemo)(() => {
     if (!(app == null ? void 0 : app.vault)) return [];
     const files = app.vault.getFiles();
@@ -26477,7 +26545,8 @@ var PhotoGalleryWidget = ({
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("style", { children: `
         .gal-container, .gal-portal-root { --gal-bg: var(--background-primary); --gal-header: var(--background-secondary); --gal-accent: var(--interactive-accent); --gal-text: var(--text-normal); --gal-muted: var(--text-muted); --gal-border: var(--background-modifier-border); }
         .gal-container { position: relative; overflow: hidden; background: var(--gal-bg); border-radius: 8px; }
-        .gal-container:fullscreen, .gal-container:-webkit-full-screen, .gal-container:-moz-full-screen, .gal-container:-ms-fullscreen { width: 100vw !important; height: 100vh !important; max-width: none !important; max-height: none !important; inset: 0 !important; }
+        .gal-container:fullscreen, .gal-container:-webkit-full-screen, .gal-container:-moz-full-screen, .gal-container:-ms-fullscreen { width: 100vw !important; height: 100vh !important; max-width: none !important; max-height: none !important; inset: 0 !important; z-index: 999999 !important; }
+        .gal-container:fullscreen .gal-header, .gal-container:-webkit-full-screen .gal-header, .gal-container:-moz-full-screen .gal-header { z-index: 1000001 !important; }
         .gal-header { padding: 10px 14px; background: var(--gal-header); display: flex; flex-wrap: wrap; align-items: center; justify-content: center; border-bottom: 1px solid var(--gal-border); z-index: 10; gap: 8px; flex-shrink: 0; min-height: 52px; cursor: pointer; }
         .gal-main { flex: 1; display: flex; position: relative; overflow: hidden; background: #000; min-height: 0; transition: height 0.2s ease-out; touch-action: none; -webkit-user-select: none; user-select: none; }
         .gal-zoom-slider { cursor: pointer; width: 120px; accent-color: var(--gal-accent); }
@@ -26667,7 +26736,7 @@ var PhotoGalleryWidget = ({
                           "div",
                           {
                             className: "fixed inset-0",
-                            style: { zIndex: 99998, cursor: "default" },
+                            style: { zIndex: popupZIndex - 1, cursor: "default" },
                             onClick: () => setSearchExpanded(false),
                             onPointerDown: () => setSearchExpanded(false),
                             "aria-hidden": true
@@ -26707,7 +26776,7 @@ var PhotoGalleryWidget = ({
                           )
                         ] }) })
                       ] }),
-                      document.body
+                      isFullscreen && containerRef.current ? containerRef.current : document.body
                     )
                   ] }),
                   /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { position: "relative" }, children: [
@@ -26731,7 +26800,7 @@ var PhotoGalleryWidget = ({
                           "div",
                           {
                             className: "fixed inset-0",
-                            style: { zIndex: 99998, cursor: "default" },
+                            style: { zIndex: popupZIndex - 1, cursor: "default" },
                             onClick: () => setSortPopup(false),
                             onPointerDown: () => setSortPopup(false),
                             "aria-hidden": true
@@ -26756,7 +26825,7 @@ var PhotoGalleryWidget = ({
                           );
                         }) })
                       ] }),
-                      document.body
+                      isFullscreen && containerRef.current ? containerRef.current : document.body
                     )
                   ] }),
                   /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { position: "relative" }, children: [
@@ -26777,7 +26846,7 @@ var PhotoGalleryWidget = ({
                           "div",
                           {
                             className: "fixed inset-0",
-                            style: { zIndex: 99998, cursor: "default" },
+                            style: { zIndex: popupZIndex - 1, cursor: "default" },
                             onClick: () => setFolderPopup(false),
                             onPointerDown: () => setFolderPopup(false),
                             "aria-hidden": true
@@ -26870,7 +26939,7 @@ var PhotoGalleryWidget = ({
                           }) })
                         ] })
                       ] }),
-                      document.body
+                      isFullscreen && containerRef.current ? containerRef.current : document.body
                     )
                   ] }),
                   /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
@@ -27117,7 +27186,6 @@ var PhotoGalleryWidget = ({
             ref: galMainRef,
             className: "gal-main",
             tabIndex: 0,
-            title: t(locale, "pasteVideoUrl"),
             onPointerMove: canShowTimeline ? handleTimelineZonePointerMove : void 0,
             onPointerLeave: canShowTimeline ? handleTimelineZonePointerLeave : void 0,
             onDragOver: (e) => {
@@ -27275,9 +27343,16 @@ var PhotoGalleryWidget = ({
                             top: layout.y,
                             width: layout.w,
                             height: layout.h,
-                            pointerEvents: isEditMode || imgData.mediaType === "video" || isGif(imgData.path) ? "auto" : "none"
+                            pointerEvents: isEditMode || imgData.mediaType === "video" || isGif(imgData.path) ? "auto" : "none",
+                            cursor: isEditMode ? "grab" : "default"
                           },
                           className: "gal-media-overlay-item",
+                          draggable: isEditMode,
+                          onDragStart: isEditMode ? (e) => {
+                            e.stopPropagation();
+                            e.dataTransfer.setData("text/plain", linksText);
+                            e.dataTransfer.effectAllowed = "copy";
+                          } : void 0,
                           onClick: isEditMode ? (e) => {
                             e.stopPropagation();
                             e.preventDefault();
@@ -27358,37 +27433,6 @@ var PhotoGalleryWidget = ({
                             }
                           } : {},
                           children: [
-                            isEditMode && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-                              "div",
-                              {
-                                draggable: true,
-                                onDragStart: (e) => {
-                                  e.stopPropagation();
-                                  e.dataTransfer.setData("text/plain", linksText);
-                                  e.dataTransfer.effectAllowed = "copy";
-                                },
-                                onClick: (e) => e.stopPropagation(),
-                                onDoubleClick: (e) => e.stopPropagation(),
-                                style: {
-                                  position: "absolute",
-                                  top: 4,
-                                  right: 4,
-                                  zIndex: 2,
-                                  width: 28,
-                                  height: 28,
-                                  cursor: "grab",
-                                  background: "rgba(0,0,0,0.5)",
-                                  borderRadius: 6,
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                  fontSize: 14,
-                                  color: "white"
-                                },
-                                title: t(locale, "dragHandle"),
-                                children: "\u22EE\u22EE"
-                              }
-                            ),
                             imgData.mediaType === "video" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
                               "video",
                               {
@@ -27497,23 +27541,46 @@ var PhotoGalleryWidget = ({
                       borderRadius: 6,
                       boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
                       pointerEvents: "none",
-                      maxWidth: 280
+                      maxWidth: 320,
+                      lineHeight: 1.4
                     },
                     children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontWeight: 600, marginBottom: 4, wordBreak: "break-all" }, children: nameTooltip.imgData.name }),
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { opacity: 0.9 }, children: [
-                        new Date(nameTooltip.imgData.mtime).toLocaleDateString(locale.startsWith("zh") ? "zh-CN" : locale, { dateStyle: "medium" }),
-                        " \u2022 ",
-                        nameTooltip.imgData.size / 1024 < 1024 ? `${(nameTooltip.imgData.size / 1024).toFixed(1)} KB` : `${(nameTooltip.imgData.size / 1024 / 1024).toFixed(2)} MB`
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontWeight: 600, marginBottom: 6, wordBreak: "break-all" }, children: nameTooltip.imgData.name }),
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, opacity: 0.85, marginBottom: 3 }, children: nameTooltip.imgData.path }),
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 11, opacity: 0.9, display: "flex", flexWrap: "wrap", gap: "4px 8px" }, children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: new Date(nameTooltip.imgData.mtime).toLocaleDateString(locale.startsWith("zh") ? "zh-CN" : locale, { dateStyle: "medium" }) }),
+                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "\u2022" }),
+                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: nameTooltip.imgData.size / 1024 < 1024 ? `${(nameTooltip.imgData.size / 1024).toFixed(1)} KB` : `${(nameTooltip.imgData.size / 1024 / 1024).toFixed(2)} MB` }),
+                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "\u2022" }),
+                        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
+                          ".",
+                          (nameTooltip.imgData.path.split(".").pop() || "").toLowerCase()
+                        ] }),
+                        (() => {
+                          const cached = cacheRef.current.get(nameTooltip.imgData.path);
+                          if (cached && cached !== "loading") {
+                            const { w, h } = getImageDimensions(cached);
+                            return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "\u2022" }),
+                              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
+                                w,
+                                " \xD7 ",
+                                h
+                              ] })
+                            ] });
+                          }
+                          return null;
+                        })()
                       ] })
                     ]
                   }
                 ),
-                document.body
+                isFullscreen && containerRef.current ? containerRef.current : document.body
               )
             ]
           }
         ),
+        "      ",
         lightboxOpen && (currentImage || lightboxEmbed) && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
           "div",
           {
@@ -27556,18 +27623,14 @@ var PhotoGalleryWidget = ({
                   ) }) : currentImage ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
                     "div",
                     {
-                      draggable: true,
-                      onDragStart: (e) => {
-                        e.dataTransfer.setData("text/plain", `![[${currentImage.name}]]`);
-                        e.dataTransfer.effectAllowed = "copy";
-                      },
+                      draggable: false,
                       style: {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
                         maxWidth: "100%",
                         maxHeight: "100%",
-                        cursor: "grab"
+                        cursor: lbZoom > 1 ? lbDragging ? "grabbing" : "grab" : "default"
                       },
                       children: currentImage.mediaType === "video" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
                         "video",
@@ -27577,6 +27640,7 @@ var PhotoGalleryWidget = ({
                           autoPlay: true,
                           loop: true,
                           playsInline: true,
+                          draggable: false,
                           className: "max-w-full max-h-full object-contain select-none",
                           style: {
                             transform: `translate(${lbPan.x}px, ${lbPan.y}px) scale(${lbZoom})`,
@@ -27588,11 +27652,11 @@ var PhotoGalleryWidget = ({
                         {
                           src: currentImage.url,
                           alt: currentImage.name,
+                          draggable: false,
                           className: "max-w-full max-h-full object-contain select-none pointer-events-none",
                           style: {
                             transform: `translate(${lbPan.x}px, ${lbPan.y}px) scale(${lbZoom})`
-                          },
-                          draggable: false
+                          }
                         }
                       )
                     }
