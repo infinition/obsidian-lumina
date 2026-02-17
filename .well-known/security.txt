@@ -1,4 +1,4 @@
 Contact: https://github.com/infinition/obsidian-lumina/issues
-Expires: 2027-02-16T05:21:23.000Z
+Expires: 2027-02-17T05:15:58.000Z
 Preferred-Languages: en, fr
 Policy: https://github.com/infinition/obsidian-lumina/blob/wiki/SECURITY.md
