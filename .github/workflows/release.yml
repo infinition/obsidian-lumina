@@ -11,26 +11,46 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       # 1️⃣ Checkout
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       # 2️⃣ Node
-      - uses: actions/setup-node@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: "18"
 
       # 3️⃣ Install deps
-      - run: npm install
+      - name: Install Dependencies
+        run: npm install
 
-      # 4️⃣ Build (src → main.js)
-      - run: npm run build
+      # 4️⃣ Build
+      - name: Build Plugin
+        run: npm run build
 
-      # 5️⃣ Create GitHub Release (BRAT-compatible)
+      # 5️⃣ Generate release notes (robuste, sans EOF)
+      - name: Generate release notes
+        run: |
+          LAST_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || true)
+
+          if [ -z "$LAST_TAG" ]; then
+            echo "## 📝 Changes" > release_notes.txt
+            echo "" >> release_notes.txt
+            echo "- 🚀 Initial release" >> release_notes.txt
+          else
+            echo "## 📝 Changes" > release_notes.txt
+            echo "" >> release_notes.txt
+            git log "$LAST_TAG"..HEAD --pretty=format:"- %s" >> release_notes.txt
+          fi
+
+      # 6️⃣ Create GitHub Release
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
+          body_path: release_notes.txt
           files: |
             main.js
             manifest.json
