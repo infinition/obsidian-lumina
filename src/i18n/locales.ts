@@ -23,6 +23,7 @@ export type StringKey =
   | 'filter'
   | 'photos'
   | 'videos'
+  | 'other'
   | 'filterFolders'
   | 'allVault'
   | 'toggleFilenames'
@@ -52,6 +53,9 @@ export type StringKey =
   | 'helpDrag'
   | 'helpCtrlWheel'
   | 'helpPinch'
+  | 'generalSettings'
+  | 'showTagsIndicator'
+  | 'showTagsIndicatorDesc'
   | 'lightbox'
   | 'helpArrows'
   | 'features'
@@ -72,7 +76,120 @@ export type StringKey =
   | 'language'
   | 'settingsTitle'
   | 'copyEmbedHtml'
-  | 'pasteVideoUrl';
+  | 'pasteVideoUrl'
+  | 'addTag'
+  | 'manageTags'
+  | 'tags'
+  | 'tagCount'
+  | 'commonTags'
+  | 'addToAll'
+  | 'removeFromAll'
+  | 'insertLuminaBlock'
+  | 'tagsByCount'
+  | 'tagsByName'
+  | 'noTags'
+  | 'searchTags'
+  | 'availableTags'
+  | 'clickToAdd'
+  | 'tagIndicatorPosition'
+  | 'tagIndicatorPositionDesc'
+  | 'tagIndicatorCompensateShift'
+  | 'tagIndicatorCompensateShiftDesc'
+  | 'tagIndicatorStyle'
+  | 'tagIndicatorStyleDesc'
+  | 'tagIndicatorStyleDot'
+  | 'tagIndicatorStyleIcon'
+  | 'tagIndicatorColor'
+  | 'tagIndicatorColorDesc'
+  | 'tagIndicatorSize'
+  | 'tagIndicatorSizeDesc'
+  | 'tagIndicatorIcon'
+  | 'tagIndicatorIconDesc'
+  | 'browseIcons'
+  | 'iconPickerTitle'
+  | 'iconPickerSearchPlaceholder'
+  | 'iconPickerNoResults'
+  | 'left'
+  | 'right'
+  | 'backlinksSection'
+  | 'scanBacklinks'
+  | 'scanBacklinksDesc'
+  | 'scanNow'
+  | 'scanning'
+  | 'scanComplete'
+  | 'blockImageClickAction'
+  | 'blockImageClickActionDesc'
+  | 'previewFullscreen'
+  | 'openFile'
+  | 'tagClickAction'
+  | 'tagClickActionDesc'
+  | 'searchInLumina'
+  | 'searchInObsidian'
+  | 'enableTagSystem'
+  | 'enableTagSystemDesc'
+  | 'tagSettings'
+  | 'gallerySettings'
+  | 'searchIntegration'
+  | 'enableVirtualSearch'
+  | 'enableVirtualSearchDesc'
+  | 'virtualSearchClickAction'
+  | 'virtualSearchClickActionDesc'
+  | 'openInObsidian'
+  | 'openInLumina'
+  | 'pip'
+  | 'loading'
+  | 'detailView'
+  | 'detailViewHint'
+  | 'fileName'
+  | 'fileType'
+  | 'fileSize'
+  | 'dateModified'
+  | 'filePath'
+  | 'noResults'
+  | 'performanceSettings'
+  | 'galleryDefaults'
+  | 'defaultLayout'
+  | 'defaultLayoutDesc'
+  | 'defaultZoom'
+  | 'defaultZoomDesc'
+  | 'defaultShowNames'
+  | 'defaultShowNamesDesc'
+  | 'defaultMediaFilter'
+  | 'defaultMediaFilterDesc'
+  | 'thumbnailQuality'
+  | 'thumbnailQualityDesc'
+  | 'qualityLow'
+  | 'qualityMedium'
+  | 'qualityHigh'
+  | 'maxCacheSize'
+  | 'maxCacheSizeDesc'
+  | 'enableStartupSync'
+  | 'enableStartupSyncDesc'
+  | 'debugLogs'
+  | 'debugLogsDesc'
+  | 'copyPath'
+  | 'selectAll'
+  | 'deselectAll'
+  | 'itemCount'
+  | 'featuresListDetail'
+  | 'activeFilters'
+  | 'removeFilter'
+  | 'toggleFilenamesAndTags'
+  | 'sortAscending'
+  | 'sortDescending'
+  | 'allFiles'
+  | 'allFilesDesc'
+  | 'backupRestore'
+  | 'autoBackup'
+  | 'autoBackupDesc'
+  | 'backupInterval'
+  | 'backupIntervalDesc'
+  | 'backupPath'
+  | 'backupPathDesc'
+  | 'exportBackup'
+  | 'importBackup'
+  | 'backupExported'
+  | 'backupImported';
 
 const en: Record<StringKey, string> = {
   openLumina: 'Open Lumina',
@@ -89,6 +206,7 @@ const en: Record<StringKey, string> = {
   filter: 'Filter',
   photos: 'Photos',
   videos: 'Videos',
+  other: 'Other (tagged)',
   filterFolders: 'Filter folders...',
   allVault: 'All Vault',
   toggleFilenames: 'Toggle Filenames',
@@ -136,9 +254,125 @@ const en: Record<StringKey, string> = {
   previous: 'Previous',
   next: 'Next',
   language: 'Language',
+  generalSettings: 'General Settings',
+  showTagsIndicator: 'Show tags indicator in file explorer',
+  showTagsIndicatorDesc: 'Show a small colored dot in the file explorer for files with tags.',
   settingsTitle: 'Lumina Settings',
   copyEmbedHtml: 'Copy embed HTML',
   pasteVideoUrl: 'Paste or drag a YouTube URL (Ctrl+V) to open in player',
+  addTag: 'Add tag...',
+  manageTags: 'Manage tags',
+  tags: 'Tags',
+  tagCount: 'Tag count',
+  commonTags: 'Common tags',
+  addToAll: 'Add to all',
+  removeFromAll: 'Remove from all',
+  insertLuminaBlock: 'Insert Lumina block',
+  tagsByCount: 'Tags (by count)',
+  tagsByName: 'Tags (by name)',
+  noTags: 'No tags',
+  searchTags: 'Search tags...',
+  availableTags: 'Available tags',
+  clickToAdd: 'Click to add',
+  tagIndicatorPosition: 'Tag indicator position',
+  tagIndicatorPositionDesc: 'Position of the colored dot in the file explorer (left or right of the filename).',
+  tagIndicatorCompensateShift: 'Compensate left offset',
+  tagIndicatorCompensateShiftDesc: 'Keeps tagged file names aligned with other files by offsetting the indicator width (left position only).',
+  tagIndicatorStyle: 'Tag indicator style',
+  tagIndicatorStyleDesc: 'Display tagged files with either a colored dot or a Lucide icon.',
+  tagIndicatorStyleDot: 'Dot',
+  tagIndicatorStyleIcon: 'Lucide icon',
+  tagIndicatorColor: 'Tag indicator color',
+  tagIndicatorColorDesc: 'Color for the dot/icon. Supports CSS colors (e.g. #22c55e or var(--interactive-accent)).',
+  tagIndicatorSize: 'Tag indicator size',
+  tagIndicatorSizeDesc: 'Size of the dot/icon in pixels.',
+  tagIndicatorIcon: 'Tag indicator Lucide icon',
+  tagIndicatorIconDesc: 'Lucide icon name to use when style is set to icon (e.g. tag, bookmark, star).',
+  browseIcons: 'Browse icons',
+  iconPickerTitle: 'Choose a Lucide icon',
+  iconPickerSearchPlaceholder: 'Search icon...',
+  iconPickerNoResults: 'No icon found',
+  left: 'Left',
+  right: 'Right',
+  backlinksSection: 'Backlinks',
+  scanBacklinks: 'Scan existing links',
+  scanBacklinksDesc: 'Scan all markdown files for existing [[links]] in frontmatter and create missing backlinks.',
+  scanNow: 'Scan Now',
+  scanning: 'Scanning...',
+  scanComplete: 'Scan complete! Created {count} backlinks.',
+  blockImageClickAction: 'Lumina block: image click action',
+  blockImageClickActionDesc: 'What happens when you click an image in a Lumina block in a note.',
+  previewFullscreen: 'Preview fullscreen',
+  openFile: 'Open file',
+  tagClickAction: 'Tag click action',
+  tagClickActionDesc: 'What happens when you click a tag bubble (#tag) in Lumina.',
+  searchInLumina: 'Search in Lumina',
+  searchInObsidian: 'Search in Obsidian global search',
+  enableTagSystem: 'Enable tag system',
+  enableTagSystemDesc: 'Enable the tag system. Disable to use Lumina as a simple gallery without tags. Your tag data will be preserved.',
+  tagSettings: 'Tag Settings',
+  gallerySettings: 'Gallery Settings',
+  searchIntegration: 'Search Integration',
+  enableVirtualSearch: 'Enable Virtual Search',
+  enableVirtualSearchDesc: 'Make tagged media files appear in Obsidian\'s global search. When you search for a tag, media files with that tag will appear in results.',
+  virtualSearchClickAction: 'Search result click action',
+  virtualSearchClickActionDesc: 'What happens when you click a media file in search results.',
+  openInObsidian: 'Open in Obsidian (native)',
+  openInLumina: 'Open in Lumina lightbox',
+  pip: 'Picture-in-Picture',
+  loading: 'Loading...',
+  detailView: 'Detail View',
+  detailViewHint: 'Detail View (line by line with file details)',
+  fileName: 'Name',
+  fileType: 'Type',
+  fileSize: 'Size',
+  dateModified: 'Modified',
+  filePath: 'Path',
+  noResults: 'No results',
+  performanceSettings: 'Performance',
+  galleryDefaults: 'Gallery Defaults',
+  defaultLayout: 'Default layout',
+  defaultLayoutDesc: 'Default layout when opening a new gallery view.',
+  defaultZoom: 'Default zoom',
+  defaultZoomDesc: 'Default zoom level for new gallery views (50-500).',
+  defaultShowNames: 'Show filenames by default',
+  defaultShowNamesDesc: 'Display filenames under thumbnails in new gallery views.',
+  defaultMediaFilter: 'Default media filter',
+  defaultMediaFilterDesc: 'Which media types to show by default in new gallery views.',
+  thumbnailQuality: 'Thumbnail quality',
+  thumbnailQualityDesc: 'Quality of generated thumbnails. Lower = faster, higher = sharper.',
+  qualityLow: 'Low (fast)',
+  qualityMedium: 'Medium (balanced)',
+  qualityHigh: 'High (sharp)',
+  maxCacheSize: 'Max cache size (MB)',
+  maxCacheSizeDesc: 'Maximum size of the thumbnail cache in megabytes.',
+  enableStartupSync: 'Sync tags on startup',
+  enableStartupSyncDesc: 'Synchronize tags from frontmatter when Obsidian starts. Disable for faster startup.',
+  debugLogs: 'Debug logs',
+  debugLogsDesc: 'Show debug logs in the developer console. Useful for troubleshooting.',
+  copyPath: 'Copy path',
+  selectAll: 'Select all',
+  deselectAll: 'Deselect all',
+  itemCount: '{n} items',
+  featuresListDetail: 'Layouts: Square, Justified, Panorama, Detail. Folders, Sort, Edit Mode, Fullscreen.',
+  activeFilters: 'Active filters',
+  removeFilter: 'Remove filter',
+  toggleFilenamesAndTags: 'Show filenames and tags',
+  sortAscending: 'Sort ascending',
+  sortDescending: 'Sort descending',
+  allFiles: 'All files (even untagged)',
+  allFilesDesc: 'Show all files from the vault, regardless of type or tags',
+  backupRestore: 'Backup & Restore',
+  autoBackup: 'Automatic backup',
+  autoBackupDesc: 'Automatically back up tags at a regular interval.',
+  backupInterval: 'Backup interval (hours)',
+  backupIntervalDesc: 'How often to create an automatic backup.',
+  backupPath: 'Backup folder path',
+  backupPathDesc: 'Folder path for automatic backups (relative to vault root). Leave empty for vault root.',
+  exportBackup: 'Export backup now',
+  importBackup: 'Import backup',
+  backupExported: 'Tags backup exported successfully!',
+  backupImported: '{n} files updated from backup.',
 };
 
 const fr: Record<StringKey, string> = {
@@ -156,6 +390,7 @@ const fr: Record<StringKey, string> = {
   filter: 'Filtrer',
   photos: 'Photos',
   videos: 'Vidéos',
+  other: 'Autres (taggués)',
   filterFolders: 'Filtrer les dossiers...',
   allVault: 'Tout le coffre',
   toggleFilenames: 'Afficher les noms',
@@ -203,9 +438,125 @@ const fr: Record<StringKey, string> = {
   previous: 'Précédent',
   next: 'Suivant',
   language: 'Langue',
-  settingsTitle: 'Paramètres Lumina',
+  generalSettings: 'Paramètres généraux',
+  showTagsIndicator: 'Afficher l\'indicateur de tags dans l\'explorateur',
+  showTagsIndicatorDesc: 'Affiche une petite pastille colorée dans l\'explorateur de fichiers pour les fichiers taggués.',
+  settingsTitle: 'Paramètres de Lumina',
   copyEmbedHtml: 'Copier le HTML embed',
   pasteVideoUrl: 'Coller ou glisser une URL YouTube (Ctrl+V) pour ouvrir le lecteur',
+  addTag: 'Ajouter un tag...',
+  manageTags: 'Gérer les tags',
+  tags: 'Tags',
+  tagCount: 'Nombre de tags',
+  commonTags: 'Tags communs',
+  addToAll: 'Ajouter à tous',
+  removeFromAll: 'Retirer de tous',
+  insertLuminaBlock: 'Insérer un bloc Lumina',
+  tagsByCount: 'Tags (par nombre)',
+  tagsByName: 'Tags (par nom)',
+  noTags: 'Aucun tag',
+  searchTags: 'Rechercher des tags...',
+  availableTags: 'Tags disponibles',
+  clickToAdd: 'Cliquer pour ajouter',
+  tagIndicatorPosition: 'Position de l\'indicateur de tags',
+  tagIndicatorPositionDesc: 'Position de la pastille colorée dans l\'explorateur de fichiers (à gauche ou à droite du nom).',
+  tagIndicatorCompensateShift: 'Compenser le décalage à gauche',
+  tagIndicatorCompensateShiftDesc: 'Aligne les noms de fichiers taggués avec les autres en compensant la largeur de l\'indicateur (position gauche uniquement).',
+  tagIndicatorStyle: 'Style de l\'indicateur de tags',
+  tagIndicatorStyleDesc: 'Affiche les fichiers taggués avec une pastille colorée ou une icône Lucide.',
+  tagIndicatorStyleDot: 'Pastille',
+  tagIndicatorStyleIcon: 'Icône Lucide',
+  tagIndicatorColor: 'Couleur de l\'indicateur',
+  tagIndicatorColorDesc: 'Couleur de la pastille/icône. Accepte les couleurs CSS (ex: #22c55e ou var(--interactive-accent)).',
+  tagIndicatorSize: 'Taille de l\'indicateur',
+  tagIndicatorSizeDesc: 'Taille de la pastille/icône en pixels.',
+  tagIndicatorIcon: 'Icône Lucide',
+  tagIndicatorIconDesc: 'Nom de l\'icône Lucide à utiliser quand le style est "Icône" (ex: tag, bookmark, star).',
+  browseIcons: 'Parcourir les icônes',
+  iconPickerTitle: 'Choisir une icône Lucide',
+  iconPickerSearchPlaceholder: 'Rechercher une icône...',
+  iconPickerNoResults: 'Aucune icône trouvée',
+  left: 'Gauche',
+  right: 'Droite',
+  backlinksSection: 'Rétroliens',
+  scanBacklinks: 'Scanner les liens existants',
+  scanBacklinksDesc: 'Scanner tous les fichiers markdown pour les [[liens]] existants dans le frontmatter et créer les rétroliens manquants.',
+  scanNow: 'Scanner maintenant',
+  scanning: 'Scan en cours...',
+  scanComplete: 'Scan terminé ! {count} rétroliens créés.',
+  blockImageClickAction: 'Bloc Lumina : action au clic sur image',
+  blockImageClickActionDesc: 'Ce qui se passe quand vous cliquez sur une image dans un bloc Lumina.',
+  previewFullscreen: 'Aperçu plein écran',
+  openFile: 'Ouvrir le fichier',
+  tagClickAction: 'Action au clic sur tag',
+  tagClickActionDesc: 'Ce qui se passe quand vous cliquez sur une bulle de tag (#tag) dans Lumina.',
+  searchInLumina: 'Rechercher dans Lumina',
+  searchInObsidian: 'Rechercher dans Obsidian (global)',
+  enableTagSystem: 'Activer le système de tags',
+  enableTagSystemDesc: 'Activer le système de tags. Désactivez pour utiliser Lumina comme une simple galerie sans tags. Vos données de tags seront conservées.',
+  tagSettings: 'Paramètres des tags',
+  gallerySettings: 'Paramètres de la galerie',
+  searchIntegration: 'Intégration recherche',
+  enableVirtualSearch: 'Activer la recherche virtuelle',
+  enableVirtualSearchDesc: 'Faire apparaître les médias taggués dans la recherche globale d\'Obsidian. Quand vous cherchez un tag, les fichiers média avec ce tag apparaîtront dans les résultats.',
+  virtualSearchClickAction: 'Action au clic sur résultat',
+  virtualSearchClickActionDesc: 'Que se passe-t-il quand vous cliquez sur un fichier média dans les résultats de recherche.',
+  openInObsidian: 'Ouvrir dans Obsidian (natif)',
+  openInLumina: 'Ouvrir dans Lumina (lightbox)',
+  pip: 'Image dans l\'image (PIP)',
+  loading: 'Chargement...',
+  detailView: 'Vue détaillée',
+  detailViewHint: 'Vue détaillée (ligne par ligne avec les détails des fichiers)',
+  fileName: 'Nom',
+  fileType: 'Type',
+  fileSize: 'Taille',
+  dateModified: 'Modifié',
+  filePath: 'Chemin',
+  noResults: 'Aucun résultat',
+  performanceSettings: 'Performance',
+  galleryDefaults: 'Paramètres par défaut de la galerie',
+  defaultLayout: 'Disposition par défaut',
+  defaultLayoutDesc: 'Disposition par défaut lors de l\'ouverture d\'une nouvelle galerie.',
+  defaultZoom: 'Zoom par défaut',
+  defaultZoomDesc: 'Niveau de zoom par défaut pour les nouvelles galeries (50-500).',
+  defaultShowNames: 'Afficher les noms par défaut',
+  defaultShowNamesDesc: 'Afficher les noms de fichiers sous les miniatures dans les nouvelles galeries.',
+  defaultMediaFilter: 'Filtre média par défaut',
+  defaultMediaFilterDesc: 'Types de médias à afficher par défaut dans les nouvelles galeries.',
+  thumbnailQuality: 'Qualité des miniatures',
+  thumbnailQualityDesc: 'Qualité des miniatures générées. Plus bas = plus rapide, plus haut = plus net.',
+  qualityLow: 'Basse (rapide)',
+  qualityMedium: 'Moyenne (équilibrée)',
+  qualityHigh: 'Haute (nette)',
+  maxCacheSize: 'Taille max du cache (Mo)',
+  maxCacheSizeDesc: 'Taille maximale du cache de miniatures en mégaoctets.',
+  enableStartupSync: 'Synchroniser au démarrage',
+  enableStartupSyncDesc: 'Synchroniser les tags depuis le frontmatter au démarrage d\'Obsidian. Désactiver pour un démarrage plus rapide.',
+  debugLogs: 'Logs de débogage',
+  debugLogsDesc: 'Afficher les logs de débogage dans la console développeur. Utile pour le diagnostic.',
+  copyPath: 'Copier le chemin',
+  selectAll: 'Tout sélectionner',
+  deselectAll: 'Tout désélectionner',
+  itemCount: '{n} éléments',
+  featuresListDetail: 'Dispositions : Carré, Justifié, Panorama, Détaillé. Dossiers, Tri, Mode édition, Plein écran.',
+  activeFilters: 'Filtres actifs',
+  removeFilter: 'Supprimer le filtre',
+  toggleFilenamesAndTags: 'Afficher les noms et les tags',
+  sortAscending: 'Tri croissant',
+  sortDescending: 'Tri décroissant',
+  allFiles: 'Tous les fichiers (même non taggués)',
+  allFilesDesc: 'Afficher tous les fichiers du coffre, quel que soit le type ou les tags',
+  backupRestore: 'Sauvegarde & Restauration',
+  autoBackup: 'Sauvegarde automatique',
+  autoBackupDesc: 'Sauvegarder automatiquement les tags à intervalle régulier.',
+  backupInterval: 'Intervalle de sauvegarde (heures)',
+  backupIntervalDesc: 'Fréquence de création des sauvegardes automatiques.',
+  backupPath: 'Chemin du dossier de sauvegarde',
+  backupPathDesc: 'Chemin du dossier pour les sauvegardes automatiques (relatif à la racine du coffre). Laisser vide pour la racine.',
+  exportBackup: 'Exporter une sauvegarde maintenant',
+  importBackup: 'Importer une sauvegarde',
+  backupExported: 'Sauvegarde des tags exportée avec succès !',
+  backupImported: '{n} fichiers mis à jour depuis la sauvegarde.',
 };
 
 const de: Record<StringKey, string> = {
@@ -223,6 +574,7 @@ const de: Record<StringKey, string> = {
   filter: 'Filter',
   photos: 'Fotos',
   videos: 'Videos',
+  other: 'Andere (getaggt)',
   filterFolders: 'Ordner filtern...',
   allVault: 'Gesamter Tresor',
   toggleFilenames: 'Dateinamen ein/aus',
@@ -270,9 +622,125 @@ const de: Record<StringKey, string> = {
   previous: 'Zurück',
   next: 'Weiter',
   language: 'Sprache',
-  settingsTitle: 'Lumina-Einstellungen',
+  generalSettings: 'Allgemeine Einstellungen',
+  showTagsIndicator: 'Tag-Indikator im Datei-Explorer anzeigen',
+  showTagsIndicatorDesc: 'Zeigt einen kleinen farbigen Punkt im Datei-Explorer für Dateien mit Tags an.',
+  settingsTitle: 'Lumina Einstellungen',
   copyEmbedHtml: 'Embed-HTML kopieren',
   pasteVideoUrl: 'YouTube-URL einfügen oder ziehen (Strg+V) zum Abspielen',
+  addTag: 'Tag hinzufügen...',
+  manageTags: 'Tags verwalten',
+  tags: 'Tags',
+  tagCount: 'Tag-Anzahl',
+  commonTags: 'Gemeinsame Tags',
+  addToAll: 'Zu allen hinzufügen',
+  removeFromAll: 'Von allen entfernen',
+  insertLuminaBlock: 'Lumina-Block einfügen',
+  tagsByCount: 'Tags (nach Anzahl)',
+  tagsByName: 'Tags (nach Name)',
+  noTags: 'Keine Tags',
+  searchTags: 'Tags suchen...',
+  availableTags: 'Verfügbare Tags',
+  clickToAdd: 'Klicken zum Hinzufügen',
+  tagIndicatorPosition: 'Position des Tag-Indikators',
+  tagIndicatorPositionDesc: 'Position des farbigen Punktes im Datei-Explorer (links oder rechts vom Dateinamen).',
+  tagIndicatorCompensateShift: 'Linken Versatz ausgleichen',
+  tagIndicatorCompensateShiftDesc: 'Haelt Dateinamen mit Tags mit anderen Dateien ausgerichtet, indem die Indikatorbreite ausgeglichen wird (nur links).',
+  tagIndicatorStyle: 'Tag-Indikator-Stil',
+  tagIndicatorStyleDesc: 'Dateien mit Tags als farbigen Punkt oder als Lucide-Symbol anzeigen.',
+  tagIndicatorStyleDot: 'Punkt',
+  tagIndicatorStyleIcon: 'Lucide-Symbol',
+  tagIndicatorColor: 'Tag-Indikator-Farbe',
+  tagIndicatorColorDesc: 'Farbe fuer Punkt/Symbol. CSS-Farben werden unterstuetzt (z. B. #22c55e oder var(--interactive-accent)).',
+  tagIndicatorSize: 'Tag-Indikator-Groesse',
+  tagIndicatorSizeDesc: 'Groesse des Punktes/Symbols in Pixel.',
+  tagIndicatorIcon: 'Lucide-Symbolname',
+  tagIndicatorIconDesc: 'Lucide-Symbolname fuer den Symbolstil (z. B. tag, bookmark, star).',
+  browseIcons: 'Symbole durchsuchen',
+  iconPickerTitle: 'Lucide-Symbol waehlen',
+  iconPickerSearchPlaceholder: 'Symbol suchen...',
+  iconPickerNoResults: 'Kein Symbol gefunden',
+  left: 'Links',
+  right: 'Rechts',
+  backlinksSection: 'Rückverweise',
+  scanBacklinks: 'Vorhandene Links scannen',
+  scanBacklinksDesc: 'Alle Markdown-Dateien nach vorhandenen [[Links]] im Frontmatter scannen und fehlende Rückverweise erstellen.',
+  scanNow: 'Jetzt scannen',
+  scanning: 'Scannen...',
+  scanComplete: 'Scan abgeschlossen! {count} Rückverweise erstellt.',
+  blockImageClickAction: 'Lumina-Block: Klickaktion für Bilder',
+  blockImageClickActionDesc: 'Was passiert, wenn Sie auf ein Bild in einem Lumina-Block klicken.',
+  previewFullscreen: 'Vollbildvorschau',
+  openFile: 'Datei öffnen',
+  tagClickAction: 'Tag-Klickaktion',
+  tagClickActionDesc: 'Was passiert, wenn Sie auf eine Tag-Blase (#tag) in Lumina klicken.',
+  searchInLumina: 'In Lumina suchen',
+  searchInObsidian: 'In Obsidian global suchen',
+  enableTagSystem: 'Tag-System aktivieren',
+  enableTagSystemDesc: 'Tag-System aktivieren. Deaktivieren Sie diese Option, um Lumina als einfache Galerie ohne Tags zu verwenden. Ihre Tag-Daten werden beibehalten.',
+  tagSettings: 'Tag-Einstellungen',
+  gallerySettings: 'Galerie-Einstellungen',
+  searchIntegration: 'Suchintegration',
+  enableVirtualSearch: 'Virtuelle Suche aktivieren',
+  enableVirtualSearchDesc: 'Markierte Mediendateien in der globalen Obsidian-Suche anzeigen. Bei der Suche nach einem Tag werden Mediendateien mit diesem Tag in den Ergebnissen angezeigt.',
+  virtualSearchClickAction: 'Suchergebnis-Klickaktion',
+  virtualSearchClickActionDesc: 'Was passiert, wenn Sie auf eine Mediendatei in den Suchergebnissen klicken.',
+  openInObsidian: 'In Obsidian öffnen (nativ)',
+  openInLumina: 'In Lumina öffnen (Lightbox)',
+  pip: 'Bild-in-Bild',
+  loading: 'Laden...',
+  detailView: 'Detailansicht',
+  detailViewHint: 'Detailansicht (Zeile für Zeile mit Dateidetails)',
+  fileName: 'Name',
+  fileType: 'Typ',
+  fileSize: 'Größe',
+  dateModified: 'Geändert',
+  filePath: 'Pfad',
+  noResults: 'Keine Ergebnisse',
+  performanceSettings: 'Leistung',
+  galleryDefaults: 'Galerie-Standardwerte',
+  defaultLayout: 'Standard-Layout',
+  defaultLayoutDesc: 'Standard-Layout beim Öffnen einer neuen Galerieansicht.',
+  defaultZoom: 'Standard-Zoom',
+  defaultZoomDesc: 'Standard-Zoomstufe für neue Galerieansichten (50-500).',
+  defaultShowNames: 'Dateinamen standardmäßig anzeigen',
+  defaultShowNamesDesc: 'Dateinamen unter Miniaturansichten in neuen Galerieansichten anzeigen.',
+  defaultMediaFilter: 'Standard-Medienfilter',
+  defaultMediaFilterDesc: 'Welche Medientypen standardmäßig in neuen Galerieansichten angezeigt werden.',
+  thumbnailQuality: 'Miniaturbildqualität',
+  thumbnailQualityDesc: 'Qualität der generierten Miniaturbilder. Niedriger = schneller, höher = schärfer.',
+  qualityLow: 'Niedrig (schnell)',
+  qualityMedium: 'Mittel (ausgewogen)',
+  qualityHigh: 'Hoch (scharf)',
+  maxCacheSize: 'Max. Cache-Größe (MB)',
+  maxCacheSizeDesc: 'Maximale Größe des Miniaturbildcaches in Megabyte.',
+  enableStartupSync: 'Tags beim Start synchronisieren',
+  enableStartupSyncDesc: 'Tags aus Frontmatter beim Start von Obsidian synchronisieren. Deaktivieren für schnelleren Start.',
+  debugLogs: 'Debug-Protokolle',
+  debugLogsDesc: 'Debug-Protokolle in der Entwicklerkonsole anzeigen. Nützlich zur Fehlerbehebung.',
+  copyPath: 'Pfad kopieren',
+  selectAll: 'Alle auswählen',
+  deselectAll: 'Alle abwählen',
+  itemCount: '{n} Elemente',
+  featuresListDetail: 'Layouts: Quadrat, Blocksatz, Panorama, Detail. Ordner, Sortierung, Bearbeitungsmodus, Vollbild.',
+  activeFilters: 'Aktive Filter',
+  removeFilter: 'Filter entfernen',
+  toggleFilenamesAndTags: 'Dateinamen und Tags anzeigen',
+  sortAscending: 'Aufsteigend sortieren',
+  sortDescending: 'Absteigend sortieren',
+  allFiles: 'Alle Dateien (auch ohne Tags)',
+  allFilesDesc: 'Alle Dateien im Tresor anzeigen, unabhängig von Typ oder Tags',
+  backupRestore: 'Sicherung & Wiederherstellung',
+  autoBackup: 'Automatische Sicherung',
+  autoBackupDesc: 'Tags automatisch in regelmäßigen Abständen sichern.',
+  backupInterval: 'Sicherungsintervall (Stunden)',
+  backupIntervalDesc: 'Wie oft eine automatische Sicherung erstellt werden soll.',
+  backupPath: 'Sicherungsordner-Pfad',
+  backupPathDesc: 'Ordnerpfad für automatische Sicherungen (relativ zum Tresor-Stammverzeichnis).',
+  exportBackup: 'Sicherung jetzt exportieren',
+  importBackup: 'Sicherung importieren',
+  backupExported: 'Tags-Sicherung erfolgreich exportiert!',
+  backupImported: '{n} Dateien aus Sicherung aktualisiert.',
 };
 
 const es: Record<StringKey, string> = {
@@ -290,6 +758,7 @@ const es: Record<StringKey, string> = {
   filter: 'Filtrar',
   photos: 'Fotos',
   videos: 'Vídeos',
+  other: 'Otros (etiquetados)',
   filterFolders: 'Filtrar carpetas...',
   allVault: 'Toda la bóveda',
   toggleFilenames: 'Nombres de archivo',
@@ -337,9 +806,125 @@ const es: Record<StringKey, string> = {
   previous: 'Anterior',
   next: 'Siguiente',
   language: 'Idioma',
+  generalSettings: 'Ajustes generales',
+  showTagsIndicator: 'Mostrar indicador de etiquetas en el explorador',
+  showTagsIndicatorDesc: 'Muestra un pequeño punto de color en el explorador de archivos para los archivos con etiquetas.',
   settingsTitle: 'Ajustes de Lumina',
   copyEmbedHtml: 'Copiar HTML de inserción',
   pasteVideoUrl: 'Pegar o arrastrar URL de YouTube (Ctrl+V) para abrir en el reproductor',
+  addTag: 'Agregar etiqueta...',
+  manageTags: 'Gestionar etiquetas',
+  tags: 'Etiquetas',
+  tagCount: 'Cantidad de etiquetas',
+  commonTags: 'Etiquetas comunes',
+  addToAll: 'Agregar a todos',
+  removeFromAll: 'Eliminar de todos',
+  insertLuminaBlock: 'Insertar bloque Lumina',
+  tagsByCount: 'Etiquetas (por cantidad)',
+  tagsByName: 'Etiquetas (por nombre)',
+  noTags: 'Sin etiquetas',
+  searchTags: 'Buscar etiquetas...',
+  availableTags: 'Etiquetas disponibles',
+  clickToAdd: 'Clic para agregar',
+  tagIndicatorPosition: 'Posición del indicador de etiquetas',
+  tagIndicatorPositionDesc: 'Posición del punto de color en el explorador de archivos (a la izquierda o a la derecha del nombre).',
+  tagIndicatorCompensateShift: 'Compensar desplazamiento izquierdo',
+  tagIndicatorCompensateShiftDesc: 'Mantiene alineados los nombres de archivos etiquetados compensando el ancho del indicador (solo posición izquierda).',
+  tagIndicatorStyle: 'Estilo del indicador de etiquetas',
+  tagIndicatorStyleDesc: 'Muestra archivos etiquetados con un punto de color o un icono Lucide.',
+  tagIndicatorStyleDot: 'Punto',
+  tagIndicatorStyleIcon: 'Icono Lucide',
+  tagIndicatorColor: 'Color del indicador',
+  tagIndicatorColorDesc: 'Color para punto/icono. Admite colores CSS (ej. #22c55e o var(--interactive-accent)).',
+  tagIndicatorSize: 'Tamaño del indicador',
+  tagIndicatorSizeDesc: 'Tamaño del punto/icono en pixeles.',
+  tagIndicatorIcon: 'Icono Lucide',
+  tagIndicatorIconDesc: 'Nombre del icono Lucide para el estilo icono (ej. tag, bookmark, star).',
+  browseIcons: 'Explorar iconos',
+  iconPickerTitle: 'Elegir icono Lucide',
+  iconPickerSearchPlaceholder: 'Buscar icono...',
+  iconPickerNoResults: 'No se encontró icono',
+  left: 'Izquierda',
+  right: 'Derecha',
+  backlinksSection: 'Retroenlaces',
+  scanBacklinks: 'Escanear enlaces existentes',
+  scanBacklinksDesc: 'Escanear todos los archivos markdown en busca de [[enlaces]] existentes en el frontmatter y crear los retroenlaces faltantes.',
+  scanNow: 'Escanear ahora',
+  scanning: 'Escaneando...',
+  scanComplete: '¡Escaneo completo! {count} retroenlaces creados.',
+  blockImageClickAction: 'Bloque Lumina: acción al clic en imagen',
+  blockImageClickActionDesc: 'Qué sucede cuando haces clic en una imagen en un bloque Lumina.',
+  previewFullscreen: 'Vista previa a pantalla completa',
+  openFile: 'Abrir archivo',
+  tagClickAction: 'Acción al hacer clic en un tag',
+  tagClickActionDesc: 'Qué sucede cuando haces clic en un tag (# o [[enlace]]).',
+  searchInLumina: 'Buscar en Lumina',
+  searchInObsidian: 'Buscar en Obsidian (búsqueda global)',
+  enableTagSystem: 'Activar sistema de etiquetas',
+  enableTagSystemDesc: 'Activar el sistema de etiquetas. Desactívelo para usar Lumina como una galería simple sin etiquetas. Sus datos de etiquetas se conservarán.',
+  tagSettings: 'Configuración de etiquetas',
+  gallerySettings: 'Configuración de galería',
+  searchIntegration: 'Integración de búsqueda',
+  enableVirtualSearch: 'Activar búsqueda virtual',
+  enableVirtualSearchDesc: 'Hacer que los archivos multimedia etiquetados aparezcan en la búsqueda global de Obsidian. Al buscar una etiqueta, los archivos multimedia con esa etiqueta aparecerán en los resultados.',
+  virtualSearchClickAction: 'Acción al hacer clic en resultado',
+  virtualSearchClickActionDesc: 'Qué sucede cuando haces clic en un archivo multimedia en los resultados de búsqueda.',
+  openInObsidian: 'Abrir en Obsidian (nativo)',
+  openInLumina: 'Abrir en Lumina (lightbox)',
+  pip: 'Imagen en imagen (PIP)',
+  loading: 'Cargando...',
+  detailView: 'Vista detallada',
+  detailViewHint: 'Vista detallada (línea por línea con detalles de archivos)',
+  fileName: 'Nombre',
+  fileType: 'Tipo',
+  fileSize: 'Tamaño',
+  dateModified: 'Modificado',
+  filePath: 'Ruta',
+  noResults: 'Sin resultados',
+  performanceSettings: 'Rendimiento',
+  galleryDefaults: 'Valores predeterminados de galería',
+  defaultLayout: 'Diseño predeterminado',
+  defaultLayoutDesc: 'Diseño predeterminado al abrir una nueva vista de galería.',
+  defaultZoom: 'Zoom predeterminado',
+  defaultZoomDesc: 'Nivel de zoom predeterminado para nuevas vistas de galería (50-500).',
+  defaultShowNames: 'Mostrar nombres por defecto',
+  defaultShowNamesDesc: 'Mostrar nombres de archivo bajo las miniaturas en nuevas vistas de galería.',
+  defaultMediaFilter: 'Filtro de medios predeterminado',
+  defaultMediaFilterDesc: 'Qué tipos de medios mostrar por defecto en nuevas vistas de galería.',
+  thumbnailQuality: 'Calidad de miniaturas',
+  thumbnailQualityDesc: 'Calidad de las miniaturas generadas. Menor = más rápido, mayor = más nítido.',
+  qualityLow: 'Baja (rápida)',
+  qualityMedium: 'Media (equilibrada)',
+  qualityHigh: 'Alta (nítida)',
+  maxCacheSize: 'Tamaño máx. de caché (MB)',
+  maxCacheSizeDesc: 'Tamaño máximo de la caché de miniaturas en megabytes.',
+  enableStartupSync: 'Sincronizar al inicio',
+  enableStartupSyncDesc: 'Sincronizar etiquetas desde el frontmatter al iniciar Obsidian. Desactivar para un inicio más rápido.',
+  debugLogs: 'Registros de depuración',
+  debugLogsDesc: 'Mostrar registros de depuración en la consola de desarrollo. Útil para diagnósticos.',
+  copyPath: 'Copiar ruta',
+  selectAll: 'Seleccionar todo',
+  deselectAll: 'Deseleccionar todo',
+  itemCount: '{n} elementos',
+  featuresListDetail: 'Diseños: Cuadrícula, Justificado, Panorama, Detallado. Carpetas, Ordenar, Modo edición, Pantalla completa.',
+  activeFilters: 'Filtros activos',
+  removeFilter: 'Eliminar filtro',
+  toggleFilenamesAndTags: 'Mostrar nombres y etiquetas',
+  sortAscending: 'Orden ascendente',
+  sortDescending: 'Orden descendente',
+  allFiles: 'Todos los archivos (incluso sin etiquetas)',
+  allFilesDesc: 'Mostrar todos los archivos de la bóveda, sin importar tipo o etiquetas',
+  backupRestore: 'Copia de seguridad y restauración',
+  autoBackup: 'Copia de seguridad automática',
+  autoBackupDesc: 'Realizar copias de seguridad automáticas de las etiquetas a intervalos regulares.',
+  backupInterval: 'Intervalo de copia (horas)',
+  backupIntervalDesc: 'Frecuencia de creación de copias de seguridad automáticas.',
+  backupPath: 'Ruta de la carpeta de respaldo',
+  backupPathDesc: 'Ruta de la carpeta para copias de seguridad automáticas (relativa a la raíz de la bóveda).',
+  exportBackup: 'Exportar copia ahora',
+  importBackup: 'Importar copia',
+  backupExported: '¡Copia de seguridad de etiquetas exportada con éxito!',
+  backupImported: '{n} archivos actualizados desde la copia.',
 };
 
 const zh: Record<StringKey, string> = {
@@ -357,6 +942,7 @@ const zh: Record<StringKey, string> = {
   filter: '筛选',
   photos: '照片',
   videos: '视频',
+  other: '其他（已标记）',
   filterFolders: '筛选文件夹...',
   allVault: '全部保险库',
   toggleFilenames: '显示文件名',
@@ -404,9 +990,125 @@ const zh: Record<StringKey, string> = {
   previous: '上一个',
   next: '下一个',
   language: '语言',
+  generalSettings: '通用设置',
+  showTagsIndicator: '在文件浏览器中显示标签指示器',
+  showTagsIndicatorDesc: '对于有标签的文件，在文件浏览器中显示一个彩色小点。',
   settingsTitle: 'Lumina 设置',
   copyEmbedHtml: '复制嵌入 HTML',
   pasteVideoUrl: '粘贴或拖放 YouTube 链接 (Ctrl+V) 在播放器中打开',
+  addTag: '添加标签...',
+  manageTags: '管理标签',
+  tags: '标签',
+  tagCount: '标签数量',
+  commonTags: '公共标签',
+  addToAll: '添加到全部',
+  removeFromAll: '从全部移除',
+  insertLuminaBlock: '插入 Lumina 块',
+  tagsByCount: '标签（按数量）',
+  tagsByName: '标签（按名称）',
+  noTags: '无标签',
+  searchTags: '搜索标签...',
+  availableTags: '可用标签',
+  clickToAdd: '点击添加',
+  tagIndicatorPosition: '标签指示器位置',
+  tagIndicatorPositionDesc: '文件浏览器中彩色点的位置（在文件名的左侧或右侧）。',
+  tagIndicatorCompensateShift: '补偿左侧偏移',
+  tagIndicatorCompensateShiftDesc: '通过补偿指示器占用宽度来对齐已标记与未标记文件名（仅左侧位置生效）。',
+  tagIndicatorStyle: '标签指示器样式',
+  tagIndicatorStyleDesc: '将已标记文件显示为彩色圆点或 Lucide 图标。',
+  tagIndicatorStyleDot: '圆点',
+  tagIndicatorStyleIcon: 'Lucide 图标',
+  tagIndicatorColor: '标签指示器颜色',
+  tagIndicatorColorDesc: '圆点/图标颜色。支持 CSS 颜色（例如 #22c55e 或 var(--interactive-accent)）。',
+  tagIndicatorSize: '标签指示器大小',
+  tagIndicatorSizeDesc: '圆点/图标的像素大小。',
+  tagIndicatorIcon: 'Lucide 图标名称',
+  tagIndicatorIconDesc: '样式为图标时使用的 Lucide 图标名（例如 tag、bookmark、star）。',
+  browseIcons: '浏览图标',
+  iconPickerTitle: '选择 Lucide 图标',
+  iconPickerSearchPlaceholder: '搜索图标...',
+  iconPickerNoResults: '未找到图标',
+  left: '左',
+  right: '右',
+  backlinksSection: '反向链接',
+  scanBacklinks: '扫描现有链接',
+  scanBacklinksDesc: '扫描所有 markdown 文件中 frontmatter 中的现有 [[链接]] 并创建缺失的反向链接。',
+  scanNow: '立即扫描',
+  scanning: '扫描中...',
+  scanComplete: '扫描完成！创建了 {count} 个反向链接。',
+  blockImageClickAction: 'Lumina 块：图片点击操作',
+  blockImageClickActionDesc: '当您点击 Lumina 块中的图片时会发生什么。',
+  previewFullscreen: '全屏预览',
+  openFile: '打开文件',
+  tagClickAction: '标签点击操作',
+  tagClickActionDesc: '当您点击标签（# 或 [[链接]]）时会发生什么。',
+  searchInLumina: '在 Lumina 中搜索',
+  searchInObsidian: '在 Obsidian 中搜索（全局搜索）',
+  enableTagSystem: '启用标签系统',
+  enableTagSystemDesc: '启用标签系统。禁用后可将 Lumina 用作简单的图库，不带标签功能。您的标签数据将被保留。',
+  tagSettings: '标签设置',
+  gallerySettings: '图库设置',
+  searchIntegration: '搜索集成',
+  enableVirtualSearch: '启用虚拟搜索',
+  enableVirtualSearchDesc: '使带标签的媒体文件出现在 Obsidian 的全局搜索中。搜索标签时，带有该标签的媒体文件将出现在结果中。',
+  virtualSearchClickAction: '点击结果时的操作',
+  virtualSearchClickActionDesc: '当您点击搜索结果中的媒体文件时会发生什么。',
+  openInObsidian: '在 Obsidian 中打开（原生）',
+  openInLumina: '在 Lumina 中打开（灯箱）',
+  pip: '画中画',
+  loading: '加载中...',
+  detailView: '详情视图',
+  detailViewHint: '详情视图（逐行显示文件详细信息）',
+  fileName: '名称',
+  fileType: '类型',
+  fileSize: '大小',
+  dateModified: '修改日期',
+  filePath: '路径',
+  noResults: '无结果',
+  performanceSettings: '性能',
+  galleryDefaults: '图库默认值',
+  defaultLayout: '默认布局',
+  defaultLayoutDesc: '打开新图库视图时的默认布局。',
+  defaultZoom: '默认缩放',
+  defaultZoomDesc: '新图库视图的默认缩放级别（50-500）。',
+  defaultShowNames: '默认显示文件名',
+  defaultShowNamesDesc: '在新图库视图中默认在缩略图下方显示文件名。',
+  defaultMediaFilter: '默认媒体筛选',
+  defaultMediaFilterDesc: '新图库视图中默认显示的媒体类型。',
+  thumbnailQuality: '缩略图质量',
+  thumbnailQualityDesc: '生成缩略图的质量。低 = 更快，高 = 更清晰。',
+  qualityLow: '低（快速）',
+  qualityMedium: '中（均衡）',
+  qualityHigh: '高（清晰）',
+  maxCacheSize: '最大缓存大小（MB）',
+  maxCacheSizeDesc: '缩略图缓存的最大大小（兆字节）。',
+  enableStartupSync: '启动时同步标签',
+  enableStartupSyncDesc: '在 Obsidian 启动时从 frontmatter 同步标签。禁用以加快启动速度。',
+  debugLogs: '调试日志',
+  debugLogsDesc: '在开发者控制台中显示调试日志。用于故障排除。',
+  copyPath: '复制路径',
+  selectAll: '全选',
+  deselectAll: '取消全选',
+  itemCount: '{n} 个项目',
+  featuresListDetail: '布局：方形、两端对齐、全景、详情。文件夹、排序、编辑模式、全屏。',
+  activeFilters: '活动筛选',
+  removeFilter: '移除筛选',
+  toggleFilenamesAndTags: '显示文件名和标签',
+  sortAscending: '升序排列',
+  sortDescending: '降序排列',
+  allFiles: '所有文件（包括未标记的）',
+  allFilesDesc: '显示保管库中的所有文件，无论类型或标签',
+  backupRestore: '备份与恢复',
+  autoBackup: '自动备份',
+  autoBackupDesc: '定期自动备份标签。',
+  backupInterval: '备份间隔（小时）',
+  backupIntervalDesc: '自动备份的频率。',
+  backupPath: '备份文件夹路径',
+  backupPathDesc: '自动备份的文件夹路径（相对于保管库根目录）。',
+  exportBackup: '立即导出备份',
+  importBackup: '导入备份',
+  backupExported: '标签备份导出成功！',
+  backupImported: '从备份更新了 {n} 个文件。',
 };
 
 const LOCALES: Record<LocaleKey, Record<StringKey, string>> = { en, fr, de, es, zh };

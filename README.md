@@ -1,402 +1,331 @@
 <p align="center">
-  <img
-    width="200"
-    height="220"
-    alt="lumina"
-    src="https://github.com/user-attachments/assets/a90c6180-0e51-43e8-8622-b4879a6c44be"
-  />
+  <img src="https://raw.githubusercontent.com/infinition/obsidian-lumina/main/logo.png" alt="Lumina" width="128">
 </p>
 
-<h1 align="center">Lumina</h1>
+<h1 align="center">✨ Lumina</h1>
 
 <p align="center">
-  <strong>High-performance photo & video gallery for Obsidian.</strong><br/>
-  Browse, organize, and manage your media with professional layouts,
-  lightbox preview, slideshow, and seamless integration with your vault.
-</p>
-
-<hr/>
-
-<p align="center">
-  <img
-    width="1523"
-    height="852"
-    alt="Lumina2"
-    src="https://github.com/user-attachments/assets/80e32221-36d1-427b-87f0-2f3198aa4525"
-  />
+  <strong>The Ultimate Media Gallery for Obsidian</strong><br>
+  <em>Transform your vault into a powerful visual knowledge base</em>
 </p>
 
 <p align="center">
-  <img
-    width="932"
-    height="534"
-    alt="Lumina3"
-    src="https://github.com/user-attachments/assets/22043fb1-9886-4995-bc89-cd1c27403104"
-  />
+  <a href="#-features">Features</a> •
+  <a href="#-installation">Installation</a> •
+  <a href="#-quick-start">Quick Start</a> •
+  <a href="#-documentation">Documentation</a> •
+  <a href="#-showcase">Showcase</a>
 </p>
 
 <p align="center">
-  <img
-    width="2557"
-    height="1389"
-    alt="Lumina1"
-    src="https://github.com/user-attachments/assets/1f088b8c-79b5-47dd-8721-fb2dfe31974e"
-  />
+  <img src="https://img.shields.io/badge/Obsidian-1.0+-purple?style=for-the-badge&logo=obsidian" alt="Obsidian">
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License">
+  <img src="https://img.shields.io/badge/Languages-5-blue?style=for-the-badge" alt="Languages">
 </p>
 
-<p align="center">
-  <img
-    width="525"
-    height="516"
-    alt="Lumina4"
-    src="https://github.com/user-attachments/assets/fccc204d-153e-443d-b291-2740ecddbc5f"
-  />
-</p>
+---
 
+## 🎯 Why Lumina?
 
-## Table of Contents
+Obsidian excels at connecting ideas through text, but what about your **images, videos, and visual content**? 
 
-- [Features](#features)
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [Layouts](#layouts)
-- [Lightbox](#lightbox)
-- [Edit Mode](#edit-mode)
-- [Slideshow](#slideshow)
-- [Filter & Sort](#filter--sort)
-- [Timeline Scrubber](#timeline-scrubber)
-- [Keyboard Shortcuts](#keyboard-shortcuts)
-- [Touch Support](#touch-support)
-- [Supported Formats](#supported-formats)
-- [Settings](#settings)
-- [Architecture](#architecture)
-- [Development](#development)
-- [License](#license)
+Lumina bridges this gap by treating media as **first-class citizens** in your knowledge graph. Tag your screenshots, link photos to project notes, search across thousands of images instantly—all without leaving Obsidian.
+
+### The Problem
+
+- 📁 Media files scattered across folders with no organization
+- 🔍 Can't search for images by content or context
+- 🔗 No way to connect photos to related notes
+- 📝 Manual embedding is tedious and breaks workflow
+
+### The Solution
+
+Lumina provides a **unified media experience** with powerful tagging, instant search, and seamless note integration.
 
 ---
 
-## Features
+## ⚡ Features
 
-### Core
+### 🖼️ High-Performance Gallery
 
-| Feature | Description |
-|---------|-------------|
-| **Multiple layouts** | Square grid, justified (masonry-style), panorama (full-height) with square/justified variants |
-| **Lightbox** | Full-screen preview with zoom, pan, and navigation |
-| **Slideshow** | Auto-advancing slideshow with configurable intervals (5s, 10s, 30s, 60s, 10min) |
-| **Edit mode** | Multi-select, bulk actions (add to note, copy links, delete), drag-to-note |
-| **Filter** | By folder, media type (photos/videos), full-text search |
-| **Sort** | By modification date, creation date, date taken, file extension, name, or size |
-| **Timeline scrubber** | Google Photos-style vertical scrubber for quick navigation |
-| **YouTube / embed** | Drag a YouTube URL onto the gallery or **Ctrl+V** to open the video in the lightbox as an embed (no CORS); copy embed HTML to paste into notes |
+<table>
+<tr>
+<td width="50%">
 
-### Performance
+**Lightning Fast**
+- IndexedDB caching for instant loads
+- Web Worker thumbnail generation
+- Virtual scrolling for 10,000+ files
+- Smart lazy loading
 
-| Feature | Description |
-|---------|-------------|
-| **Web Worker** | Image decoding offloaded to a background thread via `createImageBitmap` |
-| **Persistent cache** | IndexedDB cache for thumbnails and decoded images across sessions |
-| **Video thumbnails** | Cached video poster frames for fast grid rendering |
-| **Preloading** | Aggressive background preload of all visible and upcoming media |
+</td>
+<td width="50%">
 
-### UX
+**Multiple Layouts**
+- Grid, Masonry, Justified, Square
+- Panorama mode for immersive viewing
+- Adjustable zoom (10-100 items/row)
+- Auto-hiding toolbar
 
-| Feature | Description |
-|---------|-------------|
-| **Responsive** | Adapts to narrow panels; consolidated layout buttons, icon-only search, zoom +/- |
-| **Toolbar auto-hide** | Toolbar collapses after 10s of inactivity; hover to reveal; pin to disable |
-| **Filename tooltips** | Hover filenames 0.5s for full name, date, and size |
-| **Internationalization** | English, Français, Deutsch, Español, 中文 |
+</td>
+</tr>
+</table>
 
----
+### 🏷️ Revolutionary Tag System
 
-## Installation
-
-### BRAT
-
-1. Install [BRAT](https://github.com/TfTHacker/obsidian42-brat) (Settings → Community plugins → Browse → search “BRAT”)
-2. **Settings** → **BRAT** → **Add beta plugin** → enter: `infinition/obsidian-lumina`
-3. Enable **Lumina** in **Settings** → **Community plugins**
-
-### Manual
-
-1. Download `main.js`, `manifest.json`, `styles.css`, and `worker.js` from the [Releases](https://github.com/infinition/obsidian-lumina/releases) page
-2. Copy into `Vault/.obsidian/plugins/obsidian-lumina/`
-3. Reload Obsidian and enable the plugin in **Settings** → **Community plugins**
-
----
-
-## Quick Start
-
-1. **Open Lumina** via the ribbon icon (image) or command palette (`Open Lumina`)
-2. **Filter** by folder (or enable **All Vault**) and toggle **Photos** / **Videos**
-3. **Choose layout** — justified (default), square, or panorama
-4. **Double-click** any item to open in lightbox; use **Ctrl+Click** for edit mode
-5. **Paste** a YouTube URL (Ctrl+V) or **drag** it onto the gallery to open the video in the lightbox; use **Copy embed HTML** to insert the iframe into a note
-
----
-
-## Layouts
-
-| Layout | Description |
-|--------|-------------|
-| **Justified** (default) | Masonry-style rows with variable heights; preserves aspect ratios |
-| **Square** | Uniform grid; all thumbnails same size |
-| **Panorama** | Full-height rows; click again to toggle square vs justified |
-
-- **Zoom** — Slider or Ctrl+Wheel to resize grid
-- **Show filenames** — Toggle captions under thumbnails
-
----
-
-## Lightbox
-
-Full-screen preview for photos, videos, and **YouTube embeds**.
-
-| Action | Method |
-|--------|--------|
-| Open | Double-click or right-click on item |
-| Open video from URL | **Drag** a YouTube URL onto the gallery or **Ctrl+V** (paste) with focus on the gallery |
-| Close | Escape, double-click background, or close button |
-| Navigate | Left/right arrows, or swipe (photos/videos only) |
-| Zoom | **Ctrl+Wheel** (lightbox active; photos/videos only) |
-| Pan | Click and drag (photos/videos only) |
-| Copy link | Copy Link button (wikilink format) |
-| Copy embed HTML | When viewing a pasted/dropped YouTube URL: copies full `<iframe>...</iframe>` for use in notes |
-| Add to note | Add to Note button |
-| Delete | Delete button |
-
-**YouTube / embed** — URLs are converted to the embed form immediately (e.g. `youtube.com/watch?v=...` → embed iframe), so playback works without CORS. Supported: `youtube.com/watch?v=ID` and `youtu.be/ID`.
-
-**UI auto-hide** — Controls fade after 5s of inactivity; move mouse to reveal.
-
----
-
-## Edit Mode
-
-| Action | Method |
-|--------|--------|
-| Enter | Ctrl+Click on any item |
-| Exit | Escape or Cancel button |
-| Select one | Click |
-| Select range | Shift+Click between two items |
-| Add/remove | Ctrl+Click to toggle |
-
-### Bulk actions (edit toolbar)
-
-- **Add to Note** — Pick a note and insert wikilinks
-- **Copy Links** — Copy wikilinks to clipboard
-- **Delete** — Move selection to Obsidian trash
-
-### Drag to note
-
-- Drag selection (or single item) onto an open `.md` file or a folder in the file explorer
-- Inserts wikilinks at drop position or moves files to folder
-
----
-
-## Slideshow
-
-1. Click the **slideshow** icon; each click cycles: 5s → 10s → 30s → 60s → 10min → **OFF**
-2. When not OFF, a **5-second countdown** runs before starting
-3. Click anywhere to **interrupt**; slideshow stops and resets to OFF
-4. **Keyboard** — Left/right arrows to navigate during slideshow
-
----
-
-## Filter & Sort
-
-### Filter
-
-- **Photos** / **Videos** — Toggle visibility by type
-- **Folders** — Limit to specific folders or enable **All Vault**
-- **Search** — Filter by filename
-
-### Sort
-
-- Modifications (newest / oldest)
-- Taken (creation date)
-- Created (newest)
-- By extension (.jpg, .png, etc.)
-- Name (A–Z)
-- Size (largest first)
-
----
-
-## Timeline Scrubber
-
-- **Show** — Hover over the right 15% of the gallery
-- **Use** — Click or drag on the vertical track to jump to a section
-- **Labels** — Sections based on sort (e.g. months for date sorts, letters for name, extensions for type)
-- **Not in** — Panorama layout or during slideshow
-
----
-
-## Keyboard Shortcuts
-
-| Context | Shortcut | Action |
-|---------|----------|--------|
-| Gallery | Arrow keys | Scroll |
-| Gallery | Ctrl+Wheel | Zoom grid |
-| Gallery | Ctrl+V | Paste YouTube URL → open in lightbox (when gallery focused) |
-| Lightbox | Escape | Close |
-| Lightbox | Arrow keys | Navigate |
-| Lightbox | Ctrl+Wheel | Zoom content |
-| Edit mode | Escape | Exit |
-| Slideshow | Arrow keys | Navigate |
-
----
-
-## Touch Support
-
-- **Pan** — Swipe to scroll
-- **Pinch** — Zoom grid (gallery) or content (lightbox); **Ctrl+Wheel** for zoom in lightbox on desktop
-- **Tap** — Select (edit mode) / open lightbox (double-tap)
-- **Long-press** — Context menu (platform-dependent)
-
-Designed for iOS/iPadOS and Windows touch devices.
-
----
-
-## Supported Formats
-
-### Images
-
-`jpg`, `jpeg`, `png`, `gif`, `webp`, `svg`, `bmp`, `tiff`, `tif`, `ico`, `avif`, `apng`
-
-- **GIFs** — Animated in both grid and lightbox
-
-### Video
-
-`mp4`, `webm`, `mov`, `avi`, `mkv`, `ogv`, `m4v`
-
-- **Hover preview** — Plays after 0.8s hover (reduces accidental playback)
-- **Thumbnails** — First frame cached in IndexedDB
-
----
-
-## Settings
-
-**Settings** → **Lumina**
-
-| Option | Description |
-|--------|-------------|
-| **Language** | UI language: English, Français, Deutsch, Español, 中文 |
-
----
-
-## Architecture
+The heart of Lumina—organize media with the same power you organize notes.
 
 ```
-obsidian-lumina/
-├── main.js              # Plugin entry, view registration
-├── main.ts
-├── worker.js            # Web Worker for image decoding
-├── styles.css           # Global styles
-├── manifest.json
-├── src/
-│   ├── main.ts          # LuminaPlugin
-│   ├── view.tsx         # LuminaView (ItemView wrapper)
-│   ├── components/
-│   │   └── PhotoGallery.tsx   # Main React UI
-│   ├── i18n/
-│   │   └── locales.ts   # Translations (en, fr, de, es, zh)
-│   ├── services/
-│   │   └── bridge.ts    # WebOSAPI → Obsidian
-│   ├── utils/
-│   │   ├── imageLoader.ts    # Load, decode, cache
-│   │   └── imageCache.ts    # IndexedDB persistence
-│   ├── workers/
-│   │   └── imageWorker.ts   # createImageBitmap offload
-│   ├── settings.ts      # LuminaSettingTab
-│   └── types.ts         # Shared types
+#vacation #2024              → Hashtags like Obsidian
+[[Projects/Website]]         → Link to any note
+#photo AND [[Paris]]         → Boolean search
 ```
 
-### Data flow
+**Key capabilities:**
+- **Hashtags** (`#tag`) — Familiar tagging syntax
+- **Note Links** (`[[Note]]`) — Create bidirectional connections
+- **Boolean Search** — AND, OR, NOT operators
+- **Batch Tagging** — Tag hundreds of files at once
+- **Auto-sync** — Tags sync with note frontmatter
 
-- **Obsidian** → `LuminaView` mounts React `PhotoGalleryWidget`
-- **Bridge** (`WebOSAPI`) provides: `getObsidianApp`, `loadWidgetState`, `saveWidgetState`, `resolveResourcePath`, `getWorkerUrl`, `getLocale`
-- **State** — Folder selection, zoom, layout, sort, filters, etc. saved per widget instance via `saveWidgetState`
-- **Cache** — IndexedDB for decoded images and video thumbnails; Web Worker for `createImageBitmap`
+📖 **[Full Tag System Documentation](docs/TAG_SYSTEM.md)**
+
+### 📝 Lumina Blocks
+
+Embed dynamic galleries directly in your notes:
+
+````markdown
+```lumina
+query: #screenshots AND [[Project Alpha]]
+layout: masonry
+columns: 3
+showTags: true
+```
+````
+
+**Block Features:**
+- Visual editor (no code required)
+- 10+ customizable options
+- Live preview
+- Drag-and-drop file reordering
+
+### 🔍 Virtual Search Integration
+
+**Your tagged media appears in Obsidian's global search!**
+
+Search for `#vacation` and see both your notes AND your photos. Media files become discoverable alongside your markdown content.
+
+### 🎬 Advanced Media Viewer
+
+<table>
+<tr>
+<td width="33%">
+
+**Images**
+- Zoom & pan gestures
+- EXIF data display
+- Fullscreen mode
+
+</td>
+<td width="33%">
+
+**Videos**
+- Native playback
+- Picture-in-Picture
+- YouTube embeds
+
+</td>
+<td width="33%">
+
+**Actions**
+- Quick tagging
+- Copy wiki links
+- Add to notes
+
+</td>
+</tr>
+</table>
+
+### 🌍 Internationalization
+
+Full support for 5 languages:
+- 🇬🇧 English • 🇫🇷 Français • 🇩🇪 Deutsch • 🇪🇸 Español • 🇨🇳 中文
 
 ---
 
-## Development
+## 📦 Installation
 
-### Prerequisites
+### Option 1: BRAT (Recommended for Beta)
 
-- Node.js 18+
-- npm
+1. Install [BRAT](https://github.com/TfTHacker/obsidian42-brat) plugin
+2. Open **Settings** → **BRAT** → **Add beta plugin**
+3. Enter: `infinition/obsidian-lumina`
+4. Enable **Lumina** in Community Plugins
 
-### Setup
+### Option 2: Manual Installation
+
+1. Download from [Releases](https://github.com/infinition/obsidian-lumina/releases):
+   - `main.js`, `manifest.json`, `styles.css`, `worker.js`
+2. Create folder: `.obsidian/plugins/obsidian-lumina/`
+3. Copy files to folder
+4. Reload Obsidian & enable plugin
+
+---
+
+## 🚀 Quick Start
+
+### 1. Open Lumina
+
+Click the **camera icon** in the ribbon, or use `Ctrl+P` → "Open Lumina"
+
+### 2. Browse Your Media
+
+- **Scroll** through your vault's images and videos
+- **Zoom** with the slider or `Ctrl+Wheel`
+- **Filter** by folder or media type
+
+### 3. Tag Your First File
+
+1. **Right-click** any image
+2. Select **Manage Tags**
+3. Type `#vacation` and press Enter
+4. Link to a note: type `[[` and select a note
+
+### 4. Search
+
+Type in the search bar:
+```
+#vacation                    → All vacation photos
+[[Projects/Alpha]]           → Media linked to a project
+#2024 AND #screenshot        → Combined filters
+#work NOT #confidential      → Exclusion
+```
+
+### 5. Embed in Notes
+
+Add a Lumina block to any note:
+
+````markdown
+```lumina
+query: #vacation
+layout: grid
+columns: 4
+```
+````
+
+---
+
+## 📚 Documentation
+
+| Document | Description |
+|----------|-------------|
+| **[Full Documentation](docs/DOCUMENTATION.md)** | Complete feature reference with all options |
+| **[Tag System Guide](docs/TAG_SYSTEM.md)** | Deep dive into the tagging system |
+
+---
+
+## 🎨 Showcase
+
+### 📷 Research Project
+
+Organize research visuals with automatic connections:
+
+```
+Research/
+├── Papers/
+│   └── AI_Ethics.md           ← Note with research
+├── Screenshots/
+│   └── chart.png              ← Tagged: #ai [[Papers/AI_Ethics]]
+└── Diagrams/
+    └── flowchart.jpg          ← Tagged: #ai #diagram
+```
+
+In your note:
+````markdown
+## Visual References
+
+```lumina
+query: [[Papers/AI_Ethics]] OR #ai
+layout: justified
+showTags: true
+```
+````
+
+**Result:** A live gallery of all visuals connected to your research!
+
+### ✈️ Travel Journal
+
+Tag photos with `#travel #paris #2024` and `[[Trips/Paris 2024]]`. 
+
+Your trip note becomes a rich visual document that updates automatically as you add more photos.
+
+### 🎨 Design System
+
+Organize UI screenshots: `#component #button #dark-mode`
+
+Search across your entire design library in milliseconds.
+
+---
+
+## ⌨️ Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl+Click` | Enter edit mode (multi-select) |
+| `Shift+T` | Tag selected files in Explorer |
+| `←` `→` | Navigate in lightbox |
+| `Escape` | Close / exit mode |
+| `Ctrl+Wheel` | Zoom gallery |
+| `Ctrl+A` | Select all (edit mode) |
+| `Double-click` | Open lightbox |
+
+---
+
+## 🛠️ Settings
+
+Access via **Settings** → **Lumina**
+
+| Setting | Description |
+|---------|-------------|
+| Language | UI language (5 options) |
+| Enable Tag System | Toggle tagging features |
+| Tag Indicator | Show dot on tagged files in Explorer |
+| Virtual Search | Include media in Obsidian search |
+| Click Actions | Customize click behavior |
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! 
 
 ```bash
+# Clone
 git clone https://github.com/infinition/obsidian-lumina.git
-cd obsidian-lumina
+
+# Install
 npm install
-```
 
-### Build
+# Development
+npm run dev
 
-```bash
+# Build
 npm run build
 ```
 
-Outputs: `main.js`, `worker.js` in project root.
-
-### Dev mode
-
-```bash
-npm run dev
-```
-
-Watches and rebuilds on change. Symlink or copy build output into a test vault’s `.obsidian/plugins/obsidian-lumina/`.
-
-### Project structure
-
-- **TypeScript** + **React 18**
-- **esbuild** for bundling (main + worker)
-- **Obsidian** plugin API 0.15+
-
 ---
 
-## Browser & Platform
-
-- **Obsidian** min version: 0.15.0
-- **Electron** (desktop) and **Web** (Obsidian Mobile) supported
-- **IndexedDB** and **Web Workers** required
-- **Touch** events handled for pan, pinch-zoom, tap
-
----
-
-## Troubleshooting
-
-| Issue | Possible cause | Action |
-|-------|----------------|--------|
-| Gallery empty | No media in selected folders | Enable **All Vault** or add folders |
-| Slow loading | Large library, cold cache | First load populates cache; subsequent loads faster |
-| Videos not playing | Codec/format | Prefer MP4/H.264 for broad support |
-| Worker errors | Path/build | Ensure `worker.js` is next to `main.js` |
-| Toolbar hidden | Auto-hide active | Hover top of view or pin via eye icon |
-
----
-
-## Changelog
-
-See [Releases](https://github.com/infinition/obsidian-lumina/releases) for version history.
-
----
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push (`git push origin feature/amazing`)
-5. Open a Pull Request
-
----
-
-## License
+## 📄 License
 
 MIT © [Infinition](https://github.com/infinition)
+
+---
+
+<p align="center">
+  <strong>⭐ Star this repo if Lumina helps organize your visual knowledge!</strong>
+</p>
+
+<p align="center">
+  <a href="https://github.com/infinition/obsidian-lumina/issues">Report Bug</a> •
+  <a href="https://github.com/infinition/obsidian-lumina/discussions">Discussions</a>
+</p>

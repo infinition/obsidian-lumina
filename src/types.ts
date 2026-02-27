@@ -1,4 +1,7 @@
 import type { LocaleKey } from './i18n/locales';
+import type { TagManager } from './services/tagManager';
+import type { FrontmatterService } from './services/frontmatterService';
+import type { LuminaSettings } from './settings';
 export type { LocaleKey };
 
 export interface WebOSAPI {
@@ -8,4 +11,7 @@ export interface WebOSAPI {
   resolveResourcePath(path: string): string;
   getWorkerUrl(): string;
   getLocale(): LocaleKey;
+  getTagManager(): TagManager;
+  getFrontmatterService(): FrontmatterService | null;
+  getPluginSettings(): LuminaSettings;
 }

@@ -1094,7 +1094,7 @@ var require_react_development = __commonJS({
           }
           return dispatcher.useContext(Context);
         }
-        function useState2(initialState) {
+        function useState7(initialState) {
           var dispatcher = resolveDispatcher();
           return dispatcher.useState(initialState);
         }
@@ -1102,11 +1102,11 @@ var require_react_development = __commonJS({
           var dispatcher = resolveDispatcher();
           return dispatcher.useReducer(reducer, initialArg, init);
         }
-        function useRef2(initialValue) {
+        function useRef6(initialValue) {
           var dispatcher = resolveDispatcher();
           return dispatcher.useRef(initialValue);
         }
-        function useEffect2(create, deps) {
+        function useEffect6(create, deps) {
           var dispatcher = resolveDispatcher();
           return dispatcher.useEffect(create, deps);
         }
@@ -1114,15 +1114,15 @@ var require_react_development = __commonJS({
           var dispatcher = resolveDispatcher();
           return dispatcher.useInsertionEffect(create, deps);
         }
-        function useLayoutEffect2(create, deps) {
+        function useLayoutEffect4(create, deps) {
           var dispatcher = resolveDispatcher();
           return dispatcher.useLayoutEffect(create, deps);
         }
-        function useCallback2(callback, deps) {
+        function useCallback4(callback, deps) {
           var dispatcher = resolveDispatcher();
           return dispatcher.useCallback(callback, deps);
         }
-        function useMemo2(create, deps) {
+        function useMemo6(create, deps) {
           var dispatcher = resolveDispatcher();
           return dispatcher.useMemo(create, deps);
         }
@@ -1885,19 +1885,19 @@ var require_react_development = __commonJS({
         exports.memo = memo;
         exports.startTransition = startTransition;
         exports.unstable_act = act;
-        exports.useCallback = useCallback2;
+        exports.useCallback = useCallback4;
         exports.useContext = useContext;
         exports.useDebugValue = useDebugValue;
         exports.useDeferredValue = useDeferredValue;
-        exports.useEffect = useEffect2;
+        exports.useEffect = useEffect6;
         exports.useId = useId;
         exports.useImperativeHandle = useImperativeHandle;
         exports.useInsertionEffect = useInsertionEffect;
-        exports.useLayoutEffect = useLayoutEffect2;
-        exports.useMemo = useMemo2;
+        exports.useLayoutEffect = useLayoutEffect4;
+        exports.useMemo = useMemo6;
         exports.useReducer = useReducer;
-        exports.useRef = useRef2;
-        exports.useState = useState2;
+        exports.useRef = useRef6;
+        exports.useState = useState7;
         exports.useSyncExternalStore = useSyncExternalStore;
         exports.useTransition = useTransition;
         exports.version = ReactVersion;
@@ -2393,9 +2393,9 @@ var require_react_dom_development = __commonJS({
         if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ !== "undefined" && typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart === "function") {
           __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(new Error());
         }
-        var React3 = require_react();
+        var React8 = require_react();
         var Scheduler = require_scheduler();
-        var ReactSharedInternals = React3.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+        var ReactSharedInternals = React8.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
         var suppressWarning = false;
         function setSuppressWarning(newSuppressWarning) {
           {
@@ -2444,7 +2444,7 @@ var require_react_dom_development = __commonJS({
         var HostPortal = 4;
         var HostComponent = 5;
         var HostText = 6;
-        var Fragment2 = 7;
+        var Fragment3 = 7;
         var Mode = 8;
         var ContextConsumer = 9;
         var ContextProvider = 10;
@@ -3601,7 +3601,7 @@ var require_react_dom_development = __commonJS({
               return "DehydratedFragment";
             case ForwardRef:
               return getWrappedName$1(type, type.render, "ForwardRef");
-            case Fragment2:
+            case Fragment3:
               return "Fragment";
             case HostComponent:
               return type;
@@ -4002,7 +4002,7 @@ var require_react_dom_development = __commonJS({
           {
             if (props.value == null) {
               if (typeof props.children === "object" && props.children !== null) {
-                React3.Children.forEach(props.children, function(child) {
+                React8.Children.forEach(props.children, function(child) {
                   if (child == null) {
                     return;
                   }
@@ -12030,7 +12030,7 @@ var require_react_dom_development = __commonJS({
             }
           }
           function updateFragment2(returnFiber, current2, fragment, lanes, key) {
-            if (current2 === null || current2.tag !== Fragment2) {
+            if (current2 === null || current2.tag !== Fragment3) {
               var created = createFiberFromFragment(fragment, returnFiber.mode, lanes, key);
               created.return = returnFiber;
               return created;
@@ -12433,7 +12433,7 @@ var require_react_dom_development = __commonJS({
               if (child.key === key) {
                 var elementType = element.type;
                 if (elementType === REACT_FRAGMENT_TYPE) {
-                  if (child.tag === Fragment2) {
+                  if (child.tag === Fragment3) {
                     deleteRemainingChildren(returnFiber, child.sibling);
                     var existing = useFiber(child, element.props.children);
                     existing.return = returnFiber;
@@ -17909,7 +17909,7 @@ var require_react_dom_development = __commonJS({
               var _resolvedProps2 = workInProgress2.elementType === type ? _unresolvedProps2 : resolveDefaultProps(type, _unresolvedProps2);
               return updateForwardRef(current2, workInProgress2, type, _resolvedProps2, renderLanes2);
             }
-            case Fragment2:
+            case Fragment3:
               return updateFragment(current2, workInProgress2, renderLanes2);
             case Mode:
               return updateMode(current2, workInProgress2, renderLanes2);
@@ -18181,7 +18181,7 @@ var require_react_dom_development = __commonJS({
             case SimpleMemoComponent:
             case FunctionComponent:
             case ForwardRef:
-            case Fragment2:
+            case Fragment3:
             case Mode:
             case Profiler:
             case ContextConsumer:
@@ -22442,7 +22442,7 @@ var require_react_dom_development = __commonJS({
           return fiber;
         }
         function createFiberFromFragment(elements, mode, lanes, key) {
-          var fiber = createFiber(Fragment2, elements, key, mode);
+          var fiber = createFiber(Fragment3, elements, key, mode);
           fiber.lanes = lanes;
           return fiber;
         }
@@ -22619,7 +22619,7 @@ var require_react_dom_development = __commonJS({
           return root2;
         }
         var ReactVersion = "18.3.1";
-        function createPortal2(children, containerInfo, implementation) {
+        function createPortal4(children, containerInfo, implementation) {
           var key = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : null;
           {
             checkKeyStringCoercion(key);
@@ -23110,7 +23110,7 @@ var require_react_dom_development = __commonJS({
             unmarkContainerAsRoot(container);
           }
         };
-        function createRoot2(container, options2) {
+        function createRoot4(container, options2) {
           if (!isValidContainer(container)) {
             throw new Error("createRoot(...): Target container is not a DOM element.");
           }
@@ -23476,7 +23476,7 @@ var require_react_dom_development = __commonJS({
           if (!isValidContainer(container)) {
             throw new Error("Target container is not a DOM element.");
           }
-          return createPortal2(children, container, null, key);
+          return createPortal4(children, container, null, key);
         }
         function renderSubtreeIntoContainer(parentComponent, element, containerNode, callback) {
           return unstable_renderSubtreeIntoContainer(parentComponent, element, containerNode, callback);
@@ -23493,7 +23493,7 @@ var require_react_dom_development = __commonJS({
               error('You are importing createRoot from "react-dom" which is not supported. You should instead import it from "react-dom/client".');
             }
           }
-          return createRoot2(container, options2);
+          return createRoot4(container, options2);
         }
         function hydrateRoot$1(container, initialChildren, options2) {
           {
@@ -23598,7 +23598,7 @@ var require_react_jsx_runtime_development = __commonJS({
     if (true) {
       (function() {
         "use strict";
-        var React3 = require_react();
+        var React8 = require_react();
         var REACT_ELEMENT_TYPE = /* @__PURE__ */ Symbol.for("react.element");
         var REACT_PORTAL_TYPE = /* @__PURE__ */ Symbol.for("react.portal");
         var REACT_FRAGMENT_TYPE = /* @__PURE__ */ Symbol.for("react.fragment");
@@ -23624,7 +23624,7 @@ var require_react_jsx_runtime_development = __commonJS({
           }
           return null;
         }
-        var ReactSharedInternals = React3.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+        var ReactSharedInternals = React8.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
         function error(format) {
           {
             {
@@ -24474,11 +24474,11 @@ var require_react_jsx_runtime_development = __commonJS({
             return jsxWithValidation(type, props, key, false);
           }
         }
-        var jsx2 = jsxWithValidationDynamic;
-        var jsxs2 = jsxWithValidationStatic;
+        var jsx7 = jsxWithValidationDynamic;
+        var jsxs7 = jsxWithValidationStatic;
         exports.Fragment = REACT_FRAGMENT_TYPE;
-        exports.jsx = jsx2;
-        exports.jsxs = jsxs2;
+        exports.jsx = jsx7;
+        exports.jsxs = jsxs7;
       })();
     }
   }
@@ -24502,16 +24502,16 @@ __export(main_exports, {
   default: () => LuminaPlugin
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian4 = require("obsidian");
+var import_obsidian10 = require("obsidian");
 
 // src/view.tsx
-var import_obsidian2 = require("obsidian");
-var import_react2 = __toESM(require_react());
-var import_client = __toESM(require_client());
+var import_obsidian3 = require("obsidian");
+var import_react6 = __toESM(require_react());
+var import_client2 = __toESM(require_client());
 
 // src/components/PhotoGallery.tsx
-var import_react = __toESM(require_react());
-var import_react_dom = __toESM(require_react_dom());
+var import_react5 = __toESM(require_react());
+var import_react_dom3 = __toESM(require_react_dom());
 
 // src/utils/imageCache.ts
 var DB_NAME = "lumina-image-cache";
@@ -24739,6 +24739,7 @@ var en = {
   filter: "Filter",
   photos: "Photos",
   videos: "Videos",
+  other: "Other (tagged)",
   filterFolders: "Filter folders...",
   allVault: "All Vault",
   toggleFilenames: "Toggle Filenames",
@@ -24786,9 +24787,125 @@ var en = {
   previous: "Previous",
   next: "Next",
   language: "Language",
+  generalSettings: "General Settings",
+  showTagsIndicator: "Show tags indicator in file explorer",
+  showTagsIndicatorDesc: "Show a small colored dot in the file explorer for files with tags.",
   settingsTitle: "Lumina Settings",
   copyEmbedHtml: "Copy embed HTML",
-  pasteVideoUrl: "Paste or drag a YouTube URL (Ctrl+V) to open in player"
+  pasteVideoUrl: "Paste or drag a YouTube URL (Ctrl+V) to open in player",
+  addTag: "Add tag...",
+  manageTags: "Manage tags",
+  tags: "Tags",
+  tagCount: "Tag count",
+  commonTags: "Common tags",
+  addToAll: "Add to all",
+  removeFromAll: "Remove from all",
+  insertLuminaBlock: "Insert Lumina block",
+  tagsByCount: "Tags (by count)",
+  tagsByName: "Tags (by name)",
+  noTags: "No tags",
+  searchTags: "Search tags...",
+  availableTags: "Available tags",
+  clickToAdd: "Click to add",
+  tagIndicatorPosition: "Tag indicator position",
+  tagIndicatorPositionDesc: "Position of the colored dot in the file explorer (left or right of the filename).",
+  tagIndicatorCompensateShift: "Compensate left offset",
+  tagIndicatorCompensateShiftDesc: "Keeps tagged file names aligned with other files by offsetting the indicator width (left position only).",
+  tagIndicatorStyle: "Tag indicator style",
+  tagIndicatorStyleDesc: "Display tagged files with either a colored dot or a Lucide icon.",
+  tagIndicatorStyleDot: "Dot",
+  tagIndicatorStyleIcon: "Lucide icon",
+  tagIndicatorColor: "Tag indicator color",
+  tagIndicatorColorDesc: "Color for the dot/icon. Supports CSS colors (e.g. #22c55e or var(--interactive-accent)).",
+  tagIndicatorSize: "Tag indicator size",
+  tagIndicatorSizeDesc: "Size of the dot/icon in pixels.",
+  tagIndicatorIcon: "Tag indicator Lucide icon",
+  tagIndicatorIconDesc: "Lucide icon name to use when style is set to icon (e.g. tag, bookmark, star).",
+  browseIcons: "Browse icons",
+  iconPickerTitle: "Choose a Lucide icon",
+  iconPickerSearchPlaceholder: "Search icon...",
+  iconPickerNoResults: "No icon found",
+  left: "Left",
+  right: "Right",
+  backlinksSection: "Backlinks",
+  scanBacklinks: "Scan existing links",
+  scanBacklinksDesc: "Scan all markdown files for existing [[links]] in frontmatter and create missing backlinks.",
+  scanNow: "Scan Now",
+  scanning: "Scanning...",
+  scanComplete: "Scan complete! Created {count} backlinks.",
+  blockImageClickAction: "Lumina block: image click action",
+  blockImageClickActionDesc: "What happens when you click an image in a Lumina block in a note.",
+  previewFullscreen: "Preview fullscreen",
+  openFile: "Open file",
+  tagClickAction: "Tag click action",
+  tagClickActionDesc: "What happens when you click a tag bubble (#tag) in Lumina.",
+  searchInLumina: "Search in Lumina",
+  searchInObsidian: "Search in Obsidian global search",
+  enableTagSystem: "Enable tag system",
+  enableTagSystemDesc: "Enable the tag system. Disable to use Lumina as a simple gallery without tags. Your tag data will be preserved.",
+  tagSettings: "Tag Settings",
+  gallerySettings: "Gallery Settings",
+  searchIntegration: "Search Integration",
+  enableVirtualSearch: "Enable Virtual Search",
+  enableVirtualSearchDesc: "Make tagged media files appear in Obsidian's global search. When you search for a tag, media files with that tag will appear in results.",
+  virtualSearchClickAction: "Search result click action",
+  virtualSearchClickActionDesc: "What happens when you click a media file in search results.",
+  openInObsidian: "Open in Obsidian (native)",
+  openInLumina: "Open in Lumina lightbox",
+  pip: "Picture-in-Picture",
+  loading: "Loading...",
+  detailView: "Detail View",
+  detailViewHint: "Detail View (line by line with file details)",
+  fileName: "Name",
+  fileType: "Type",
+  fileSize: "Size",
+  dateModified: "Modified",
+  filePath: "Path",
+  noResults: "No results",
+  performanceSettings: "Performance",
+  galleryDefaults: "Gallery Defaults",
+  defaultLayout: "Default layout",
+  defaultLayoutDesc: "Default layout when opening a new gallery view.",
+  defaultZoom: "Default zoom",
+  defaultZoomDesc: "Default zoom level for new gallery views (50-500).",
+  defaultShowNames: "Show filenames by default",
+  defaultShowNamesDesc: "Display filenames under thumbnails in new gallery views.",
+  defaultMediaFilter: "Default media filter",
+  defaultMediaFilterDesc: "Which media types to show by default in new gallery views.",
+  thumbnailQuality: "Thumbnail quality",
+  thumbnailQualityDesc: "Quality of generated thumbnails. Lower = faster, higher = sharper.",
+  qualityLow: "Low (fast)",
+  qualityMedium: "Medium (balanced)",
+  qualityHigh: "High (sharp)",
+  maxCacheSize: "Max cache size (MB)",
+  maxCacheSizeDesc: "Maximum size of the thumbnail cache in megabytes.",
+  enableStartupSync: "Sync tags on startup",
+  enableStartupSyncDesc: "Synchronize tags from frontmatter when Obsidian starts. Disable for faster startup.",
+  debugLogs: "Debug logs",
+  debugLogsDesc: "Show debug logs in the developer console. Useful for troubleshooting.",
+  copyPath: "Copy path",
+  selectAll: "Select all",
+  deselectAll: "Deselect all",
+  itemCount: "{n} items",
+  featuresListDetail: "Layouts: Square, Justified, Panorama, Detail. Folders, Sort, Edit Mode, Fullscreen.",
+  activeFilters: "Active filters",
+  removeFilter: "Remove filter",
+  toggleFilenamesAndTags: "Show filenames and tags",
+  sortAscending: "Sort ascending",
+  sortDescending: "Sort descending",
+  allFiles: "All files (even untagged)",
+  allFilesDesc: "Show all files from the vault, regardless of type or tags",
+  backupRestore: "Backup & Restore",
+  autoBackup: "Automatic backup",
+  autoBackupDesc: "Automatically back up tags at a regular interval.",
+  backupInterval: "Backup interval (hours)",
+  backupIntervalDesc: "How often to create an automatic backup.",
+  backupPath: "Backup folder path",
+  backupPathDesc: "Folder path for automatic backups (relative to vault root). Leave empty for vault root.",
+  exportBackup: "Export backup now",
+  importBackup: "Import backup",
+  backupExported: "Tags backup exported successfully!",
+  backupImported: "{n} files updated from backup."
 };
 var fr = {
   openLumina: "Ouvrir Lumina",
@@ -24805,6 +24922,7 @@ var fr = {
   filter: "Filtrer",
   photos: "Photos",
   videos: "Vid\xE9os",
+  other: "Autres (taggu\xE9s)",
   filterFolders: "Filtrer les dossiers...",
   allVault: "Tout le coffre",
   toggleFilenames: "Afficher les noms",
@@ -24852,9 +24970,125 @@ var fr = {
   previous: "Pr\xE9c\xE9dent",
   next: "Suivant",
   language: "Langue",
-  settingsTitle: "Param\xE8tres Lumina",
+  generalSettings: "Param\xE8tres g\xE9n\xE9raux",
+  showTagsIndicator: "Afficher l'indicateur de tags dans l'explorateur",
+  showTagsIndicatorDesc: "Affiche une petite pastille color\xE9e dans l'explorateur de fichiers pour les fichiers taggu\xE9s.",
+  settingsTitle: "Param\xE8tres de Lumina",
   copyEmbedHtml: "Copier le HTML embed",
-  pasteVideoUrl: "Coller ou glisser une URL YouTube (Ctrl+V) pour ouvrir le lecteur"
+  pasteVideoUrl: "Coller ou glisser une URL YouTube (Ctrl+V) pour ouvrir le lecteur",
+  addTag: "Ajouter un tag...",
+  manageTags: "G\xE9rer les tags",
+  tags: "Tags",
+  tagCount: "Nombre de tags",
+  commonTags: "Tags communs",
+  addToAll: "Ajouter \xE0 tous",
+  removeFromAll: "Retirer de tous",
+  insertLuminaBlock: "Ins\xE9rer un bloc Lumina",
+  tagsByCount: "Tags (par nombre)",
+  tagsByName: "Tags (par nom)",
+  noTags: "Aucun tag",
+  searchTags: "Rechercher des tags...",
+  availableTags: "Tags disponibles",
+  clickToAdd: "Cliquer pour ajouter",
+  tagIndicatorPosition: "Position de l'indicateur de tags",
+  tagIndicatorPositionDesc: "Position de la pastille color\xE9e dans l'explorateur de fichiers (\xE0 gauche ou \xE0 droite du nom).",
+  tagIndicatorCompensateShift: "Compenser le d\xE9calage \xE0 gauche",
+  tagIndicatorCompensateShiftDesc: "Aligne les noms de fichiers taggu\xE9s avec les autres en compensant la largeur de l'indicateur (position gauche uniquement).",
+  tagIndicatorStyle: "Style de l'indicateur de tags",
+  tagIndicatorStyleDesc: "Affiche les fichiers taggu\xE9s avec une pastille color\xE9e ou une ic\xF4ne Lucide.",
+  tagIndicatorStyleDot: "Pastille",
+  tagIndicatorStyleIcon: "Ic\xF4ne Lucide",
+  tagIndicatorColor: "Couleur de l'indicateur",
+  tagIndicatorColorDesc: "Couleur de la pastille/ic\xF4ne. Accepte les couleurs CSS (ex: #22c55e ou var(--interactive-accent)).",
+  tagIndicatorSize: "Taille de l'indicateur",
+  tagIndicatorSizeDesc: "Taille de la pastille/ic\xF4ne en pixels.",
+  tagIndicatorIcon: "Ic\xF4ne Lucide",
+  tagIndicatorIconDesc: `Nom de l'ic\xF4ne Lucide \xE0 utiliser quand le style est "Ic\xF4ne" (ex: tag, bookmark, star).`,
+  browseIcons: "Parcourir les ic\xF4nes",
+  iconPickerTitle: "Choisir une ic\xF4ne Lucide",
+  iconPickerSearchPlaceholder: "Rechercher une ic\xF4ne...",
+  iconPickerNoResults: "Aucune ic\xF4ne trouv\xE9e",
+  left: "Gauche",
+  right: "Droite",
+  backlinksSection: "R\xE9troliens",
+  scanBacklinks: "Scanner les liens existants",
+  scanBacklinksDesc: "Scanner tous les fichiers markdown pour les [[liens]] existants dans le frontmatter et cr\xE9er les r\xE9troliens manquants.",
+  scanNow: "Scanner maintenant",
+  scanning: "Scan en cours...",
+  scanComplete: "Scan termin\xE9 ! {count} r\xE9troliens cr\xE9\xE9s.",
+  blockImageClickAction: "Bloc Lumina : action au clic sur image",
+  blockImageClickActionDesc: "Ce qui se passe quand vous cliquez sur une image dans un bloc Lumina.",
+  previewFullscreen: "Aper\xE7u plein \xE9cran",
+  openFile: "Ouvrir le fichier",
+  tagClickAction: "Action au clic sur tag",
+  tagClickActionDesc: "Ce qui se passe quand vous cliquez sur une bulle de tag (#tag) dans Lumina.",
+  searchInLumina: "Rechercher dans Lumina",
+  searchInObsidian: "Rechercher dans Obsidian (global)",
+  enableTagSystem: "Activer le syst\xE8me de tags",
+  enableTagSystemDesc: "Activer le syst\xE8me de tags. D\xE9sactivez pour utiliser Lumina comme une simple galerie sans tags. Vos donn\xE9es de tags seront conserv\xE9es.",
+  tagSettings: "Param\xE8tres des tags",
+  gallerySettings: "Param\xE8tres de la galerie",
+  searchIntegration: "Int\xE9gration recherche",
+  enableVirtualSearch: "Activer la recherche virtuelle",
+  enableVirtualSearchDesc: "Faire appara\xEEtre les m\xE9dias taggu\xE9s dans la recherche globale d'Obsidian. Quand vous cherchez un tag, les fichiers m\xE9dia avec ce tag appara\xEEtront dans les r\xE9sultats.",
+  virtualSearchClickAction: "Action au clic sur r\xE9sultat",
+  virtualSearchClickActionDesc: "Que se passe-t-il quand vous cliquez sur un fichier m\xE9dia dans les r\xE9sultats de recherche.",
+  openInObsidian: "Ouvrir dans Obsidian (natif)",
+  openInLumina: "Ouvrir dans Lumina (lightbox)",
+  pip: "Image dans l'image (PIP)",
+  loading: "Chargement...",
+  detailView: "Vue d\xE9taill\xE9e",
+  detailViewHint: "Vue d\xE9taill\xE9e (ligne par ligne avec les d\xE9tails des fichiers)",
+  fileName: "Nom",
+  fileType: "Type",
+  fileSize: "Taille",
+  dateModified: "Modifi\xE9",
+  filePath: "Chemin",
+  noResults: "Aucun r\xE9sultat",
+  performanceSettings: "Performance",
+  galleryDefaults: "Param\xE8tres par d\xE9faut de la galerie",
+  defaultLayout: "Disposition par d\xE9faut",
+  defaultLayoutDesc: "Disposition par d\xE9faut lors de l'ouverture d'une nouvelle galerie.",
+  defaultZoom: "Zoom par d\xE9faut",
+  defaultZoomDesc: "Niveau de zoom par d\xE9faut pour les nouvelles galeries (50-500).",
+  defaultShowNames: "Afficher les noms par d\xE9faut",
+  defaultShowNamesDesc: "Afficher les noms de fichiers sous les miniatures dans les nouvelles galeries.",
+  defaultMediaFilter: "Filtre m\xE9dia par d\xE9faut",
+  defaultMediaFilterDesc: "Types de m\xE9dias \xE0 afficher par d\xE9faut dans les nouvelles galeries.",
+  thumbnailQuality: "Qualit\xE9 des miniatures",
+  thumbnailQualityDesc: "Qualit\xE9 des miniatures g\xE9n\xE9r\xE9es. Plus bas = plus rapide, plus haut = plus net.",
+  qualityLow: "Basse (rapide)",
+  qualityMedium: "Moyenne (\xE9quilibr\xE9e)",
+  qualityHigh: "Haute (nette)",
+  maxCacheSize: "Taille max du cache (Mo)",
+  maxCacheSizeDesc: "Taille maximale du cache de miniatures en m\xE9gaoctets.",
+  enableStartupSync: "Synchroniser au d\xE9marrage",
+  enableStartupSyncDesc: "Synchroniser les tags depuis le frontmatter au d\xE9marrage d'Obsidian. D\xE9sactiver pour un d\xE9marrage plus rapide.",
+  debugLogs: "Logs de d\xE9bogage",
+  debugLogsDesc: "Afficher les logs de d\xE9bogage dans la console d\xE9veloppeur. Utile pour le diagnostic.",
+  copyPath: "Copier le chemin",
+  selectAll: "Tout s\xE9lectionner",
+  deselectAll: "Tout d\xE9s\xE9lectionner",
+  itemCount: "{n} \xE9l\xE9ments",
+  featuresListDetail: "Dispositions : Carr\xE9, Justifi\xE9, Panorama, D\xE9taill\xE9. Dossiers, Tri, Mode \xE9dition, Plein \xE9cran.",
+  activeFilters: "Filtres actifs",
+  removeFilter: "Supprimer le filtre",
+  toggleFilenamesAndTags: "Afficher les noms et les tags",
+  sortAscending: "Tri croissant",
+  sortDescending: "Tri d\xE9croissant",
+  allFiles: "Tous les fichiers (m\xEAme non taggu\xE9s)",
+  allFilesDesc: "Afficher tous les fichiers du coffre, quel que soit le type ou les tags",
+  backupRestore: "Sauvegarde & Restauration",
+  autoBackup: "Sauvegarde automatique",
+  autoBackupDesc: "Sauvegarder automatiquement les tags \xE0 intervalle r\xE9gulier.",
+  backupInterval: "Intervalle de sauvegarde (heures)",
+  backupIntervalDesc: "Fr\xE9quence de cr\xE9ation des sauvegardes automatiques.",
+  backupPath: "Chemin du dossier de sauvegarde",
+  backupPathDesc: "Chemin du dossier pour les sauvegardes automatiques (relatif \xE0 la racine du coffre). Laisser vide pour la racine.",
+  exportBackup: "Exporter une sauvegarde maintenant",
+  importBackup: "Importer une sauvegarde",
+  backupExported: "Sauvegarde des tags export\xE9e avec succ\xE8s !",
+  backupImported: "{n} fichiers mis \xE0 jour depuis la sauvegarde."
 };
 var de = {
   openLumina: "Lumina \xF6ffnen",
@@ -24871,6 +25105,7 @@ var de = {
   filter: "Filter",
   photos: "Fotos",
   videos: "Videos",
+  other: "Andere (getaggt)",
   filterFolders: "Ordner filtern...",
   allVault: "Gesamter Tresor",
   toggleFilenames: "Dateinamen ein/aus",
@@ -24918,9 +25153,125 @@ var de = {
   previous: "Zur\xFCck",
   next: "Weiter",
   language: "Sprache",
-  settingsTitle: "Lumina-Einstellungen",
+  generalSettings: "Allgemeine Einstellungen",
+  showTagsIndicator: "Tag-Indikator im Datei-Explorer anzeigen",
+  showTagsIndicatorDesc: "Zeigt einen kleinen farbigen Punkt im Datei-Explorer f\xFCr Dateien mit Tags an.",
+  settingsTitle: "Lumina Einstellungen",
   copyEmbedHtml: "Embed-HTML kopieren",
-  pasteVideoUrl: "YouTube-URL einf\xFCgen oder ziehen (Strg+V) zum Abspielen"
+  pasteVideoUrl: "YouTube-URL einf\xFCgen oder ziehen (Strg+V) zum Abspielen",
+  addTag: "Tag hinzuf\xFCgen...",
+  manageTags: "Tags verwalten",
+  tags: "Tags",
+  tagCount: "Tag-Anzahl",
+  commonTags: "Gemeinsame Tags",
+  addToAll: "Zu allen hinzuf\xFCgen",
+  removeFromAll: "Von allen entfernen",
+  insertLuminaBlock: "Lumina-Block einf\xFCgen",
+  tagsByCount: "Tags (nach Anzahl)",
+  tagsByName: "Tags (nach Name)",
+  noTags: "Keine Tags",
+  searchTags: "Tags suchen...",
+  availableTags: "Verf\xFCgbare Tags",
+  clickToAdd: "Klicken zum Hinzuf\xFCgen",
+  tagIndicatorPosition: "Position des Tag-Indikators",
+  tagIndicatorPositionDesc: "Position des farbigen Punktes im Datei-Explorer (links oder rechts vom Dateinamen).",
+  tagIndicatorCompensateShift: "Linken Versatz ausgleichen",
+  tagIndicatorCompensateShiftDesc: "Haelt Dateinamen mit Tags mit anderen Dateien ausgerichtet, indem die Indikatorbreite ausgeglichen wird (nur links).",
+  tagIndicatorStyle: "Tag-Indikator-Stil",
+  tagIndicatorStyleDesc: "Dateien mit Tags als farbigen Punkt oder als Lucide-Symbol anzeigen.",
+  tagIndicatorStyleDot: "Punkt",
+  tagIndicatorStyleIcon: "Lucide-Symbol",
+  tagIndicatorColor: "Tag-Indikator-Farbe",
+  tagIndicatorColorDesc: "Farbe fuer Punkt/Symbol. CSS-Farben werden unterstuetzt (z. B. #22c55e oder var(--interactive-accent)).",
+  tagIndicatorSize: "Tag-Indikator-Groesse",
+  tagIndicatorSizeDesc: "Groesse des Punktes/Symbols in Pixel.",
+  tagIndicatorIcon: "Lucide-Symbolname",
+  tagIndicatorIconDesc: "Lucide-Symbolname fuer den Symbolstil (z. B. tag, bookmark, star).",
+  browseIcons: "Symbole durchsuchen",
+  iconPickerTitle: "Lucide-Symbol waehlen",
+  iconPickerSearchPlaceholder: "Symbol suchen...",
+  iconPickerNoResults: "Kein Symbol gefunden",
+  left: "Links",
+  right: "Rechts",
+  backlinksSection: "R\xFCckverweise",
+  scanBacklinks: "Vorhandene Links scannen",
+  scanBacklinksDesc: "Alle Markdown-Dateien nach vorhandenen [[Links]] im Frontmatter scannen und fehlende R\xFCckverweise erstellen.",
+  scanNow: "Jetzt scannen",
+  scanning: "Scannen...",
+  scanComplete: "Scan abgeschlossen! {count} R\xFCckverweise erstellt.",
+  blockImageClickAction: "Lumina-Block: Klickaktion f\xFCr Bilder",
+  blockImageClickActionDesc: "Was passiert, wenn Sie auf ein Bild in einem Lumina-Block klicken.",
+  previewFullscreen: "Vollbildvorschau",
+  openFile: "Datei \xF6ffnen",
+  tagClickAction: "Tag-Klickaktion",
+  tagClickActionDesc: "Was passiert, wenn Sie auf eine Tag-Blase (#tag) in Lumina klicken.",
+  searchInLumina: "In Lumina suchen",
+  searchInObsidian: "In Obsidian global suchen",
+  enableTagSystem: "Tag-System aktivieren",
+  enableTagSystemDesc: "Tag-System aktivieren. Deaktivieren Sie diese Option, um Lumina als einfache Galerie ohne Tags zu verwenden. Ihre Tag-Daten werden beibehalten.",
+  tagSettings: "Tag-Einstellungen",
+  gallerySettings: "Galerie-Einstellungen",
+  searchIntegration: "Suchintegration",
+  enableVirtualSearch: "Virtuelle Suche aktivieren",
+  enableVirtualSearchDesc: "Markierte Mediendateien in der globalen Obsidian-Suche anzeigen. Bei der Suche nach einem Tag werden Mediendateien mit diesem Tag in den Ergebnissen angezeigt.",
+  virtualSearchClickAction: "Suchergebnis-Klickaktion",
+  virtualSearchClickActionDesc: "Was passiert, wenn Sie auf eine Mediendatei in den Suchergebnissen klicken.",
+  openInObsidian: "In Obsidian \xF6ffnen (nativ)",
+  openInLumina: "In Lumina \xF6ffnen (Lightbox)",
+  pip: "Bild-in-Bild",
+  loading: "Laden...",
+  detailView: "Detailansicht",
+  detailViewHint: "Detailansicht (Zeile f\xFCr Zeile mit Dateidetails)",
+  fileName: "Name",
+  fileType: "Typ",
+  fileSize: "Gr\xF6\xDFe",
+  dateModified: "Ge\xE4ndert",
+  filePath: "Pfad",
+  noResults: "Keine Ergebnisse",
+  performanceSettings: "Leistung",
+  galleryDefaults: "Galerie-Standardwerte",
+  defaultLayout: "Standard-Layout",
+  defaultLayoutDesc: "Standard-Layout beim \xD6ffnen einer neuen Galerieansicht.",
+  defaultZoom: "Standard-Zoom",
+  defaultZoomDesc: "Standard-Zoomstufe f\xFCr neue Galerieansichten (50-500).",
+  defaultShowNames: "Dateinamen standardm\xE4\xDFig anzeigen",
+  defaultShowNamesDesc: "Dateinamen unter Miniaturansichten in neuen Galerieansichten anzeigen.",
+  defaultMediaFilter: "Standard-Medienfilter",
+  defaultMediaFilterDesc: "Welche Medientypen standardm\xE4\xDFig in neuen Galerieansichten angezeigt werden.",
+  thumbnailQuality: "Miniaturbildqualit\xE4t",
+  thumbnailQualityDesc: "Qualit\xE4t der generierten Miniaturbilder. Niedriger = schneller, h\xF6her = sch\xE4rfer.",
+  qualityLow: "Niedrig (schnell)",
+  qualityMedium: "Mittel (ausgewogen)",
+  qualityHigh: "Hoch (scharf)",
+  maxCacheSize: "Max. Cache-Gr\xF6\xDFe (MB)",
+  maxCacheSizeDesc: "Maximale Gr\xF6\xDFe des Miniaturbildcaches in Megabyte.",
+  enableStartupSync: "Tags beim Start synchronisieren",
+  enableStartupSyncDesc: "Tags aus Frontmatter beim Start von Obsidian synchronisieren. Deaktivieren f\xFCr schnelleren Start.",
+  debugLogs: "Debug-Protokolle",
+  debugLogsDesc: "Debug-Protokolle in der Entwicklerkonsole anzeigen. N\xFCtzlich zur Fehlerbehebung.",
+  copyPath: "Pfad kopieren",
+  selectAll: "Alle ausw\xE4hlen",
+  deselectAll: "Alle abw\xE4hlen",
+  itemCount: "{n} Elemente",
+  featuresListDetail: "Layouts: Quadrat, Blocksatz, Panorama, Detail. Ordner, Sortierung, Bearbeitungsmodus, Vollbild.",
+  activeFilters: "Aktive Filter",
+  removeFilter: "Filter entfernen",
+  toggleFilenamesAndTags: "Dateinamen und Tags anzeigen",
+  sortAscending: "Aufsteigend sortieren",
+  sortDescending: "Absteigend sortieren",
+  allFiles: "Alle Dateien (auch ohne Tags)",
+  allFilesDesc: "Alle Dateien im Tresor anzeigen, unabh\xE4ngig von Typ oder Tags",
+  backupRestore: "Sicherung & Wiederherstellung",
+  autoBackup: "Automatische Sicherung",
+  autoBackupDesc: "Tags automatisch in regelm\xE4\xDFigen Abst\xE4nden sichern.",
+  backupInterval: "Sicherungsintervall (Stunden)",
+  backupIntervalDesc: "Wie oft eine automatische Sicherung erstellt werden soll.",
+  backupPath: "Sicherungsordner-Pfad",
+  backupPathDesc: "Ordnerpfad f\xFCr automatische Sicherungen (relativ zum Tresor-Stammverzeichnis).",
+  exportBackup: "Sicherung jetzt exportieren",
+  importBackup: "Sicherung importieren",
+  backupExported: "Tags-Sicherung erfolgreich exportiert!",
+  backupImported: "{n} Dateien aus Sicherung aktualisiert."
 };
 var es = {
   openLumina: "Abrir Lumina",
@@ -24937,6 +25288,7 @@ var es = {
   filter: "Filtrar",
   photos: "Fotos",
   videos: "V\xEDdeos",
+  other: "Otros (etiquetados)",
   filterFolders: "Filtrar carpetas...",
   allVault: "Toda la b\xF3veda",
   toggleFilenames: "Nombres de archivo",
@@ -24984,9 +25336,125 @@ var es = {
   previous: "Anterior",
   next: "Siguiente",
   language: "Idioma",
+  generalSettings: "Ajustes generales",
+  showTagsIndicator: "Mostrar indicador de etiquetas en el explorador",
+  showTagsIndicatorDesc: "Muestra un peque\xF1o punto de color en el explorador de archivos para los archivos con etiquetas.",
   settingsTitle: "Ajustes de Lumina",
   copyEmbedHtml: "Copiar HTML de inserci\xF3n",
-  pasteVideoUrl: "Pegar o arrastrar URL de YouTube (Ctrl+V) para abrir en el reproductor"
+  pasteVideoUrl: "Pegar o arrastrar URL de YouTube (Ctrl+V) para abrir en el reproductor",
+  addTag: "Agregar etiqueta...",
+  manageTags: "Gestionar etiquetas",
+  tags: "Etiquetas",
+  tagCount: "Cantidad de etiquetas",
+  commonTags: "Etiquetas comunes",
+  addToAll: "Agregar a todos",
+  removeFromAll: "Eliminar de todos",
+  insertLuminaBlock: "Insertar bloque Lumina",
+  tagsByCount: "Etiquetas (por cantidad)",
+  tagsByName: "Etiquetas (por nombre)",
+  noTags: "Sin etiquetas",
+  searchTags: "Buscar etiquetas...",
+  availableTags: "Etiquetas disponibles",
+  clickToAdd: "Clic para agregar",
+  tagIndicatorPosition: "Posici\xF3n del indicador de etiquetas",
+  tagIndicatorPositionDesc: "Posici\xF3n del punto de color en el explorador de archivos (a la izquierda o a la derecha del nombre).",
+  tagIndicatorCompensateShift: "Compensar desplazamiento izquierdo",
+  tagIndicatorCompensateShiftDesc: "Mantiene alineados los nombres de archivos etiquetados compensando el ancho del indicador (solo posici\xF3n izquierda).",
+  tagIndicatorStyle: "Estilo del indicador de etiquetas",
+  tagIndicatorStyleDesc: "Muestra archivos etiquetados con un punto de color o un icono Lucide.",
+  tagIndicatorStyleDot: "Punto",
+  tagIndicatorStyleIcon: "Icono Lucide",
+  tagIndicatorColor: "Color del indicador",
+  tagIndicatorColorDesc: "Color para punto/icono. Admite colores CSS (ej. #22c55e o var(--interactive-accent)).",
+  tagIndicatorSize: "Tama\xF1o del indicador",
+  tagIndicatorSizeDesc: "Tama\xF1o del punto/icono en pixeles.",
+  tagIndicatorIcon: "Icono Lucide",
+  tagIndicatorIconDesc: "Nombre del icono Lucide para el estilo icono (ej. tag, bookmark, star).",
+  browseIcons: "Explorar iconos",
+  iconPickerTitle: "Elegir icono Lucide",
+  iconPickerSearchPlaceholder: "Buscar icono...",
+  iconPickerNoResults: "No se encontr\xF3 icono",
+  left: "Izquierda",
+  right: "Derecha",
+  backlinksSection: "Retroenlaces",
+  scanBacklinks: "Escanear enlaces existentes",
+  scanBacklinksDesc: "Escanear todos los archivos markdown en busca de [[enlaces]] existentes en el frontmatter y crear los retroenlaces faltantes.",
+  scanNow: "Escanear ahora",
+  scanning: "Escaneando...",
+  scanComplete: "\xA1Escaneo completo! {count} retroenlaces creados.",
+  blockImageClickAction: "Bloque Lumina: acci\xF3n al clic en imagen",
+  blockImageClickActionDesc: "Qu\xE9 sucede cuando haces clic en una imagen en un bloque Lumina.",
+  previewFullscreen: "Vista previa a pantalla completa",
+  openFile: "Abrir archivo",
+  tagClickAction: "Acci\xF3n al hacer clic en un tag",
+  tagClickActionDesc: "Qu\xE9 sucede cuando haces clic en un tag (# o [[enlace]]).",
+  searchInLumina: "Buscar en Lumina",
+  searchInObsidian: "Buscar en Obsidian (b\xFAsqueda global)",
+  enableTagSystem: "Activar sistema de etiquetas",
+  enableTagSystemDesc: "Activar el sistema de etiquetas. Desact\xEDvelo para usar Lumina como una galer\xEDa simple sin etiquetas. Sus datos de etiquetas se conservar\xE1n.",
+  tagSettings: "Configuraci\xF3n de etiquetas",
+  gallerySettings: "Configuraci\xF3n de galer\xEDa",
+  searchIntegration: "Integraci\xF3n de b\xFAsqueda",
+  enableVirtualSearch: "Activar b\xFAsqueda virtual",
+  enableVirtualSearchDesc: "Hacer que los archivos multimedia etiquetados aparezcan en la b\xFAsqueda global de Obsidian. Al buscar una etiqueta, los archivos multimedia con esa etiqueta aparecer\xE1n en los resultados.",
+  virtualSearchClickAction: "Acci\xF3n al hacer clic en resultado",
+  virtualSearchClickActionDesc: "Qu\xE9 sucede cuando haces clic en un archivo multimedia en los resultados de b\xFAsqueda.",
+  openInObsidian: "Abrir en Obsidian (nativo)",
+  openInLumina: "Abrir en Lumina (lightbox)",
+  pip: "Imagen en imagen (PIP)",
+  loading: "Cargando...",
+  detailView: "Vista detallada",
+  detailViewHint: "Vista detallada (l\xEDnea por l\xEDnea con detalles de archivos)",
+  fileName: "Nombre",
+  fileType: "Tipo",
+  fileSize: "Tama\xF1o",
+  dateModified: "Modificado",
+  filePath: "Ruta",
+  noResults: "Sin resultados",
+  performanceSettings: "Rendimiento",
+  galleryDefaults: "Valores predeterminados de galer\xEDa",
+  defaultLayout: "Dise\xF1o predeterminado",
+  defaultLayoutDesc: "Dise\xF1o predeterminado al abrir una nueva vista de galer\xEDa.",
+  defaultZoom: "Zoom predeterminado",
+  defaultZoomDesc: "Nivel de zoom predeterminado para nuevas vistas de galer\xEDa (50-500).",
+  defaultShowNames: "Mostrar nombres por defecto",
+  defaultShowNamesDesc: "Mostrar nombres de archivo bajo las miniaturas en nuevas vistas de galer\xEDa.",
+  defaultMediaFilter: "Filtro de medios predeterminado",
+  defaultMediaFilterDesc: "Qu\xE9 tipos de medios mostrar por defecto en nuevas vistas de galer\xEDa.",
+  thumbnailQuality: "Calidad de miniaturas",
+  thumbnailQualityDesc: "Calidad de las miniaturas generadas. Menor = m\xE1s r\xE1pido, mayor = m\xE1s n\xEDtido.",
+  qualityLow: "Baja (r\xE1pida)",
+  qualityMedium: "Media (equilibrada)",
+  qualityHigh: "Alta (n\xEDtida)",
+  maxCacheSize: "Tama\xF1o m\xE1x. de cach\xE9 (MB)",
+  maxCacheSizeDesc: "Tama\xF1o m\xE1ximo de la cach\xE9 de miniaturas en megabytes.",
+  enableStartupSync: "Sincronizar al inicio",
+  enableStartupSyncDesc: "Sincronizar etiquetas desde el frontmatter al iniciar Obsidian. Desactivar para un inicio m\xE1s r\xE1pido.",
+  debugLogs: "Registros de depuraci\xF3n",
+  debugLogsDesc: "Mostrar registros de depuraci\xF3n en la consola de desarrollo. \xDAtil para diagn\xF3sticos.",
+  copyPath: "Copiar ruta",
+  selectAll: "Seleccionar todo",
+  deselectAll: "Deseleccionar todo",
+  itemCount: "{n} elementos",
+  featuresListDetail: "Dise\xF1os: Cuadr\xEDcula, Justificado, Panorama, Detallado. Carpetas, Ordenar, Modo edici\xF3n, Pantalla completa.",
+  activeFilters: "Filtros activos",
+  removeFilter: "Eliminar filtro",
+  toggleFilenamesAndTags: "Mostrar nombres y etiquetas",
+  sortAscending: "Orden ascendente",
+  sortDescending: "Orden descendente",
+  allFiles: "Todos los archivos (incluso sin etiquetas)",
+  allFilesDesc: "Mostrar todos los archivos de la b\xF3veda, sin importar tipo o etiquetas",
+  backupRestore: "Copia de seguridad y restauraci\xF3n",
+  autoBackup: "Copia de seguridad autom\xE1tica",
+  autoBackupDesc: "Realizar copias de seguridad autom\xE1ticas de las etiquetas a intervalos regulares.",
+  backupInterval: "Intervalo de copia (horas)",
+  backupIntervalDesc: "Frecuencia de creaci\xF3n de copias de seguridad autom\xE1ticas.",
+  backupPath: "Ruta de la carpeta de respaldo",
+  backupPathDesc: "Ruta de la carpeta para copias de seguridad autom\xE1ticas (relativa a la ra\xEDz de la b\xF3veda).",
+  exportBackup: "Exportar copia ahora",
+  importBackup: "Importar copia",
+  backupExported: "\xA1Copia de seguridad de etiquetas exportada con \xE9xito!",
+  backupImported: "{n} archivos actualizados desde la copia."
 };
 var zh = {
   openLumina: "\u6253\u5F00 Lumina",
@@ -25003,6 +25471,7 @@ var zh = {
   filter: "\u7B5B\u9009",
   photos: "\u7167\u7247",
   videos: "\u89C6\u9891",
+  other: "\u5176\u4ED6\uFF08\u5DF2\u6807\u8BB0\uFF09",
   filterFolders: "\u7B5B\u9009\u6587\u4EF6\u5939...",
   allVault: "\u5168\u90E8\u4FDD\u9669\u5E93",
   toggleFilenames: "\u663E\u793A\u6587\u4EF6\u540D",
@@ -25050,9 +25519,125 @@ var zh = {
   previous: "\u4E0A\u4E00\u4E2A",
   next: "\u4E0B\u4E00\u4E2A",
   language: "\u8BED\u8A00",
+  generalSettings: "\u901A\u7528\u8BBE\u7F6E",
+  showTagsIndicator: "\u5728\u6587\u4EF6\u6D4F\u89C8\u5668\u4E2D\u663E\u793A\u6807\u7B7E\u6307\u793A\u5668",
+  showTagsIndicatorDesc: "\u5BF9\u4E8E\u6709\u6807\u7B7E\u7684\u6587\u4EF6\uFF0C\u5728\u6587\u4EF6\u6D4F\u89C8\u5668\u4E2D\u663E\u793A\u4E00\u4E2A\u5F69\u8272\u5C0F\u70B9\u3002",
   settingsTitle: "Lumina \u8BBE\u7F6E",
   copyEmbedHtml: "\u590D\u5236\u5D4C\u5165 HTML",
-  pasteVideoUrl: "\u7C98\u8D34\u6216\u62D6\u653E YouTube \u94FE\u63A5 (Ctrl+V) \u5728\u64AD\u653E\u5668\u4E2D\u6253\u5F00"
+  pasteVideoUrl: "\u7C98\u8D34\u6216\u62D6\u653E YouTube \u94FE\u63A5 (Ctrl+V) \u5728\u64AD\u653E\u5668\u4E2D\u6253\u5F00",
+  addTag: "\u6DFB\u52A0\u6807\u7B7E...",
+  manageTags: "\u7BA1\u7406\u6807\u7B7E",
+  tags: "\u6807\u7B7E",
+  tagCount: "\u6807\u7B7E\u6570\u91CF",
+  commonTags: "\u516C\u5171\u6807\u7B7E",
+  addToAll: "\u6DFB\u52A0\u5230\u5168\u90E8",
+  removeFromAll: "\u4ECE\u5168\u90E8\u79FB\u9664",
+  insertLuminaBlock: "\u63D2\u5165 Lumina \u5757",
+  tagsByCount: "\u6807\u7B7E\uFF08\u6309\u6570\u91CF\uFF09",
+  tagsByName: "\u6807\u7B7E\uFF08\u6309\u540D\u79F0\uFF09",
+  noTags: "\u65E0\u6807\u7B7E",
+  searchTags: "\u641C\u7D22\u6807\u7B7E...",
+  availableTags: "\u53EF\u7528\u6807\u7B7E",
+  clickToAdd: "\u70B9\u51FB\u6DFB\u52A0",
+  tagIndicatorPosition: "\u6807\u7B7E\u6307\u793A\u5668\u4F4D\u7F6E",
+  tagIndicatorPositionDesc: "\u6587\u4EF6\u6D4F\u89C8\u5668\u4E2D\u5F69\u8272\u70B9\u7684\u4F4D\u7F6E\uFF08\u5728\u6587\u4EF6\u540D\u7684\u5DE6\u4FA7\u6216\u53F3\u4FA7\uFF09\u3002",
+  tagIndicatorCompensateShift: "\u8865\u507F\u5DE6\u4FA7\u504F\u79FB",
+  tagIndicatorCompensateShiftDesc: "\u901A\u8FC7\u8865\u507F\u6307\u793A\u5668\u5360\u7528\u5BBD\u5EA6\u6765\u5BF9\u9F50\u5DF2\u6807\u8BB0\u4E0E\u672A\u6807\u8BB0\u6587\u4EF6\u540D\uFF08\u4EC5\u5DE6\u4FA7\u4F4D\u7F6E\u751F\u6548\uFF09\u3002",
+  tagIndicatorStyle: "\u6807\u7B7E\u6307\u793A\u5668\u6837\u5F0F",
+  tagIndicatorStyleDesc: "\u5C06\u5DF2\u6807\u8BB0\u6587\u4EF6\u663E\u793A\u4E3A\u5F69\u8272\u5706\u70B9\u6216 Lucide \u56FE\u6807\u3002",
+  tagIndicatorStyleDot: "\u5706\u70B9",
+  tagIndicatorStyleIcon: "Lucide \u56FE\u6807",
+  tagIndicatorColor: "\u6807\u7B7E\u6307\u793A\u5668\u989C\u8272",
+  tagIndicatorColorDesc: "\u5706\u70B9/\u56FE\u6807\u989C\u8272\u3002\u652F\u6301 CSS \u989C\u8272\uFF08\u4F8B\u5982 #22c55e \u6216 var(--interactive-accent)\uFF09\u3002",
+  tagIndicatorSize: "\u6807\u7B7E\u6307\u793A\u5668\u5927\u5C0F",
+  tagIndicatorSizeDesc: "\u5706\u70B9/\u56FE\u6807\u7684\u50CF\u7D20\u5927\u5C0F\u3002",
+  tagIndicatorIcon: "Lucide \u56FE\u6807\u540D\u79F0",
+  tagIndicatorIconDesc: "\u6837\u5F0F\u4E3A\u56FE\u6807\u65F6\u4F7F\u7528\u7684 Lucide \u56FE\u6807\u540D\uFF08\u4F8B\u5982 tag\u3001bookmark\u3001star\uFF09\u3002",
+  browseIcons: "\u6D4F\u89C8\u56FE\u6807",
+  iconPickerTitle: "\u9009\u62E9 Lucide \u56FE\u6807",
+  iconPickerSearchPlaceholder: "\u641C\u7D22\u56FE\u6807...",
+  iconPickerNoResults: "\u672A\u627E\u5230\u56FE\u6807",
+  left: "\u5DE6",
+  right: "\u53F3",
+  backlinksSection: "\u53CD\u5411\u94FE\u63A5",
+  scanBacklinks: "\u626B\u63CF\u73B0\u6709\u94FE\u63A5",
+  scanBacklinksDesc: "\u626B\u63CF\u6240\u6709 markdown \u6587\u4EF6\u4E2D frontmatter \u4E2D\u7684\u73B0\u6709 [[\u94FE\u63A5]] \u5E76\u521B\u5EFA\u7F3A\u5931\u7684\u53CD\u5411\u94FE\u63A5\u3002",
+  scanNow: "\u7ACB\u5373\u626B\u63CF",
+  scanning: "\u626B\u63CF\u4E2D...",
+  scanComplete: "\u626B\u63CF\u5B8C\u6210\uFF01\u521B\u5EFA\u4E86 {count} \u4E2A\u53CD\u5411\u94FE\u63A5\u3002",
+  blockImageClickAction: "Lumina \u5757\uFF1A\u56FE\u7247\u70B9\u51FB\u64CD\u4F5C",
+  blockImageClickActionDesc: "\u5F53\u60A8\u70B9\u51FB Lumina \u5757\u4E2D\u7684\u56FE\u7247\u65F6\u4F1A\u53D1\u751F\u4EC0\u4E48\u3002",
+  previewFullscreen: "\u5168\u5C4F\u9884\u89C8",
+  openFile: "\u6253\u5F00\u6587\u4EF6",
+  tagClickAction: "\u6807\u7B7E\u70B9\u51FB\u64CD\u4F5C",
+  tagClickActionDesc: "\u5F53\u60A8\u70B9\u51FB\u6807\u7B7E\uFF08# \u6216 [[\u94FE\u63A5]]\uFF09\u65F6\u4F1A\u53D1\u751F\u4EC0\u4E48\u3002",
+  searchInLumina: "\u5728 Lumina \u4E2D\u641C\u7D22",
+  searchInObsidian: "\u5728 Obsidian \u4E2D\u641C\u7D22\uFF08\u5168\u5C40\u641C\u7D22\uFF09",
+  enableTagSystem: "\u542F\u7528\u6807\u7B7E\u7CFB\u7EDF",
+  enableTagSystemDesc: "\u542F\u7528\u6807\u7B7E\u7CFB\u7EDF\u3002\u7981\u7528\u540E\u53EF\u5C06 Lumina \u7528\u4F5C\u7B80\u5355\u7684\u56FE\u5E93\uFF0C\u4E0D\u5E26\u6807\u7B7E\u529F\u80FD\u3002\u60A8\u7684\u6807\u7B7E\u6570\u636E\u5C06\u88AB\u4FDD\u7559\u3002",
+  tagSettings: "\u6807\u7B7E\u8BBE\u7F6E",
+  gallerySettings: "\u56FE\u5E93\u8BBE\u7F6E",
+  searchIntegration: "\u641C\u7D22\u96C6\u6210",
+  enableVirtualSearch: "\u542F\u7528\u865A\u62DF\u641C\u7D22",
+  enableVirtualSearchDesc: "\u4F7F\u5E26\u6807\u7B7E\u7684\u5A92\u4F53\u6587\u4EF6\u51FA\u73B0\u5728 Obsidian \u7684\u5168\u5C40\u641C\u7D22\u4E2D\u3002\u641C\u7D22\u6807\u7B7E\u65F6\uFF0C\u5E26\u6709\u8BE5\u6807\u7B7E\u7684\u5A92\u4F53\u6587\u4EF6\u5C06\u51FA\u73B0\u5728\u7ED3\u679C\u4E2D\u3002",
+  virtualSearchClickAction: "\u70B9\u51FB\u7ED3\u679C\u65F6\u7684\u64CD\u4F5C",
+  virtualSearchClickActionDesc: "\u5F53\u60A8\u70B9\u51FB\u641C\u7D22\u7ED3\u679C\u4E2D\u7684\u5A92\u4F53\u6587\u4EF6\u65F6\u4F1A\u53D1\u751F\u4EC0\u4E48\u3002",
+  openInObsidian: "\u5728 Obsidian \u4E2D\u6253\u5F00\uFF08\u539F\u751F\uFF09",
+  openInLumina: "\u5728 Lumina \u4E2D\u6253\u5F00\uFF08\u706F\u7BB1\uFF09",
+  pip: "\u753B\u4E2D\u753B",
+  loading: "\u52A0\u8F7D\u4E2D...",
+  detailView: "\u8BE6\u60C5\u89C6\u56FE",
+  detailViewHint: "\u8BE6\u60C5\u89C6\u56FE\uFF08\u9010\u884C\u663E\u793A\u6587\u4EF6\u8BE6\u7EC6\u4FE1\u606F\uFF09",
+  fileName: "\u540D\u79F0",
+  fileType: "\u7C7B\u578B",
+  fileSize: "\u5927\u5C0F",
+  dateModified: "\u4FEE\u6539\u65E5\u671F",
+  filePath: "\u8DEF\u5F84",
+  noResults: "\u65E0\u7ED3\u679C",
+  performanceSettings: "\u6027\u80FD",
+  galleryDefaults: "\u56FE\u5E93\u9ED8\u8BA4\u503C",
+  defaultLayout: "\u9ED8\u8BA4\u5E03\u5C40",
+  defaultLayoutDesc: "\u6253\u5F00\u65B0\u56FE\u5E93\u89C6\u56FE\u65F6\u7684\u9ED8\u8BA4\u5E03\u5C40\u3002",
+  defaultZoom: "\u9ED8\u8BA4\u7F29\u653E",
+  defaultZoomDesc: "\u65B0\u56FE\u5E93\u89C6\u56FE\u7684\u9ED8\u8BA4\u7F29\u653E\u7EA7\u522B\uFF0850-500\uFF09\u3002",
+  defaultShowNames: "\u9ED8\u8BA4\u663E\u793A\u6587\u4EF6\u540D",
+  defaultShowNamesDesc: "\u5728\u65B0\u56FE\u5E93\u89C6\u56FE\u4E2D\u9ED8\u8BA4\u5728\u7F29\u7565\u56FE\u4E0B\u65B9\u663E\u793A\u6587\u4EF6\u540D\u3002",
+  defaultMediaFilter: "\u9ED8\u8BA4\u5A92\u4F53\u7B5B\u9009",
+  defaultMediaFilterDesc: "\u65B0\u56FE\u5E93\u89C6\u56FE\u4E2D\u9ED8\u8BA4\u663E\u793A\u7684\u5A92\u4F53\u7C7B\u578B\u3002",
+  thumbnailQuality: "\u7F29\u7565\u56FE\u8D28\u91CF",
+  thumbnailQualityDesc: "\u751F\u6210\u7F29\u7565\u56FE\u7684\u8D28\u91CF\u3002\u4F4E = \u66F4\u5FEB\uFF0C\u9AD8 = \u66F4\u6E05\u6670\u3002",
+  qualityLow: "\u4F4E\uFF08\u5FEB\u901F\uFF09",
+  qualityMedium: "\u4E2D\uFF08\u5747\u8861\uFF09",
+  qualityHigh: "\u9AD8\uFF08\u6E05\u6670\uFF09",
+  maxCacheSize: "\u6700\u5927\u7F13\u5B58\u5927\u5C0F\uFF08MB\uFF09",
+  maxCacheSizeDesc: "\u7F29\u7565\u56FE\u7F13\u5B58\u7684\u6700\u5927\u5927\u5C0F\uFF08\u5146\u5B57\u8282\uFF09\u3002",
+  enableStartupSync: "\u542F\u52A8\u65F6\u540C\u6B65\u6807\u7B7E",
+  enableStartupSyncDesc: "\u5728 Obsidian \u542F\u52A8\u65F6\u4ECE frontmatter \u540C\u6B65\u6807\u7B7E\u3002\u7981\u7528\u4EE5\u52A0\u5FEB\u542F\u52A8\u901F\u5EA6\u3002",
+  debugLogs: "\u8C03\u8BD5\u65E5\u5FD7",
+  debugLogsDesc: "\u5728\u5F00\u53D1\u8005\u63A7\u5236\u53F0\u4E2D\u663E\u793A\u8C03\u8BD5\u65E5\u5FD7\u3002\u7528\u4E8E\u6545\u969C\u6392\u9664\u3002",
+  copyPath: "\u590D\u5236\u8DEF\u5F84",
+  selectAll: "\u5168\u9009",
+  deselectAll: "\u53D6\u6D88\u5168\u9009",
+  itemCount: "{n} \u4E2A\u9879\u76EE",
+  featuresListDetail: "\u5E03\u5C40\uFF1A\u65B9\u5F62\u3001\u4E24\u7AEF\u5BF9\u9F50\u3001\u5168\u666F\u3001\u8BE6\u60C5\u3002\u6587\u4EF6\u5939\u3001\u6392\u5E8F\u3001\u7F16\u8F91\u6A21\u5F0F\u3001\u5168\u5C4F\u3002",
+  activeFilters: "\u6D3B\u52A8\u7B5B\u9009",
+  removeFilter: "\u79FB\u9664\u7B5B\u9009",
+  toggleFilenamesAndTags: "\u663E\u793A\u6587\u4EF6\u540D\u548C\u6807\u7B7E",
+  sortAscending: "\u5347\u5E8F\u6392\u5217",
+  sortDescending: "\u964D\u5E8F\u6392\u5217",
+  allFiles: "\u6240\u6709\u6587\u4EF6\uFF08\u5305\u62EC\u672A\u6807\u8BB0\u7684\uFF09",
+  allFilesDesc: "\u663E\u793A\u4FDD\u7BA1\u5E93\u4E2D\u7684\u6240\u6709\u6587\u4EF6\uFF0C\u65E0\u8BBA\u7C7B\u578B\u6216\u6807\u7B7E",
+  backupRestore: "\u5907\u4EFD\u4E0E\u6062\u590D",
+  autoBackup: "\u81EA\u52A8\u5907\u4EFD",
+  autoBackupDesc: "\u5B9A\u671F\u81EA\u52A8\u5907\u4EFD\u6807\u7B7E\u3002",
+  backupInterval: "\u5907\u4EFD\u95F4\u9694\uFF08\u5C0F\u65F6\uFF09",
+  backupIntervalDesc: "\u81EA\u52A8\u5907\u4EFD\u7684\u9891\u7387\u3002",
+  backupPath: "\u5907\u4EFD\u6587\u4EF6\u5939\u8DEF\u5F84",
+  backupPathDesc: "\u81EA\u52A8\u5907\u4EFD\u7684\u6587\u4EF6\u5939\u8DEF\u5F84\uFF08\u76F8\u5BF9\u4E8E\u4FDD\u7BA1\u5E93\u6839\u76EE\u5F55\uFF09\u3002",
+  exportBackup: "\u7ACB\u5373\u5BFC\u51FA\u5907\u4EFD",
+  importBackup: "\u5BFC\u5165\u5907\u4EFD",
+  backupExported: "\u6807\u7B7E\u5907\u4EFD\u5BFC\u51FA\u6210\u529F\uFF01",
+  backupImported: "\u4ECE\u5907\u4EFD\u66F4\u65B0\u4E86 {n} \u4E2A\u6587\u4EF6\u3002"
 };
 var LOCALES = { en, fr, de, es, zh };
 function t(locale, key, params) {
@@ -25063,8 +25648,968 @@ function t(locale, key, params) {
   return str;
 }
 
-// src/components/PhotoGallery.tsx
+// src/components/GalleryContextMenu.tsx
+var import_react = __toESM(require_react());
 var import_jsx_runtime = __toESM(require_jsx_runtime());
+var GalleryContextMenu = ({
+  x,
+  y,
+  selectedPaths,
+  onManageTags,
+  onDelete,
+  onClose,
+  locale,
+  enableTagSystem = true
+}) => {
+  const menuRef = (0, import_react.useRef)(null);
+  const [pos, setPos] = (0, import_react.useState)({ left: x, top: y });
+  (0, import_react.useLayoutEffect)(() => {
+    const el = menuRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    let left = x;
+    let top = y;
+    if (left + rect.width > vw - 8) left = vw - rect.width - 8;
+    if (top + rect.height > vh - 8) top = vh - rect.height - 8;
+    if (left < 8) left = 8;
+    if (top < 8) top = 8;
+    setPos({ left, top });
+  }, [x, y]);
+  const handleClick = (action) => {
+    action();
+    onClose();
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+      "div",
+      {
+        className: "gal-context-menu-overlay",
+        onClick: onClose,
+        onContextMenu: (e) => {
+          e.preventDefault();
+          onClose();
+        }
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+      "div",
+      {
+        ref: menuRef,
+        className: "gal-context-menu",
+        style: {
+          left: `${pos.left}px`,
+          top: `${pos.top}px`
+        },
+        children: [
+          enableTagSystem && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "gal-context-menu-item", onClick: () => handleClick(onManageTags), children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+                "svg",
+                {
+                  xmlns: "http://www.w3.org/2000/svg",
+                  width: "16",
+                  height: "16",
+                  viewBox: "0 0 24 24",
+                  fill: "none",
+                  stroke: "currentColor",
+                  strokeWidth: "2",
+                  strokeLinecap: "round",
+                  strokeLinejoin: "round",
+                  children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", { x1: "7", y1: "7", x2: "7.01", y2: "7" })
+                  ]
+                }
+              ),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
+                t(locale, "manageTags"),
+                selectedPaths.length > 1 && ` (${selectedPaths.length})`
+              ] })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "gal-context-menu-separator" })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "gal-context-menu-item danger", onClick: () => handleClick(onDelete), children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+              "svg",
+              {
+                xmlns: "http://www.w3.org/2000/svg",
+                width: "16",
+                height: "16",
+                viewBox: "0 0 24 24",
+                fill: "none",
+                stroke: "currentColor",
+                strokeWidth: "2",
+                strokeLinecap: "round",
+                strokeLinejoin: "round",
+                children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("polyline", { points: "3 6 5 6 21 6" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", { x1: "10", y1: "11", x2: "10", y2: "17" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", { x1: "14", y1: "11", x2: "14", y2: "17" })
+                ]
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
+              t(locale, "delete"),
+              selectedPaths.length > 1 && ` (${selectedPaths.length})`
+            ] })
+          ] })
+        ]
+      }
+    )
+  ] });
+};
+
+// src/components/TagModals.tsx
+var import_react3 = __toESM(require_react());
+var import_obsidian = require("obsidian");
+var import_client = __toESM(require_client());
+
+// src/components/TagComponents.tsx
+var import_react2 = __toESM(require_react());
+var import_react_dom = __toESM(require_react_dom());
+var import_jsx_runtime2 = __toESM(require_jsx_runtime());
+var TagInput = ({
+  existingTags,
+  allTags,
+  allNoteLinks = [],
+  onAdd,
+  locale,
+  placeholder
+}) => {
+  const [input, setInput] = (0, import_react2.useState)("");
+  const [showSuggestions, setShowSuggestions] = (0, import_react2.useState)(false);
+  const [selectedIndex, setSelectedIndex] = (0, import_react2.useState)(-1);
+  const inputRef = (0, import_react2.useRef)(null);
+  const { currentType, filterText } = (0, import_react2.useMemo)(() => {
+    const trimmed = input.trim();
+    if (trimmed.startsWith("[[")) {
+      return { currentType: "bracket", filterText: trimmed.slice(2).replace(/\]\]$/, "") };
+    } else if (trimmed.startsWith("#")) {
+      return { currentType: "hash", filterText: trimmed.slice(1) };
+    }
+    return { currentType: null, filterText: trimmed };
+  }, [input]);
+  const suggestions = (0, import_react2.useMemo)(() => {
+    const normalizedFilter = filterText.toLowerCase();
+    const existingSet = new Set(existingTags.map((t2) => t2.toLowerCase()));
+    const results = [];
+    if (currentType === "bracket" || currentType === null) {
+      allNoteLinks.filter(
+        (note) => !existingSet.has(`[[${note.toLowerCase()}]]`) && (!normalizedFilter || note.toLowerCase().includes(normalizedFilter))
+      ).slice(0, 25).forEach((note) => {
+        results.push({
+          value: `[[${note}]]`,
+          type: "bracket",
+          label: `[[${note}]]`
+        });
+      });
+    }
+    if (currentType === "hash" || currentType === null) {
+      allTags.filter((tag) => {
+        const normalized = tag.startsWith("#") ? tag.slice(1) : tag;
+        return !existingSet.has(`#${normalized.toLowerCase()}`) && (!normalizedFilter || normalized.toLowerCase().includes(normalizedFilter));
+      }).slice(0, 25).forEach((tag) => {
+        const normalized = tag.startsWith("#") ? tag.slice(1) : tag;
+        results.push({
+          value: `#${normalized}`,
+          type: "hash",
+          label: `#${normalized}`
+        });
+      });
+    }
+    return results.sort((a, b) => {
+      const aStarts = a.label.toLowerCase().includes(normalizedFilter);
+      const bStarts = b.label.toLowerCase().includes(normalizedFilter);
+      if (aStarts && !bStarts) return -1;
+      if (!aStarts && bStarts) return 1;
+      return a.label.localeCompare(b.label);
+    }).slice(0, 30);
+  }, [allTags, allNoteLinks, existingTags, currentType, filterText]);
+  const handleAdd = (tag) => {
+    var _a;
+    const trimmed = tag.trim();
+    if (trimmed && !existingTags.includes(trimmed)) {
+      onAdd(trimmed);
+      setInput("");
+      setShowSuggestions(false);
+      setSelectedIndex(-1);
+      (_a = inputRef.current) == null ? void 0 : _a.focus();
+    }
+  };
+  const handleInputChange = (value) => {
+    setInput(value);
+    setShowSuggestions(true);
+    setSelectedIndex(-1);
+  };
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (selectedIndex >= 0 && suggestions[selectedIndex]) {
+        handleAdd(suggestions[selectedIndex].value);
+      } else if (input.trim()) {
+        const trimmed = input.trim();
+        if (trimmed.startsWith("#") || trimmed.startsWith("[[") && trimmed.endsWith("]]")) {
+          handleAdd(trimmed);
+        } else if (trimmed.startsWith("[[")) {
+          handleAdd(`${trimmed}]]`);
+        } else {
+          handleAdd(`#${trimmed}`);
+        }
+      }
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setSelectedIndex((prev) => Math.min(prev + 1, suggestions.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setSelectedIndex((prev) => Math.max(prev - 1, -1));
+    } else if (e.key === "Escape") {
+      setShowSuggestions(false);
+      setSelectedIndex(-1);
+    }
+  };
+  const handleFocus = () => {
+    setShowSuggestions(true);
+  };
+  const handleBlur = () => {
+    setTimeout(() => setShowSuggestions(false), 200);
+  };
+  const [suggestionsStyle, setSuggestionsStyle] = (0, import_react2.useState)({});
+  const updateSuggestionsPosition = (0, import_react2.useCallback)(() => {
+    if (inputRef.current && showSuggestions) {
+      const rect = inputRef.current.getBoundingClientRect();
+      setSuggestionsStyle({
+        position: "fixed",
+        top: rect.bottom + 4,
+        left: rect.left,
+        width: rect.width,
+        zIndex: 1e5
+      });
+    }
+  }, [showSuggestions]);
+  (0, import_react2.useEffect)(() => {
+    updateSuggestionsPosition();
+    window.addEventListener("resize", updateSuggestionsPosition);
+    window.addEventListener("scroll", updateSuggestionsPosition, true);
+    return () => {
+      window.removeEventListener("resize", updateSuggestionsPosition);
+      window.removeEventListener("scroll", updateSuggestionsPosition, true);
+    };
+  }, [updateSuggestionsPosition]);
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "lumina-tag-input-container", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+      "input",
+      {
+        ref: inputRef,
+        type: "text",
+        className: "lumina-tag-input",
+        value: input,
+        onChange: (e) => handleInputChange(e.target.value),
+        onKeyDown: handleKeyDown,
+        onFocus: handleFocus,
+        onBlur: handleBlur,
+        placeholder: placeholder || t(locale, "addTag")
+      }
+    ),
+    showSuggestions && suggestions.length > 0 && (0, import_react_dom.createPortal)(
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "lumina-tag-suggestions", style: suggestionsStyle, children: suggestions.map((suggestion, idx) => /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
+        "div",
+        {
+          className: `lumina-tag-suggestion ${idx === selectedIndex ? "selected" : ""} ${suggestion.type}`,
+          onClick: () => handleAdd(suggestion.value),
+          onMouseEnter: () => setSelectedIndex(idx),
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "lumina-tag-suggestion-icon", children: suggestion.type === "bracket" ? "\u{1F4C4}" : "#" }),
+            /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { className: "lumina-tag-suggestion-label", children: suggestion.label })
+          ]
+        },
+        suggestion.value
+      )) }),
+      document.body
+    )
+  ] });
+};
+function getTagDisplayName(tag) {
+  if (tag.startsWith("[[") && tag.endsWith("]]")) {
+    const linkContent = tag.slice(2, -2);
+    const lastSlashIndex = linkContent.lastIndexOf("/");
+    return `[[${lastSlashIndex >= 0 ? linkContent.slice(lastSlashIndex + 1) : linkContent}]]`;
+  }
+  return tag;
+}
+var TagBadge = ({ tag, onRemove, clickable, onClick }) => {
+  const tagTypeClass = tag.startsWith("[[") && tag.endsWith("]]") ? "lumina-tag-link" : tag.startsWith("#") ? "lumina-tag-hashtag" : "";
+  const displayName = getTagDisplayName(tag);
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
+    "span",
+    {
+      className: `lumina-tag-badge ${tagTypeClass} ${clickable ? "clickable" : ""}`,
+      onClick,
+      title: tag,
+      children: [
+        displayName,
+        onRemove && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+          "button",
+          {
+            className: "lumina-tag-remove",
+            onClick: (e) => {
+              e.stopPropagation();
+              onRemove();
+            },
+            "aria-label": "Remove tag",
+            children: "\xD7"
+          }
+        )
+      ]
+    }
+  );
+};
+var TagList = ({
+  tags,
+  maxVisible = 4,
+  onTagClick,
+  onRemove,
+  showCount = true
+}) => {
+  const [expanded, setExpanded] = (0, import_react2.useState)(false);
+  if (tags.length === 0) {
+    return null;
+  }
+  const visibleTags = expanded ? tags : tags.slice(0, maxVisible);
+  const hiddenCount = tags.length - maxVisible;
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "lumina-tag-list", children: [
+    visibleTags.map((tag) => /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+      TagBadge,
+      {
+        tag,
+        clickable: !!onTagClick,
+        onClick: () => onTagClick == null ? void 0 : onTagClick(tag),
+        onRemove: onRemove ? () => onRemove(tag) : void 0
+      },
+      tag
+    )),
+    !expanded && hiddenCount > 0 && showCount && /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
+      "button",
+      {
+        className: "lumina-tag-more",
+        onClick: () => setExpanded(true),
+        title: tags.slice(maxVisible).join(", "),
+        children: [
+          "+",
+          hiddenCount
+        ]
+      }
+    ),
+    expanded && tags.length > maxVisible && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+      "button",
+      {
+        className: "lumina-tag-less",
+        onClick: () => setExpanded(false),
+        children: "\u2212"
+      }
+    )
+  ] });
+};
+
+// src/components/TagModals.tsx
+var import_jsx_runtime3 = __toESM(require_jsx_runtime());
+var TagManagerContent = ({
+  filePath,
+  fileName,
+  tagManager,
+  locale,
+  onClose,
+  fromLightbox,
+  app
+}) => {
+  const [tags, setTags] = (0, import_react3.useState)(tagManager.getTags(filePath));
+  const [, forceUpdate] = (0, import_react3.useState)(0);
+  const allHashTags = (0, import_react3.useMemo)(() => {
+    var _a;
+    const tagSet = /* @__PURE__ */ new Set();
+    tagManager.getAllTags().forEach((tag) => {
+      const normalized = tag.startsWith("#") ? tag.slice(1) : tag;
+      if (normalized && !normalized.startsWith("[[")) {
+        tagSet.add(normalized);
+      }
+    });
+    const metadataCache = app == null ? void 0 : app.metadataCache;
+    const metaTags = (_a = metadataCache == null ? void 0 : metadataCache.getTags) == null ? void 0 : _a.call(metadataCache);
+    if (metaTags) {
+      Object.keys(metaTags).forEach((tag) => {
+        const normalized = tag.startsWith("#") ? tag.slice(1) : tag;
+        if (normalized) {
+          tagSet.add(normalized);
+        }
+      });
+    }
+    return Array.from(tagSet).sort((a, b) => a.localeCompare(b));
+  }, [tagManager, app]);
+  const allNoteLinks = (0, import_react3.useMemo)(() => {
+    var _a, _b, _c;
+    const fileSet = /* @__PURE__ */ new Set();
+    const files = (_c = (_b = (_a = app == null ? void 0 : app.vault) == null ? void 0 : _a.getFiles) == null ? void 0 : _b.call(_a)) != null ? _c : [];
+    files.forEach((file) => {
+      var _a2;
+      if (file.path === filePath) return;
+      const name = file.name || ((_a2 = file.path) == null ? void 0 : _a2.split("/").pop()) || "";
+      if (name) fileSet.add(name);
+    });
+    return Array.from(fileSet).sort((a, b) => a.localeCompare(b));
+  }, [app, filePath]);
+  (0, import_react3.useEffect)(() => {
+    const listener = () => {
+      setTags(tagManager.getTags(filePath));
+      forceUpdate((v) => v + 1);
+    };
+    tagManager.addListener(listener);
+    return () => tagManager.removeListener(listener);
+  }, [tagManager, filePath]);
+  const handleAddTag = (tag) => {
+    tagManager.addTag(filePath, tag);
+  };
+  const handleRemoveTag = (tag) => {
+    tagManager.removeTag(filePath, tag);
+  };
+  const quickAddTags = (0, import_react3.useMemo)(() => {
+    const existing = new Set(tags.map((t2) => t2.toLowerCase()));
+    return allHashTags.filter((tag) => !existing.has(tag.toLowerCase()) && !existing.has(`#${tag.toLowerCase()}`)).slice(0, 15);
+  }, [allHashTags, tags]);
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "lumina-tag-manager", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "lumina-tag-manager-header", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "lumina-tag-manager-title", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("svg", { xmlns: "http://www.w3.org/2000/svg", width: "20", height: "20", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("path", { d: "M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("line", { x1: "7", y1: "7", x2: "7.01", y2: "7" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h2", { children: t(locale, "manageTags") })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "lumina-tag-manager-filename", title: filePath, children: fileName })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "lumina-tag-manager-body", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "lumina-tag-section", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "lumina-tag-section-header", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h3", { children: t(locale, "tags") }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { className: "lumina-tag-count", children: tags.length })
+        ] }),
+        tags.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "lumina-tag-list-container", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
+          TagList,
+          {
+            tags,
+            maxVisible: 100,
+            onRemove: handleRemoveTag,
+            showCount: false
+          }
+        ) }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "lumina-no-tags", children: t(locale, "noTags") })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "lumina-tag-section lumina-tag-section-input", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h3", { children: t(locale, "addTag") }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "lumina-tag-hint", children: "Tapez # pour les tags, [[ pour les liens vers des notes" }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
+          TagInput,
+          {
+            existingTags: tags,
+            allTags: allHashTags,
+            allNoteLinks,
+            onAdd: handleAddTag,
+            locale
+          }
+        )
+      ] }),
+      quickAddTags.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "lumina-tag-section", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h3", { children: t(locale, "availableTags") }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "lumina-tag-quick-add", children: quickAddTags.map((tag) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(
+          "button",
+          {
+            className: "lumina-tag-quick-button",
+            onClick: () => handleAddTag(`#${tag}`),
+            title: t(locale, "clickToAdd"),
+            children: [
+              "+ #",
+              tag
+            ]
+          },
+          tag
+        )) })
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "lumina-tag-manager-footer", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { className: "lumina-btn-close", onClick: onClose, children: t(locale, "cancel") }) })
+  ] });
+};
+var TagManagerModal = class extends import_obsidian.Modal {
+  constructor(app, filePath, fileName, tagManager, locale, fromLightbox = false) {
+    super(app);
+    this.root = null;
+    this.filePath = filePath;
+    this.fileName = fileName;
+    this.tagManager = tagManager;
+    this.locale = locale;
+    this.fromLightbox = fromLightbox;
+  }
+  onOpen() {
+    const { contentEl, modalEl } = this;
+    contentEl.empty();
+    contentEl.addClass("lumina-tag-manager-modal");
+    modalEl.addClass("lumina-modal-no-overflow");
+    const container = contentEl.createDiv({ cls: "lumina-tag-manager-container" });
+    this.root = (0, import_client.createRoot)(container);
+    this.root.render(
+      import_react3.default.createElement(TagManagerContent, {
+        filePath: this.filePath,
+        fileName: this.fileName,
+        tagManager: this.tagManager,
+        locale: this.locale,
+        onClose: () => this.close(),
+        fromLightbox: this.fromLightbox,
+        app: this.app
+      })
+    );
+  }
+  onClose() {
+    var _a;
+    (_a = this.root) == null ? void 0 : _a.unmount();
+    this.root = null;
+    this.contentEl.empty();
+  }
+};
+var BatchTagContent = ({
+  filePaths,
+  tagManager,
+  locale,
+  onClose,
+  app
+}) => {
+  const [version, setVersion] = (0, import_react3.useState)(0);
+  const commonTags = (0, import_react3.useMemo)(() => {
+    return tagManager.getCommonTags(filePaths);
+  }, [tagManager, filePaths, version]);
+  (0, import_react3.useEffect)(() => {
+    const listener = () => setVersion((v) => v + 1);
+    tagManager.addListener(listener);
+    return () => tagManager.removeListener(listener);
+  }, [tagManager]);
+  const allHashTags = (0, import_react3.useMemo)(() => {
+    var _a;
+    const tagSet = /* @__PURE__ */ new Set();
+    tagManager.getAllTags().forEach((tag) => {
+      const normalized = tag.startsWith("#") ? tag.slice(1) : tag;
+      if (normalized && !normalized.startsWith("[[")) {
+        tagSet.add(normalized);
+      }
+    });
+    const metadataCache = app == null ? void 0 : app.metadataCache;
+    const metaTags = (_a = metadataCache == null ? void 0 : metadataCache.getTags) == null ? void 0 : _a.call(metadataCache);
+    if (metaTags) {
+      Object.keys(metaTags).forEach((tag) => {
+        const normalized = tag.startsWith("#") ? tag.slice(1) : tag;
+        if (normalized) {
+          tagSet.add(normalized);
+        }
+      });
+    }
+    return Array.from(tagSet).sort((a, b) => a.localeCompare(b));
+  }, [tagManager, app, version]);
+  const allNoteLinks = (0, import_react3.useMemo)(() => {
+    var _a, _b, _c;
+    const noteSet = /* @__PURE__ */ new Set();
+    const files = (_c = (_b = (_a = app == null ? void 0 : app.vault) == null ? void 0 : _a.getFiles) == null ? void 0 : _b.call(_a)) != null ? _c : [];
+    files.forEach((file) => {
+      var _a2;
+      const fullName = file.name || ((_a2 = file.path) == null ? void 0 : _a2.split("/").pop());
+      if (fullName) noteSet.add(fullName);
+    });
+    return Array.from(noteSet).sort((a, b) => a.localeCompare(b));
+  }, [app]);
+  const forceUpdate = () => setVersion((v) => v + 1);
+  const handleAddToAll = (tag) => {
+    filePaths.forEach((path) => tagManager.addTag(path, tag));
+    forceUpdate();
+  };
+  const handleRemoveFromAll = (tag) => {
+    filePaths.forEach((path) => tagManager.removeTag(path, tag));
+    forceUpdate();
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "lumina-batch-tag-manager", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "lumina-tag-manager-header", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "lumina-tag-manager-title", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("svg", { xmlns: "http://www.w3.org/2000/svg", width: "20", height: "20", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("path", { d: "M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("line", { x1: "7", y1: "7", x2: "7.01", y2: "7" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h2", { children: t(locale, "manageTags") })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("p", { className: "lumina-tag-manager-filename", children: [
+        filePaths.length,
+        " ",
+        t(locale, "selected")
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "lumina-tag-manager-body", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "lumina-tag-section", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "lumina-tag-section-header", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h3", { children: t(locale, "commonTags") }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { className: "lumina-tag-count", children: commonTags.length })
+        ] }),
+        commonTags.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "lumina-tag-list-container", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
+          TagList,
+          {
+            tags: commonTags,
+            maxVisible: 100,
+            onRemove: handleRemoveFromAll,
+            showCount: false
+          }
+        ) }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "lumina-no-tags", children: t(locale, "noTags") })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "lumina-tag-section lumina-tag-section-input", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h3", { children: t(locale, "addToAll") }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "lumina-tag-hint", children: "Tapez # pour les tags, [[ pour les liens vers des notes" }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
+          TagInput,
+          {
+            existingTags: commonTags,
+            allTags: allHashTags,
+            allNoteLinks,
+            onAdd: handleAddToAll,
+            locale
+          }
+        )
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "lumina-tag-section", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("h3", { children: [
+          t(locale, "tags"),
+          " par fichier"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "lumina-file-tag-list", children: filePaths.map((path) => {
+          const fileName = path.split("/").pop() || path;
+          const tags = tagManager.getTags(path);
+          return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "lumina-file-tag-item", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "lumina-file-tag-name", children: fileName }),
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
+              TagList,
+              {
+                tags,
+                maxVisible: 5,
+                showCount: true,
+                onRemove: (tag) => tagManager.removeTag(path, tag)
+              }
+            )
+          ] }, path);
+        }) })
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "lumina-tag-manager-footer", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { className: "lumina-btn-close", onClick: onClose, children: t(locale, "cancel") }) })
+  ] });
+};
+var BatchTagModal = class extends import_obsidian.Modal {
+  constructor(app, filePaths, tagManager, locale) {
+    super(app);
+    this.root = null;
+    this.filePaths = filePaths;
+    this.tagManager = tagManager;
+    this.locale = locale;
+  }
+  onOpen() {
+    const { contentEl, modalEl } = this;
+    contentEl.empty();
+    contentEl.addClass("lumina-batch-tag-modal");
+    modalEl.addClass("lumina-modal-no-overflow");
+    const container = contentEl.createDiv({ cls: "lumina-tag-manager-container" });
+    this.root = (0, import_client.createRoot)(container);
+    this.root.render(
+      import_react3.default.createElement(BatchTagContent, {
+        filePaths: this.filePaths,
+        tagManager: this.tagManager,
+        locale: this.locale,
+        onClose: () => this.close(),
+        app: this.app
+      })
+    );
+  }
+  onClose() {
+    var _a;
+    (_a = this.root) == null ? void 0 : _a.unmount();
+    this.root = null;
+    this.contentEl.empty();
+  }
+};
+
+// src/components/SearchBarWithTags.tsx
+var import_react4 = __toESM(require_react());
+var import_react_dom2 = __toESM(require_react_dom());
+var import_jsx_runtime4 = __toESM(require_jsx_runtime());
+function parseTokens(value) {
+  if (!value.trim()) return [];
+  const tokens = [];
+  const regex = /(\[\[[^\]]+\]\]|#\S+|\S+)/g;
+  let match;
+  while ((match = regex.exec(value)) !== null) {
+    const v = match[1];
+    let type = "keyword";
+    if (v.startsWith("[[") && v.endsWith("]]")) {
+      type = "link";
+    } else if (v.startsWith("#")) {
+      type = "tag";
+    }
+    tokens.push({ value: v, type });
+  }
+  return tokens;
+}
+function tokensToString(tokens) {
+  return tokens.map((t2) => t2.value).join(" ");
+}
+var SearchBarWithTags = ({
+  value,
+  onChange,
+  searchMode,
+  onSearchModeChange,
+  allHashTags,
+  allNoteLinks,
+  locale,
+  placeholder
+}) => {
+  const [inputValue, setInputValue] = (0, import_react4.useState)("");
+  const [suggestions, setSuggestions] = (0, import_react4.useState)([]);
+  const [showSuggestions, setShowSuggestions] = (0, import_react4.useState)(false);
+  const [selectedIndex, setSelectedIndex] = (0, import_react4.useState)(-1);
+  const [dropdownStyle, setDropdownStyle] = (0, import_react4.useState)(null);
+  const inputRef = (0, import_react4.useRef)(null);
+  const containerRef = (0, import_react4.useRef)(null);
+  const wrapperRef = (0, import_react4.useRef)(null);
+  const dropdownRef = (0, import_react4.useRef)(null);
+  const isAddingRef = (0, import_react4.useRef)(false);
+  const tokens = (0, import_react4.useMemo)(() => parseTokens(value), [value]);
+  const allItems = (0, import_react4.useMemo)(() => {
+    return [...allHashTags, ...allNoteLinks].sort();
+  }, [allHashTags, allNoteLinks]);
+  (0, import_react4.useLayoutEffect)(() => {
+    if (!showSuggestions || !wrapperRef.current || suggestions.length === 0) {
+      setDropdownStyle(null);
+      return;
+    }
+    const rect = wrapperRef.current.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const spaceBelow = vh - rect.bottom - 10;
+    const spaceAbove = rect.top - 10;
+    const dropdownHeight = Math.min(280, suggestions.length * 40);
+    let top;
+    let maxHeight;
+    if (spaceBelow >= dropdownHeight || spaceBelow >= spaceAbove) {
+      top = rect.bottom + 4;
+      maxHeight = Math.min(280, spaceBelow);
+    } else {
+      top = rect.top - Math.min(dropdownHeight, spaceAbove) - 4;
+      maxHeight = Math.min(280, spaceAbove);
+    }
+    setDropdownStyle({
+      position: "fixed",
+      top,
+      left: rect.left,
+      width: rect.width,
+      maxHeight,
+      zIndex: 1e4
+    });
+  }, [showSuggestions, suggestions.length]);
+  (0, import_react4.useEffect)(() => {
+    const handleClickOutside = (e) => {
+      if (isAddingRef.current) return;
+      const target = e.target;
+      if (containerRef.current && containerRef.current.contains(target)) return;
+      if (dropdownRef.current && dropdownRef.current.contains(target)) return;
+      setShowSuggestions(false);
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+  const getFilteredSuggestions = (0, import_react4.useCallback)((input, currentTokens) => {
+    const existing = new Set(currentTokens.map((t2) => t2.value.toLowerCase()));
+    const lower = input.toLowerCase();
+    let filtered = [];
+    if (!input) {
+      filtered = allItems.filter((item) => !existing.has(item.toLowerCase()));
+    } else if (input.startsWith("#")) {
+      const search = lower.slice(1);
+      filtered = allHashTags.filter((tag) => tag.toLowerCase().includes(search)).filter((tag) => !existing.has(tag.toLowerCase()));
+    } else if (input.startsWith("[")) {
+      const search = lower.replace(/[\[\]]/g, "");
+      filtered = allNoteLinks.filter((link) => link.toLowerCase().includes(search)).filter((link) => !existing.has(link.toLowerCase()));
+    } else {
+      filtered = allItems.filter((item) => item.toLowerCase().includes(lower)).filter((item) => !existing.has(item.toLowerCase()));
+    }
+    return filtered.slice(0, 30);
+  }, [allItems, allHashTags, allNoteLinks]);
+  const updateSuggestions = (0, import_react4.useCallback)((input) => {
+    const filtered = getFilteredSuggestions(input, tokens);
+    setSuggestions(filtered);
+  }, [getFilteredSuggestions, tokens]);
+  (0, import_react4.useEffect)(() => {
+    if (showSuggestions) {
+      updateSuggestions(inputValue);
+    }
+  }, [tokens, showSuggestions, inputValue, updateSuggestions]);
+  const handleFocus = () => {
+    updateSuggestions(inputValue);
+    setShowSuggestions(true);
+  };
+  const handleInputChange = (e) => {
+    const newValue = e.target.value;
+    setInputValue(newValue);
+    updateSuggestions(newValue);
+    setShowSuggestions(true);
+    setSelectedIndex(-1);
+  };
+  const addToken = (0, import_react4.useCallback)((tokenValue) => {
+    const trimmed = tokenValue.trim();
+    if (!trimmed) return;
+    const existing = tokens.map((t2) => t2.value.toLowerCase());
+    if (existing.includes(trimmed.toLowerCase())) return;
+    isAddingRef.current = true;
+    let type = "keyword";
+    if (trimmed.startsWith("[[") && trimmed.endsWith("]]")) {
+      type = "link";
+    } else if (trimmed.startsWith("#")) {
+      type = "tag";
+    }
+    const newTokens = [...tokens, { value: trimmed, type }];
+    const newValue = tokensToString(newTokens);
+    onChange(newValue);
+    setInputValue("");
+    setSelectedIndex(-1);
+    setTimeout(() => {
+      var _a;
+      setShowSuggestions(true);
+      isAddingRef.current = false;
+      (_a = inputRef.current) == null ? void 0 : _a.focus();
+    }, 50);
+  }, [tokens, onChange]);
+  const removeToken = (index) => {
+    var _a;
+    const newTokens = tokens.filter((_, i) => i !== index);
+    onChange(tokensToString(newTokens));
+    (_a = inputRef.current) == null ? void 0 : _a.focus();
+  };
+  const selectSuggestion = (0, import_react4.useCallback)((suggestion) => {
+    isAddingRef.current = true;
+    addToken(suggestion);
+  }, [addToken]);
+  const handleKeyDown = (e) => {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setSelectedIndex((prev) => Math.min(prev + 1, suggestions.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setSelectedIndex((prev) => Math.max(prev - 1, -1));
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (selectedIndex >= 0 && suggestions[selectedIndex]) {
+        selectSuggestion(suggestions[selectedIndex]);
+      } else if (inputValue.trim()) {
+        addToken(inputValue);
+      }
+    } else if (e.key === "Escape") {
+      setShowSuggestions(false);
+    } else if (e.key === " " && inputValue.trim() && !inputValue.startsWith("[")) {
+      e.preventDefault();
+      addToken(inputValue);
+    }
+  };
+  const clearAll = () => {
+    var _a;
+    onChange("");
+    setInputValue("");
+    setSuggestions(allItems.slice(0, 50));
+    (_a = inputRef.current) == null ? void 0 : _a.focus();
+  };
+  const suggestionClass = (idx) => "lumina-search-suggestion" + (idx === selectedIndex ? " selected" : "");
+  const tokenClass = (type) => `lumina-search-token lumina-search-token-${type}`;
+  const toggleSearchMode = () => {
+    onSearchModeChange(searchMode === "OR" ? "AND" : "OR");
+  };
+  const suggestionsDropdown = showSuggestions && suggestions.length > 0 && dropdownStyle && (0, import_react_dom2.createPortal)(
+    /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+      "div",
+      {
+        ref: dropdownRef,
+        className: "lumina-search-suggestions lumina-search-suggestions-portal",
+        style: dropdownStyle,
+        children: suggestions.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+          "div",
+          {
+            className: suggestionClass(i),
+            onMouseDown: (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            },
+            onClick: (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              selectSuggestion(s);
+            },
+            onMouseEnter: () => setSelectedIndex(i),
+            children: s
+          },
+          i
+        ))
+      }
+    ),
+    document.body
+  );
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "lumina-search-container", ref: containerRef, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "lumina-search-row", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "lumina-search-tokens-wrapper", ref: wrapperRef, onClick: () => {
+        var _a;
+        return (_a = inputRef.current) == null ? void 0 : _a.focus();
+      }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "lumina-search-tokens", children: [
+          tokens.map((token, i) => /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("span", { className: tokenClass(token.type), children: [
+            token.value,
+            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+              "button",
+              {
+                type: "button",
+                className: "lumina-search-token-remove",
+                onClick: (e) => {
+                  e.stopPropagation();
+                  removeToken(i);
+                },
+                "aria-label": "Remove",
+                children: "\xD7"
+              }
+            )
+          ] }, i)),
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+            "input",
+            {
+              ref: inputRef,
+              type: "text",
+              value: inputValue,
+              onChange: handleInputChange,
+              onKeyDown: handleKeyDown,
+              onFocus: handleFocus,
+              placeholder: tokens.length === 0 ? placeholder || t(locale, "searchPlaceholder") : "",
+              className: "lumina-search-input"
+            }
+          )
+        ] }),
+        (tokens.length > 0 || inputValue) && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("button", { className: "lumina-search-clear", onClick: clearAll, title: "Clear all", children: "\xD7" })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+        "button",
+        {
+          className: `lumina-mode-toggle-btn ${searchMode.toLowerCase()}`,
+          onClick: toggleSearchMode,
+          title: searchMode === "OR" ? "Match any tag" : "Match all tags",
+          children: searchMode
+        }
+      )
+    ] }),
+    suggestionsDropdown
+  ] });
+};
+
+// src/components/PhotoGallery.tsx
+var import_jsx_runtime5 = __toESM(require_jsx_runtime());
 var IMG_EXT = ["jpg", "jpeg", "png", "gif", "webp", "svg", "bmp", "tiff", "tif", "ico", "avif", "apng"];
 var VIDEO_EXT = ["mp4", "webm", "mov", "avi", "mkv", "ogv", "m4v"];
 var GAP = 10;
@@ -25099,15 +26644,24 @@ var DEFAULT_SETTINGS = {
   zoom: 200,
   layout: "justified",
   search: "",
+  searchMode: "OR",
   showNames: false,
+  showTags: false,
   showPhotos: true,
   showVideos: false,
+  showOther: false,
+  showAllFiles: false,
   slideshowIntervalSec: 0,
   slideshowInactivitySec: 10,
-  toolbarPinned: false
+  toolbarPinned: false,
+  detailSortField: "name",
+  detailSortAsc: true
 };
 function getMediaType(ext) {
-  return VIDEO_EXT.includes(ext.toLowerCase()) ? "video" : "image";
+  const lowerExt = ext.toLowerCase();
+  if (IMG_EXT.includes(lowerExt)) return "image";
+  if (VIDEO_EXT.includes(lowerExt)) return "video";
+  return "other";
 }
 function isGif(path) {
   return path.toLowerCase().endsWith(".gif");
@@ -25143,93 +26697,113 @@ var PhotoGalleryWidget = ({
   const stateId = instanceId || "photo-gallery";
   const app = api.getObsidianApp();
   const locale = api.getLocale();
-  const [settings, setSettings] = (0, import_react.useState)(DEFAULT_SETTINGS);
-  const [allImages, setAllImages] = (0, import_react.useState)([]);
-  const [filteredImages, setFilteredImages] = (0, import_react.useState)([]);
-  const [layoutData, setLayoutData] = (0, import_react.useState)([]);
-  const scrollRef = (0, import_react.useRef)(0);
-  const [targetScroll, setTargetScroll] = (0, import_react.useState)(0);
-  const scrollRefX = (0, import_react.useRef)(0);
-  const [targetScrollX, setTargetScrollX] = (0, import_react.useState)(0);
-  const startXRef = (0, import_react.useRef)(0);
-  const startScrollXRef = (0, import_react.useRef)(0);
-  const panoramaTotalWidthRef = (0, import_react.useRef)(0);
-  const [selection, setSelection] = (0, import_react.useState)(/* @__PURE__ */ new Set());
-  const [isEditMode, setIsEditMode] = (0, import_react.useState)(false);
-  const [lightboxOpen, setLightboxOpen] = (0, import_react.useState)(false);
-  const [lightboxIndex, setLightboxIndex] = (0, import_react.useState)(0);
-  const [lightboxEmbed, setLightboxEmbed] = (0, import_react.useState)(null);
-  const [lbUiVisible, setLbUiVisible] = (0, import_react.useState)(true);
-  const [lbZoom, setLbZoom] = (0, import_react.useState)(1);
-  const [lbPan, setLbPan] = (0, import_react.useState)({ x: 0, y: 0 });
-  const [lbDragging, setLbDragging] = (0, import_react.useState)(false);
-  const [folderPopup, setFolderPopup] = (0, import_react.useState)(false);
-  const [sortPopup, setSortPopup] = (0, import_react.useState)(false);
-  const [searchExpanded, setSearchExpanded] = (0, import_react.useState)(false);
-  const [helpModal, setHelpModal] = (0, import_react.useState)(false);
-  const [noteModal, setNoteModal] = (0, import_react.useState)(false);
-  const [noteSearch, setNoteSearch] = (0, import_react.useState)("");
-  const [folderSearch, setFolderSearch] = (0, import_react.useState)("");
-  const [containerWidth, setContainerWidth] = (0, import_react.useState)(0);
-  const [containerHeight, setContainerHeight] = (0, import_react.useState)(0);
-  const [compact, setCompact] = (0, import_react.useState)(false);
-  const [extraCompact, setExtraCompact] = (0, import_react.useState)(false);
-  const [isSlideshowActive, setIsSlideshowActive] = (0, import_react.useState)(false);
-  const [slideshowIndex, setSlideshowIndex] = (0, import_react.useState)(0);
-  const [slideshowCountdown, setSlideshowCountdown] = (0, import_react.useState)(0);
-  const lastActivityRef = (0, import_react.useRef)(Date.now());
-  const lastSelectedIndexRef = (0, import_react.useRef)(-1);
-  const slideshowIntervalRef = (0, import_react.useRef)(null);
-  const inactivityCheckRef = (0, import_react.useRef)(null);
-  const layoutDataRef = (0, import_react.useRef)([]);
-  const slideshowIndexRef = (0, import_react.useRef)(0);
-  const isSlideshowActiveRef = (0, import_react.useRef)(false);
-  const containerRef = (0, import_react.useRef)(null);
-  const canvasRef = (0, import_react.useRef)(null);
-  const cacheRef = (0, import_react.useRef)(/* @__PURE__ */ new Map());
-  const [layoutVersion, setLayoutVersion] = (0, import_react.useState)(0);
-  const velocityRef = (0, import_react.useRef)(0);
-  const lastYRef = (0, import_react.useRef)(0);
-  const lastTimeRef = (0, import_react.useRef)(0);
-  const isDraggingRef = (0, import_react.useRef)(false);
-  const hasMovedRef = (0, import_react.useRef)(false);
-  const isPointerDownRef = (0, import_react.useRef)(false);
-  const startYRef = (0, import_react.useRef)(0);
-  const startScrollRef = (0, import_react.useRef)(0);
-  const lbZoomRef = (0, import_react.useRef)(1);
-  (0, import_react.useEffect)(() => {
+  const tagManager = api.getTagManager();
+  const [settings, setSettings] = (0, import_react5.useState)(DEFAULT_SETTINGS);
+  const [allImages, setAllImages] = (0, import_react5.useState)([]);
+  const [filteredImages, setFilteredImages] = (0, import_react5.useState)([]);
+  const [layoutData, setLayoutData] = (0, import_react5.useState)([]);
+  const scrollRef = (0, import_react5.useRef)(0);
+  const [targetScroll, setTargetScroll] = (0, import_react5.useState)(0);
+  const scrollRefX = (0, import_react5.useRef)(0);
+  const [targetScrollX, setTargetScrollX] = (0, import_react5.useState)(0);
+  const startXRef = (0, import_react5.useRef)(0);
+  const startScrollXRef = (0, import_react5.useRef)(0);
+  const panoramaTotalWidthRef = (0, import_react5.useRef)(0);
+  const [selection, setSelection] = (0, import_react5.useState)(/* @__PURE__ */ new Set());
+  const [isEditMode, setIsEditMode] = (0, import_react5.useState)(false);
+  const [lightboxOpen, setLightboxOpen] = (0, import_react5.useState)(false);
+  const [lightboxIndex, setLightboxIndex] = (0, import_react5.useState)(0);
+  const [lightboxEmbed, setLightboxEmbed] = (0, import_react5.useState)(null);
+  const [lbUiVisible, setLbUiVisible] = (0, import_react5.useState)(true);
+  const [lbZoom, setLbZoom] = (0, import_react5.useState)(1);
+  const [lbPan, setLbPan] = (0, import_react5.useState)({ x: 0, y: 0 });
+  const [lbDragging, setLbDragging] = (0, import_react5.useState)(false);
+  const [folderPopup, setFolderPopup] = (0, import_react5.useState)(false);
+  const [sortPopup, setSortPopup] = (0, import_react5.useState)(false);
+  const [searchExpanded, setSearchExpanded] = (0, import_react5.useState)(false);
+  const [helpModal, setHelpModal] = (0, import_react5.useState)(false);
+  const [noteModal, setNoteModal] = (0, import_react5.useState)(false);
+  const [noteSearch, setNoteSearch] = (0, import_react5.useState)("");
+  const [folderSearch, setFolderSearch] = (0, import_react5.useState)("");
+  const [containerWidth, setContainerWidth] = (0, import_react5.useState)(0);
+  const [containerHeight, setContainerHeight] = (0, import_react5.useState)(0);
+  const [compact, setCompact] = (0, import_react5.useState)(false);
+  const [extraCompact, setExtraCompact] = (0, import_react5.useState)(false);
+  const [isSlideshowActive, setIsSlideshowActive] = (0, import_react5.useState)(false);
+  const [slideshowIndex, setSlideshowIndex] = (0, import_react5.useState)(0);
+  const [slideshowCountdown, setSlideshowCountdown] = (0, import_react5.useState)(0);
+  const [contextMenu, setContextMenu] = (0, import_react5.useState)(null);
+  const [availableHashTags, setAvailableHashTags] = (0, import_react5.useState)([]);
+  const [availableNoteLinks, setAvailableNoteLinks] = (0, import_react5.useState)([]);
+  const lastActivityRef = (0, import_react5.useRef)(Date.now());
+  const lastSelectedIndexRef = (0, import_react5.useRef)(-1);
+  const slideshowIntervalRef = (0, import_react5.useRef)(null);
+  const inactivityCheckRef = (0, import_react5.useRef)(null);
+  const layoutDataRef = (0, import_react5.useRef)([]);
+  const slideshowIndexRef = (0, import_react5.useRef)(0);
+  const isSlideshowActiveRef = (0, import_react5.useRef)(false);
+  const containerRef = (0, import_react5.useRef)(null);
+  const canvasRef = (0, import_react5.useRef)(null);
+  const cacheRef = (0, import_react5.useRef)(/* @__PURE__ */ new Map());
+  const [layoutVersion, setLayoutVersion] = (0, import_react5.useState)(0);
+  const velocityRef = (0, import_react5.useRef)(0);
+  const lastYRef = (0, import_react5.useRef)(0);
+  const lastTimeRef = (0, import_react5.useRef)(0);
+  const isDraggingRef = (0, import_react5.useRef)(false);
+  const hasMovedRef = (0, import_react5.useRef)(false);
+  const isPointerDownRef = (0, import_react5.useRef)(false);
+  const startYRef = (0, import_react5.useRef)(0);
+  const startScrollRef = (0, import_react5.useRef)(0);
+  const lbZoomRef = (0, import_react5.useRef)(1);
+  (0, import_react5.useEffect)(() => {
     lbZoomRef.current = lbZoom;
   }, [lbZoom]);
-  const lbXRef = (0, import_react.useRef)(0);
-  const lbYRef = (0, import_react.useRef)(0);
-  const lbDraggingRef = (0, import_react.useRef)(false);
-  const lbPointerDownRef = (0, import_react.useRef)(false);
-  const lbStartXRef = (0, import_react.useRef)(0);
-  const lbStartYRef = (0, import_react.useRef)(0);
-  const lbStartPanRef = (0, import_react.useRef)({ x: 0, y: 0 });
-  const lightboxViewerRef = (0, import_react.useRef)(null);
-  const saveTimeoutRef = (0, import_react.useRef)(null);
-  const rafRef = (0, import_react.useRef)(0);
-  const overlayContentRef = (0, import_react.useRef)(null);
-  const countdownIntervalRef = (0, import_react.useRef)(null);
-  const galMainRef = (0, import_react.useRef)(null);
-  const videoHoverTimeoutRef = (0, import_react.useRef)(null);
-  const nameTooltipTimeoutRef = (0, import_react.useRef)(null);
-  const [nameTooltip, setNameTooltip] = (0, import_react.useState)(null);
-  const [toolbarVisible, setToolbarVisible] = (0, import_react.useState)(true);
-  const toolbarHideTimeoutRef = (0, import_react.useRef)(null);
-  const lbUiHideTimeoutRef = (0, import_react.useRef)(null);
-  const searchBtnRef = (0, import_react.useRef)(null);
-  const folderBtnRef = (0, import_react.useRef)(null);
-  const sortBtnRef = (0, import_react.useRef)(null);
-  const [searchPopupStyle, setSearchPopupStyle] = (0, import_react.useState)(null);
-  const [folderPopupStyle, setFolderPopupStyle] = (0, import_react.useState)(null);
-  const [sortPopupStyle, setSortPopupStyle] = (0, import_react.useState)(null);
-  const [timelineVisible, setTimelineVisible] = (0, import_react.useState)(false);
-  const timelineHideTimeoutRef = (0, import_react.useRef)(null);
-  const timelineScrubRef = (0, import_react.useRef)(null);
-  const [isFullscreen, setIsFullscreen] = (0, import_react.useState)(false);
-  (0, import_react.useEffect)(() => {
+  const lbXRef = (0, import_react5.useRef)(0);
+  const lbYRef = (0, import_react5.useRef)(0);
+  const lbDraggingRef = (0, import_react5.useRef)(false);
+  const lbPointerDownRef = (0, import_react5.useRef)(false);
+  const lbStartXRef = (0, import_react5.useRef)(0);
+  const lbStartYRef = (0, import_react5.useRef)(0);
+  const lbStartPanRef = (0, import_react5.useRef)({ x: 0, y: 0 });
+  const lightboxViewerRef = (0, import_react5.useRef)(null);
+  const lightboxVideoRef = (0, import_react5.useRef)(null);
+  const [isPipActive, setIsPipActive] = (0, import_react5.useState)(false);
+  const saveTimeoutRef = (0, import_react5.useRef)(null);
+  const lastTapRef = (0, import_react5.useRef)(null);
+  const rafRef = (0, import_react5.useRef)(0);
+  const overlayContentRef = (0, import_react5.useRef)(null);
+  const countdownIntervalRef = (0, import_react5.useRef)(null);
+  const galMainRef = (0, import_react5.useRef)(null);
+  const detailViewRef = (0, import_react5.useRef)(null);
+  const [detailScrollInfo, setDetailScrollInfo] = (0, import_react5.useState)({ scrollTop: 0, scrollHeight: 1, clientHeight: 1 });
+  const videoHoverTimeoutRef = (0, import_react5.useRef)(null);
+  const nameTooltipTimeoutRef = (0, import_react5.useRef)(null);
+  const [nameTooltip, setNameTooltip] = (0, import_react5.useState)(null);
+  const [toolbarVisible, setToolbarVisible] = (0, import_react5.useState)(true);
+  const toolbarHideTimeoutRef = (0, import_react5.useRef)(null);
+  const lbUiHideTimeoutRef = (0, import_react5.useRef)(null);
+  const [pluginSettings, setPluginSettings] = (0, import_react5.useState)(api.getPluginSettings());
+  (0, import_react5.useEffect)(() => {
+    const refreshSettings = () => setPluginSettings(api.getPluginSettings());
+    const onSettingsChanged = () => refreshSettings();
+    window.addEventListener("lumina:settings-changed", onSettingsChanged);
+    document.addEventListener("visibilitychange", refreshSettings);
+    return () => {
+      window.removeEventListener("lumina:settings-changed", onSettingsChanged);
+      document.removeEventListener("visibilitychange", refreshSettings);
+    };
+  }, [api]);
+  const searchBtnRef = (0, import_react5.useRef)(null);
+  const folderBtnRef = (0, import_react5.useRef)(null);
+  const sortBtnRef = (0, import_react5.useRef)(null);
+  const [searchPopupStyle, setSearchPopupStyle] = (0, import_react5.useState)(null);
+  const [folderPopupStyle, setFolderPopupStyle] = (0, import_react5.useState)(null);
+  const [sortPopupStyle, setSortPopupStyle] = (0, import_react5.useState)(null);
+  const [timelineVisible, setTimelineVisible] = (0, import_react5.useState)(false);
+  const timelineHideTimeoutRef = (0, import_react5.useRef)(null);
+  const timelineScrubRef = (0, import_react5.useRef)(null);
+  const [isFullscreen, setIsFullscreen] = (0, import_react5.useState)(false);
+  (0, import_react5.useEffect)(() => {
     const checkFullscreen = () => {
       setIsFullscreen(!!document.fullscreenElement);
     };
@@ -25244,7 +26818,75 @@ var PhotoGalleryWidget = ({
     };
   }, []);
   const popupZIndex = isFullscreen ? 2e6 : 10001;
-  const getVisibleBounds = (0, import_react.useCallback)(() => {
+  (0, import_react5.useEffect)(() => {
+    var _a2, _b2, _c2, _d2, _e2;
+    if (!app) return void 0;
+    const metadataCache = app.metadataCache;
+    const vault = app.vault;
+    const normalizeHash = (tag) => {
+      const trimmed = tag.trim();
+      if (!trimmed) return "";
+      return trimmed.startsWith("#") ? trimmed.slice(1) : trimmed;
+    };
+    const updateHashTags = () => {
+      var _a3;
+      const tagSet = /* @__PURE__ */ new Set();
+      tagManager.getAllTags().forEach((tag) => tagSet.add(tag));
+      const metaTags = (_a3 = metadataCache == null ? void 0 : metadataCache.getTags) == null ? void 0 : _a3.call(metadataCache);
+      if (metaTags) {
+        Object.keys(metaTags).forEach((tag) => {
+          const normalized = normalizeHash(tag);
+          if (normalized) {
+            tagSet.add(normalized);
+          }
+        });
+      }
+      setAvailableHashTags(
+        Array.from(tagSet).sort((a, b) => a.localeCompare(b, locale, { sensitivity: "base" }))
+      );
+    };
+    const updateNoteLinks = () => {
+      var _a3, _b3, _c3;
+      const files = (_c3 = (_b3 = (_a3 = app.vault).getMarkdownFiles) == null ? void 0 : _b3.call(_a3)) != null ? _c3 : app.vault.getFiles().filter((f) => f.path.toLowerCase().endsWith(".md"));
+      const noteSet = /* @__PURE__ */ new Set();
+      files.forEach((file) => {
+        var _a4;
+        const pathWithoutExt = file.path.replace(/\.md$/i, "");
+        const baseName = (_a4 = file.path.split("/").pop()) == null ? void 0 : _a4.replace(/\.md$/i, "");
+        if (pathWithoutExt) noteSet.add(pathWithoutExt);
+        if (baseName) noteSet.add(baseName);
+      });
+      setAvailableNoteLinks(
+        Array.from(noteSet).sort((a, b) => a.localeCompare(b, locale, { sensitivity: "base" }))
+      );
+    };
+    updateHashTags();
+    updateNoteLinks();
+    const tagListener = () => updateHashTags();
+    tagManager.addListener(tagListener);
+    const onCacheUpdate = () => {
+      updateHashTags();
+      updateNoteLinks();
+    };
+    (_a2 = metadataCache == null ? void 0 : metadataCache.on) == null ? void 0 : _a2.call(metadataCache, "changed", onCacheUpdate);
+    (_b2 = metadataCache == null ? void 0 : metadataCache.on) == null ? void 0 : _b2.call(metadataCache, "resolve", onCacheUpdate);
+    const onCreate = () => updateNoteLinks();
+    const onDelete = () => updateNoteLinks();
+    const onRename = () => updateNoteLinks();
+    (_c2 = vault.on) == null ? void 0 : _c2.call(vault, "create", onCreate);
+    (_d2 = vault.on) == null ? void 0 : _d2.call(vault, "delete", onDelete);
+    (_e2 = vault.on) == null ? void 0 : _e2.call(vault, "rename", onRename);
+    return () => {
+      var _a3, _b3, _c3, _d3, _e3;
+      tagManager.removeListener(tagListener);
+      (_a3 = metadataCache == null ? void 0 : metadataCache.off) == null ? void 0 : _a3.call(metadataCache, "changed", onCacheUpdate);
+      (_b3 = metadataCache == null ? void 0 : metadataCache.off) == null ? void 0 : _b3.call(metadataCache, "resolve", onCacheUpdate);
+      (_c3 = vault.off) == null ? void 0 : _c3.call(vault, "create", onCreate);
+      (_d3 = vault.off) == null ? void 0 : _d3.call(vault, "delete", onDelete);
+      (_e3 = vault.off) == null ? void 0 : _e3.call(vault, "rename", onRename);
+    };
+  }, [app, locale, tagManager]);
+  const getVisibleBounds = (0, import_react5.useCallback)(() => {
     if (!containerRef.current) return null;
     const cr = containerRef.current.getBoundingClientRect();
     const vw = window.innerWidth;
@@ -25258,7 +26900,7 @@ var PhotoGalleryWidget = ({
       height: Math.min(cr.bottom, vh) - Math.max(cr.top, 0)
     };
   }, []);
-  (0, import_react.useLayoutEffect)(() => {
+  (0, import_react5.useLayoutEffect)(() => {
     if (!searchExpanded || !searchBtnRef.current) {
       setSearchPopupStyle(null);
       return;
@@ -25270,7 +26912,7 @@ var PhotoGalleryWidget = ({
     }
     const rect = searchBtnRef.current.getBoundingClientRect();
     const pad = 8;
-    const w = Math.min(220, bounds.width - 2 * pad);
+    const w = Math.min(450, bounds.width - 2 * pad);
     let left = rect.left;
     if (left + w > bounds.right - pad) left = bounds.right - w - pad;
     if (left < bounds.left + pad) left = bounds.left + pad;
@@ -25281,7 +26923,7 @@ var PhotoGalleryWidget = ({
     const maxHeight = Math.max(80, bounds.bottom - top - pad);
     setSearchPopupStyle({ position: "fixed", top, left, width: w, maxHeight, zIndex: popupZIndex, overflowY: "auto" });
   }, [searchExpanded, getVisibleBounds, popupZIndex]);
-  (0, import_react.useLayoutEffect)(() => {
+  (0, import_react5.useLayoutEffect)(() => {
     if (!folderPopup || !folderBtnRef.current) {
       setFolderPopupStyle(null);
       return;
@@ -25304,7 +26946,7 @@ var PhotoGalleryWidget = ({
     const maxHeight = Math.max(120, bounds.bottom - top - pad);
     setFolderPopupStyle({ position: "fixed", top, left, width: w, maxHeight, zIndex: popupZIndex, overflowY: "auto" });
   }, [folderPopup, getVisibleBounds, popupZIndex]);
-  (0, import_react.useLayoutEffect)(() => {
+  (0, import_react5.useLayoutEffect)(() => {
     if (!sortPopup || !sortBtnRef.current) {
       setSortPopupStyle(null);
       return;
@@ -25327,7 +26969,7 @@ var PhotoGalleryWidget = ({
     const maxHeight = Math.max(120, bounds.bottom - top - pad);
     setSortPopupStyle({ position: "fixed", top, left, width: w, maxHeight, zIndex: popupZIndex, overflowY: "auto", padding: 4 });
   }, [sortPopup, getVisibleBounds, popupZIndex]);
-  (0, import_react.useEffect)(() => {
+  (0, import_react5.useEffect)(() => {
     if (!searchExpanded && !folderPopup && !sortPopup) return;
     const handleOutside = (e) => {
       var _a2, _b2, _c2;
@@ -25346,8 +26988,17 @@ var PhotoGalleryWidget = ({
       doc.removeEventListener("touchstart", handleOutside);
     };
   }, [searchExpanded, folderPopup, sortPopup]);
-  (0, import_react.useEffect)(() => {
+  (0, import_react5.useEffect)(() => {
+    var _a2, _b2, _c2;
     let active = true;
+    const ps = api.getPluginSettings();
+    const pluginDefaults = {
+      layout: (_a2 = ps.defaultLayout) != null ? _a2 : DEFAULT_SETTINGS.layout,
+      zoom: (_b2 = ps.defaultZoom) != null ? _b2 : DEFAULT_SETTINGS.zoom,
+      showNames: (_c2 = ps.defaultShowNames) != null ? _c2 : DEFAULT_SETTINGS.showNames,
+      showPhotos: ps.defaultMediaFilter === "videos" ? false : true,
+      showVideos: ps.defaultMediaFilter === "photos" ? false : true
+    };
     api.loadWidgetState(stateId).then((saved) => {
       if (!active) return;
       const s = saved;
@@ -25356,14 +27007,16 @@ var PhotoGalleryWidget = ({
         if (loaded.layout === "panorama") {
           loaded.layout = "panorama-square";
         }
-        setSettings((prev) => ({ ...prev, ...loaded }));
+        setSettings((prev) => ({ ...prev, ...pluginDefaults, ...loaded }));
+      } else {
+        setSettings((prev) => ({ ...prev, ...pluginDefaults }));
       }
     });
     return () => {
       active = false;
     };
   }, [api, stateId]);
-  const saveState = (0, import_react.useCallback)(
+  const saveState = (0, import_react5.useCallback)(
     (immediate) => {
       const save = () => api.saveWidgetState(stateId, { settings });
       if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
@@ -25372,18 +27025,24 @@ var PhotoGalleryWidget = ({
     },
     [api, stateId, settings]
   );
-  const settingsRef = (0, import_react.useRef)(settings);
+  const settingsRef = (0, import_react5.useRef)(settings);
   settingsRef.current = settings;
-  (0, import_react.useEffect)(() => () => {
+  (0, import_react5.useEffect)(() => () => {
     if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
     api.saveWidgetState(stateId, { settings: settingsRef.current });
   }, [api, stateId]);
-  const refreshGallery = (0, import_react.useCallback)(() => {
+  const refreshGallery = (0, import_react5.useCallback)(() => {
     if (!(app == null ? void 0 : app.vault)) return;
     const files = app.vault.getFiles();
+    const taggedPaths = new Set(Object.keys(tagManager.getData()));
+    const wantAll = settingsRef.current.showAllFiles;
     const list = files.filter((f) => {
+      if (f.path.startsWith(".")) return false;
+      if (wantAll) return true;
       const ext = f.extension.toLowerCase();
-      return IMG_EXT.includes(ext) || VIDEO_EXT.includes(ext);
+      const isMedia = IMG_EXT.includes(ext) || VIDEO_EXT.includes(ext);
+      const isTagged = taggedPaths.has(f.path);
+      return isMedia || isTagged;
     }).map((f) => ({
       name: f.name,
       path: f.path,
@@ -25394,48 +27053,160 @@ var PhotoGalleryWidget = ({
       mediaType: getMediaType(f.extension)
     }));
     setAllImages(list);
-  }, [app, api]);
-  (0, import_react.useEffect)(() => {
+  }, [app, api, tagManager]);
+  const openBatchTagModal = (0, import_react5.useCallback)((paths) => {
+    if (!app || paths.length === 0) return;
+    const modal = new BatchTagModal(app, paths, tagManager, locale);
+    modal.open();
+  }, [app, tagManager, locale]);
+  const handleTagClick = (0, import_react5.useCallback)((tag) => {
+    var _a2, _b2, _c2, _d2;
+    if (!(app == null ? void 0 : app.vault)) return;
+    if (tag.startsWith("[[") && tag.endsWith("]]")) {
+      const linkName = tag.slice(2, -2).trim();
+      if (!linkName) return;
+      const files = app.vault.getFiles();
+      const targetFile = files.find(
+        (f) => f.name.toLowerCase() === linkName.toLowerCase() || f.name.toLowerCase() === `${linkName.toLowerCase()}.md` || f.path.replace(/\.[^/.]+$/, "").toLowerCase() === linkName.toLowerCase()
+      );
+      if (targetFile) {
+        const ext = targetFile.extension.toLowerCase();
+        if (IMG_EXT.includes(ext) || VIDEO_EXT.includes(ext)) {
+          const idx = filteredImages.findIndex((img) => img.path === targetFile.path);
+          if (idx >= 0) {
+            setLightboxIndex(idx);
+            setLightboxOpen(true);
+            setLightboxEmbed(null);
+          }
+        } else {
+          const obsidianApp = api.getObsidianApp();
+          if ((_a2 = obsidianApp == null ? void 0 : obsidianApp.workspace) == null ? void 0 : _a2.openLinkText) {
+            obsidianApp.workspace.openLinkText(linkName, "");
+          }
+        }
+      }
+    } else if (tag.startsWith("#")) {
+      const hashTag = tag.startsWith("#") ? tag : `#${tag}`;
+      setLightboxOpen(false);
+      setLightboxEmbed(null);
+      if (pluginSettings.tagClickAction === "obsidian") {
+        const obsidianApp = api.getObsidianApp();
+        if ((_b2 = obsidianApp == null ? void 0 : obsidianApp.internalPlugins) == null ? void 0 : _b2.getPluginById) {
+          const searchPlugin = obsidianApp.internalPlugins.getPluginById("global-search");
+          if ((_c2 = searchPlugin == null ? void 0 : searchPlugin.instance) == null ? void 0 : _c2.openGlobalSearch) {
+            searchPlugin.instance.openGlobalSearch(`tag:${hashTag}`);
+            return;
+          }
+        }
+        if ((_d2 = obsidianApp == null ? void 0 : obsidianApp.commands) == null ? void 0 : _d2.executeCommandById) {
+          obsidianApp.commands.executeCommandById("global-search:open");
+          return;
+        }
+      }
+      setSettings((s) => ({
+        ...s,
+        search: s.search ? `${s.search} ${hashTag}` : hashTag
+      }));
+    }
+  }, [app, api, filteredImages]);
+  (0, import_react5.useEffect)(() => {
     refreshGallery();
-  }, [refreshGallery]);
-  (0, import_react.useEffect)(() => {
+  }, [refreshGallery, settings.showAllFiles, settings.showOther]);
+  (0, import_react5.useEffect)(() => {
+    const tagListener = () => {
+      if (settings.showOther) {
+        refreshGallery();
+      }
+    };
+    tagManager.addListener(tagListener);
+    return () => tagManager.removeListener(tagListener);
+  }, [tagManager, refreshGallery, settings.showOther]);
+  (0, import_react5.useEffect)(() => {
     initWorker(api.getWorkerUrl());
   }, [api]);
-  (0, import_react.useEffect)(() => {
+  (0, import_react5.useEffect)(() => {
     const cache = cacheRef.current;
     const timeouts = [];
-    const BATCH = 3;
-    const DELAY_MS = 50;
-    filteredImages.forEach((imgData, i) => {
+    const BATCH = 5;
+    const DELAY_MS = 150;
+    const viewportCount = (() => {
+      if (!containerRef.current) return 20;
+      const { clientWidth, clientHeight } = containerRef.current;
+      const cols = Math.max(1, Math.floor(clientWidth / (settings.zoom + GAP)));
+      const rows = Math.max(1, Math.ceil(clientHeight / (settings.zoom + GAP)));
+      return cols * rows;
+    })();
+    const visible = filteredImages.slice(0, viewportCount);
+    const offscreen = filteredImages.slice(viewportCount);
+    const loadOne = (imgData) => {
+      if (cache.get(imgData.path)) return;
+      cache.set(imgData.path, "loading");
+      if (imgData.mediaType === "video") {
+        loadVideoThumbnail(imgData.url, imgData.path, (img) => {
+          cache.set(imgData.path, img);
+          setLayoutVersion((v) => v + 1);
+        }, () => {
+          cache.delete(imgData.path);
+        });
+      } else {
+        loadImage(imgData.url, imgData.path, (img) => {
+          cache.set(imgData.path, img);
+          setLayoutVersion((v) => v + 1);
+        }, () => {
+          cache.delete(imgData.path);
+        }, api.getWorkerUrl());
+      }
+    };
+    visible.forEach((imgData) => {
+      if (!cache.get(imgData.path)) loadOne(imgData);
+    });
+    offscreen.forEach((imgData, i) => {
       if (cache.get(imgData.path)) return;
       const t2 = setTimeout(() => {
         if (cache.get(imgData.path)) return;
-        cache.set(imgData.path, "loading");
-        if (imgData.mediaType === "video") {
-          loadVideoThumbnail(imgData.url, imgData.path, (img) => {
-            cache.set(imgData.path, img);
-            setLayoutVersion((v) => v + 1);
-          }, () => {
-            cache.delete(imgData.path);
-          });
-        } else {
-          loadImage(imgData.url, imgData.path, (img) => {
-            cache.set(imgData.path, img);
-            setLayoutVersion((v) => v + 1);
-          }, () => {
-            cache.delete(imgData.path);
-          }, api.getWorkerUrl());
-        }
+        loadOne(imgData);
       }, Math.floor(i / BATCH) * DELAY_MS);
       timeouts.push(t2);
     });
     return () => timeouts.forEach(clearTimeout);
-  }, [filteredImages, api]);
-  const sortedAndFiltered = (0, import_react.useMemo)(() => {
-    const query = (settings.search || "").toLowerCase();
+  }, [filteredImages, api, settings.zoom]);
+  const sortedAndFiltered = (0, import_react5.useMemo)(() => {
+    const rawQuery = settings.search || "";
+    const tagQueries = rawQuery.match(/#[\w\-/]+|\[\[[^\]]+\]\]/g) || [];
+    const textPart = rawQuery.replace(/#[\w\-/]+/g, "").replace(/\[\[[^\]]+\]\]/g, "").trim().toLowerCase();
+    const textTerms = textPart.split(/\s+/).filter((t2) => t2.length > 0);
     const inFolder = (img) => settings.includeAll || settings.folders.some((f) => img.path.startsWith(f));
-    const matchesSearch = (img) => !query || img.name.toLowerCase().includes(query);
-    const matchesMediaType = (img) => img.mediaType === "image" && settings.showPhotos || img.mediaType === "video" && settings.showVideos;
+    const matchesSearch = (img) => {
+      const imgNameLower = img.name.toLowerCase();
+      const fileTags = tagManager.getTags(img.path);
+      const fileTagsLower = fileTags.map((t2) => t2.toLowerCase());
+      const textMatches = textTerms.map((term) => imgNameLower.includes(term));
+      const tagMatches = tagQueries.map((query) => {
+        const queryLower = query.toLowerCase();
+        if (fileTagsLower.includes(queryLower)) return true;
+        if (query.startsWith("#")) {
+          const tagWithout = query.slice(1).toLowerCase();
+          return fileTagsLower.some(
+            (ft) => ft === `#${tagWithout}` || ft === tagWithout || ft.replace(/^#/, "") === tagWithout
+          );
+        }
+        if (query.startsWith("[[") && query.endsWith("]]")) {
+          const linkName = query.slice(2, -2).toLowerCase();
+          return fileTagsLower.some(
+            (ft) => ft === queryLower || ft === `[[${linkName}]]` || ft.replace(/^\[\[/, "").replace(/\]\]$/, "") === linkName
+          );
+        }
+        return false;
+      });
+      const allMatches = [...textMatches, ...tagMatches];
+      if (allMatches.length === 0) return true;
+      if (settings.searchMode === "AND") {
+        return allMatches.every((m) => m);
+      } else {
+        return allMatches.some((m) => m);
+      }
+    };
+    const matchesMediaType = (img) => settings.showAllFiles || img.mediaType === "image" && settings.showPhotos || img.mediaType === "video" && settings.showVideos || img.mediaType === "other" && settings.showOther;
     let list = allImages.filter(
       (img) => inFolder(img) && matchesSearch(img) && matchesMediaType(img)
     );
@@ -25455,16 +27226,16 @@ var PhotoGalleryWidget = ({
       return 0;
     });
     return list;
-  }, [allImages, settings.includeAll, settings.folders, settings.search, settings.sortBy, settings.showPhotos, settings.showVideos]);
-  (0, import_react.useEffect)(() => {
+  }, [allImages, settings.includeAll, settings.folders, settings.search, settings.sortBy, settings.showPhotos, settings.showVideos, settings.showOther, settings.showAllFiles, settings.searchMode, tagManager]);
+  (0, import_react5.useEffect)(() => {
     setFilteredImages(sortedAndFiltered);
   }, [sortedAndFiltered]);
   const isPanoramaLayout = settings.layout === "panorama-square" || settings.layout === "panorama-justified";
-  const panoramaBaseHeight = Math.max(100, (containerHeight || 400) - 2 * GAP - (settings.showNames ? 25 : 0));
+  const textH = settings.showNames ? 25 : 0;
+  const panoramaBaseHeight = Math.max(100, (containerHeight || 400) - 2 * GAP - textH);
   const panoramaRowHeight = Math.max(80, panoramaBaseHeight * (settings.zoom / 200));
   const rowHeight = isPanoramaLayout ? panoramaRowHeight : settings.zoom;
-  const textH = settings.showNames ? 25 : 0;
-  (0, import_react.useLayoutEffect)(() => {
+  (0, import_react5.useLayoutEffect)(() => {
     if (containerWidth <= 0 || filteredImages.length === 0) {
       setLayoutData([]);
       return;
@@ -25544,7 +27315,7 @@ var PhotoGalleryWidget = ({
     }
     setLayoutData(layout);
   }, [filteredImages, settings.layout, settings.zoom, settings.showNames, containerWidth, containerHeight, rowHeight, textH, layoutVersion]);
-  const timelineSections = (0, import_react.useMemo)(() => {
+  const timelineSections = (0, import_react5.useMemo)(() => {
     if (filteredImages.length === 0 || layoutData.length === 0 || isPanoramaLayout) return [];
     const sortBy = settings.sortBy;
     const sections = [];
@@ -25600,7 +27371,7 @@ var PhotoGalleryWidget = ({
     });
     return sections;
   }, [filteredImages, layoutData, settings.sortBy, isPanoramaLayout, locale]);
-  (0, import_react.useEffect)(() => {
+  (0, import_react5.useEffect)(() => {
     const updateWidth = (w) => {
       setContainerWidth(w);
       setCompact(w < 800);
@@ -25628,7 +27399,7 @@ var PhotoGalleryWidget = ({
       clearTimeout(t2);
     };
   }, []);
-  (0, import_react.useEffect)(() => {
+  (0, import_react5.useEffect)(() => {
     const main = galMainRef.current;
     if (!main) return;
     const updateHeight = () => {
@@ -25640,8 +27411,8 @@ var PhotoGalleryWidget = ({
     ro.observe(main);
     return () => ro.disconnect();
   }, []);
-  const canvasHeightRef = (0, import_react.useRef)(0);
-  (0, import_react.useEffect)(() => {
+  const canvasHeightRef = (0, import_react5.useRef)(0);
+  (0, import_react5.useEffect)(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d", { alpha: false });
@@ -25695,7 +27466,7 @@ var PhotoGalleryWidget = ({
               ctx.fillStyle = "#333";
               ctx.font = "14px sans-serif";
               ctx.textAlign = "center";
-              ctx.fillText("Chargement\u2026", rect.width / 2, rect.height / 2);
+              ctx.fillText(t(locale, "loading"), rect.width / 2, rect.height / 2);
             } else if (cached && cached !== "loading") {
               const { w: iw, h: ih } = getImageDimensions(cached);
               const r = Math.min(rect.width / iw, rect.height / ih);
@@ -25714,6 +27485,7 @@ var PhotoGalleryWidget = ({
         return;
       }
       layoutData.forEach((layout, i) => {
+        var _a2;
         const x = isPanorama ? layout.x - scrollXVal : layout.x;
         const y = isPanorama ? layout.y : layout.y - scrollVal;
         if (isPanorama) {
@@ -25765,10 +27537,19 @@ var PhotoGalleryWidget = ({
         } else if (imgData.mediaType === "video") {
           ctx.fillStyle = "#111";
           ctx.fillRect(x, y, w, h);
+        } else if (imgData.mediaType === "other") {
+          ctx.fillStyle = "#1a1a2e";
+          ctx.fillRect(x, y, w, h);
+          const ext = ((_a2 = imgData.name.split(".").pop()) == null ? void 0 : _a2.toUpperCase()) || "FILE";
+          ctx.fillStyle = "#6366f1";
+          ctx.font = `bold ${Math.min(w / 4, 24)}px sans-serif`;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(ext.substring(0, 4), x + w / 2, y + h / 2);
         }
         ctx.restore();
         if (isSelected) {
-          ctx.strokeStyle = isEditMode ? "#ff4444" : "var(--gal-accent, #0ea5e9)";
+          ctx.strokeStyle = isEditMode ? "#ff4444" : getComputedStyle(canvasRef.current).getPropertyValue("--gal-accent").trim() || "#0ea5e9";
           ctx.lineWidth = 4;
           ctx.strokeRect(x + 2, y + 2, w - 4, h - 4);
           ctx.fillStyle = "rgba(0, 210, 255, 0.2)";
@@ -25793,8 +27574,8 @@ var PhotoGalleryWidget = ({
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [targetScroll, targetScrollX, layoutData, filteredImages, selection, isEditMode, settings.showNames, settings.layout, isSlideshowActive, slideshowIndex]);
-  const clampScroll = (0, import_react.useCallback)(() => {
+  }, [targetScroll, targetScrollX, layoutData, filteredImages, selection, isEditMode, settings.showNames, settings.showTags, settings.layout, isSlideshowActive, slideshowIndex, tagManager]);
+  const clampScroll = (0, import_react5.useCallback)(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const rect = canvas.getBoundingClientRect();
@@ -25809,15 +27590,19 @@ var PhotoGalleryWidget = ({
     }
   }, [layoutData, textH, settings.layout]);
   const canShowTimeline = !isPanoramaLayout && !isSlideshowActive && timelineSections.length >= 1 && ["mtime-desc", "mtime-asc", "dateTaken-desc", "ctime-desc", "type-asc", "name-asc", "size-desc"].includes(settings.sortBy);
-  const { maxScroll, totalContentHeight } = (0, import_react.useMemo)(() => {
+  const { maxScroll, totalContentHeight } = (0, import_react5.useMemo)(() => {
+    if (settings.layout === "detail") {
+      const max2 = Math.max(0, detailScrollInfo.scrollHeight - detailScrollInfo.clientHeight);
+      return { maxScroll: max2, totalContentHeight: Math.max(1, detailScrollInfo.scrollHeight) };
+    }
     if (isPanoramaLayout || layoutData.length === 0) return { maxScroll: 0, totalContentHeight: 1 };
     const last = layoutData[layoutData.length - 1];
     if (!last) return { maxScroll: 0, totalContentHeight: 1 };
     const total = last.y + last.h + GAP + textH;
     const max = Math.max(0, total - (containerHeight || 400));
     return { maxScroll: max, totalContentHeight: total };
-  }, [layoutData, textH, containerHeight, isPanoramaLayout]);
-  const handleTimelineZonePointerMove = (0, import_react.useCallback)(
+  }, [layoutData, textH, containerHeight, isPanoramaLayout, settings.layout, detailScrollInfo]);
+  const handleTimelineZonePointerMove = (0, import_react5.useCallback)(
     (e) => {
       if (!canShowTimeline || !galMainRef.current) return;
       const rect = galMainRef.current.getBoundingClientRect();
@@ -25839,7 +27624,7 @@ var PhotoGalleryWidget = ({
     },
     [canShowTimeline]
   );
-  const handleTimelineZonePointerLeave = (0, import_react.useCallback)(() => {
+  const handleTimelineZonePointerLeave = (0, import_react5.useCallback)(() => {
     if (timelineHideTimeoutRef.current) {
       clearTimeout(timelineHideTimeoutRef.current);
       timelineHideTimeoutRef.current = null;
@@ -25849,9 +27634,9 @@ var PhotoGalleryWidget = ({
       timelineHideTimeoutRef.current = null;
     }, 500);
   }, []);
-  const [timelineDragging, setTimelineDragging] = (0, import_react.useState)(false);
-  const [timelineLabel, setTimelineLabel] = (0, import_react.useState)(null);
-  const updateTimelineLabelFromY = (0, import_react.useCallback)(
+  const [timelineDragging, setTimelineDragging] = (0, import_react5.useState)(false);
+  const [timelineLabel, setTimelineLabel] = (0, import_react5.useState)(null);
+  const updateTimelineLabelFromY = (0, import_react5.useCallback)(
     (clientY) => {
       const scrub = timelineScrubRef.current;
       if (!scrub || timelineSections.length === 0) return;
@@ -25865,7 +27650,7 @@ var PhotoGalleryWidget = ({
     },
     [timelineSections, totalContentHeight]
   );
-  const onTimelineScrub = (0, import_react.useCallback)(
+  const onTimelineScrub = (0, import_react5.useCallback)(
     (clientY) => {
       const scrub = timelineScrubRef.current;
       if (!scrub || maxScroll <= 0) return;
@@ -25873,14 +27658,18 @@ var PhotoGalleryWidget = ({
       const relY = (clientY - rect.top) / rect.height;
       const t2 = Math.max(0, Math.min(1, relY));
       const newScroll = t2 * maxScroll;
-      setTargetScroll(newScroll);
-      scrollRef.current = newScroll;
-      clampScroll();
+      if (settingsRef.current.layout === "detail" && detailViewRef.current) {
+        detailViewRef.current.scrollTop = newScroll;
+      } else {
+        setTargetScroll(newScroll);
+        scrollRef.current = newScroll;
+        clampScroll();
+      }
       updateTimelineLabelFromY(clientY);
     },
     [maxScroll, clampScroll, updateTimelineLabelFromY]
   );
-  const onTimelineScrubPointerDown = (0, import_react.useCallback)(
+  const onTimelineScrubPointerDown = (0, import_react5.useCallback)(
     (e) => {
       if (e.button !== 0) return;
       e.preventDefault();
@@ -25891,7 +27680,7 @@ var PhotoGalleryWidget = ({
     },
     [onTimelineScrub]
   );
-  const onTimelineScrubPointerMove = (0, import_react.useCallback)(
+  const onTimelineScrubPointerMove = (0, import_react5.useCallback)(
     (e) => {
       if (e.buttons & 1) {
         onTimelineScrub(e.clientY);
@@ -25901,14 +27690,14 @@ var PhotoGalleryWidget = ({
     },
     [onTimelineScrub, updateTimelineLabelFromY]
   );
-  const onTimelineScrubPointerUp = (0, import_react.useCallback)(() => {
+  const onTimelineScrubPointerUp = (0, import_react5.useCallback)(() => {
     setTimelineDragging(false);
   }, []);
-  const onTimelineScrubPointerLeave = (0, import_react.useCallback)(() => {
+  const onTimelineScrubPointerLeave = (0, import_react5.useCallback)(() => {
     setTimelineDragging(false);
     setTimelineLabel(null);
   }, []);
-  const onSlideshowInterrupt = (0, import_react.useCallback)(() => {
+  const onSlideshowInterrupt = (0, import_react5.useCallback)(() => {
     lastActivityRef.current = Date.now();
     if (isSlideshowActive) {
       setIsSlideshowActive(false);
@@ -25917,7 +27706,7 @@ var PhotoGalleryWidget = ({
     }
     setSlideshowCountdown(0);
   }, [isSlideshowActive, api, stateId]);
-  const onCanvasPointerDown = (0, import_react.useCallback)(
+  const onCanvasPointerDown = (0, import_react5.useCallback)(
     (e) => {
       onSlideshowInterrupt();
       if (e.button !== 0) return;
@@ -25936,7 +27725,7 @@ var PhotoGalleryWidget = ({
     },
     [targetScroll, targetScrollX, onSlideshowInterrupt]
   );
-  const onCanvasPointerMove = (0, import_react.useCallback)(
+  const onCanvasPointerMove = (0, import_react5.useCallback)(
     (e) => {
       if (!isPointerDownRef.current || (e.buttons & 1) === 0) {
         isPointerDownRef.current = false;
@@ -25970,7 +27759,7 @@ var PhotoGalleryWidget = ({
     },
     [clampScroll, settings.layout]
   );
-  const onCanvasPointerUp = (0, import_react.useCallback)(
+  const onCanvasPointerUp = (0, import_react5.useCallback)(
     (e) => {
       if (!isPointerDownRef.current) {
         return;
@@ -25993,7 +27782,14 @@ var PhotoGalleryWidget = ({
           const img = filteredImages[idx];
           if (!img) return;
           if (e.button === 2) {
-            if (!isEditMode) {
+            console.log("[PhotoGallery] Right-click detected, isEditMode:", isEditMode);
+            if (isEditMode) {
+              const paths = selection.size > 0 && selection.has(img.path) ? Array.from(selection) : [img.path];
+              console.log("[PhotoGallery] Showing context menu for paths:", paths);
+              setContextMenu({ x: e.clientX, y: e.clientY, paths });
+              return;
+            } else {
+              console.log("[PhotoGallery] Opening lightbox");
               setLightboxIndex(idx);
               setLightboxOpen(true);
             }
@@ -26034,11 +27830,23 @@ var PhotoGalleryWidget = ({
     },
     [layoutData, filteredImages, isEditMode, clampScroll, settings.layout]
   );
-  const pinchZoomRef = (0, import_react.useRef)(null);
-  (0, import_react.useEffect)(() => {
+  const pinchZoomRef = (0, import_react5.useRef)(null);
+  (0, import_react5.useEffect)(() => {
     const el = galMainRef.current;
     if (!el) return;
     const onWheel = (e) => {
+      if (settingsRef.current.layout === "detail") {
+        if (e.ctrlKey) {
+          e.preventDefault();
+          const factor = e.deltaY > 0 ? -1 : 1;
+          setSettings((s) => ({
+            ...s,
+            zoom: Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, zoomMultiply(s.zoom, factor)))
+          }));
+          saveState(false);
+        }
+        return;
+      }
       e.preventDefault();
       lastActivityRef.current = Date.now();
       if (e.ctrlKey) {
@@ -26097,7 +27905,7 @@ var PhotoGalleryWidget = ({
   layoutDataRef.current = layoutData;
   slideshowIndexRef.current = slideshowIndex;
   isSlideshowActiveRef.current = isSlideshowActive;
-  (0, import_react.useEffect)(() => {
+  (0, import_react5.useEffect)(() => {
     if (slideshowCountdown <= 0) return;
     const id = setInterval(() => {
       setSlideshowCountdown((c) => {
@@ -26119,7 +27927,7 @@ var PhotoGalleryWidget = ({
       countdownIntervalRef.current = null;
     };
   }, [slideshowCountdown]);
-  (0, import_react.useEffect)(() => {
+  (0, import_react5.useEffect)(() => {
     const ms = (settings.slideshowInactivitySec || 10) * 1e3;
     const interval = setInterval(() => {
       if (settings.slideshowIntervalSec <= 0) return;
@@ -26140,7 +27948,7 @@ var PhotoGalleryWidget = ({
       inactivityCheckRef.current = null;
     };
   }, [settings.slideshowInactivitySec, settings.slideshowIntervalSec]);
-  (0, import_react.useEffect)(() => {
+  (0, import_react5.useEffect)(() => {
     if (!isSlideshowActive || settings.slideshowIntervalSec <= 0) {
       if (slideshowIntervalRef.current) {
         clearInterval(slideshowIntervalRef.current);
@@ -26168,7 +27976,7 @@ var PhotoGalleryWidget = ({
       slideshowIntervalRef.current = null;
     };
   }, [isSlideshowActive, settings.slideshowIntervalSec]);
-  const onCanvasDoubleClick = (0, import_react.useCallback)(
+  const onCanvasDoubleClick = (0, import_react5.useCallback)(
     (e) => {
       const rect = e.target.getBoundingClientRect();
       const isPanorama = isPanoramaLayout;
@@ -26185,11 +27993,11 @@ var PhotoGalleryWidget = ({
     },
     [layoutData, settings.layout]
   );
-  const onCanvasContextMenu = (0, import_react.useCallback)((e) => {
+  const onCanvasContextMenu = (0, import_react5.useCallback)((e) => {
     e.preventDefault();
   }, []);
   const currentImage = filteredImages[lightboxIndex];
-  const closeLightbox = (0, import_react.useCallback)(() => {
+  const closeLightbox = (0, import_react5.useCallback)(() => {
     if (lbUiHideTimeoutRef.current) {
       clearTimeout(lbUiHideTimeoutRef.current);
       lbUiHideTimeoutRef.current = null;
@@ -26204,7 +28012,7 @@ var PhotoGalleryWidget = ({
     lbXRef.current = 0;
     lbYRef.current = 0;
   }, []);
-  const scheduleLbUiHide = (0, import_react.useCallback)(() => {
+  const scheduleLbUiHide = (0, import_react5.useCallback)(() => {
     if (lbUiHideTimeoutRef.current) clearTimeout(lbUiHideTimeoutRef.current);
     setLbUiVisible(true);
     lbUiHideTimeoutRef.current = setTimeout(() => {
@@ -26212,10 +28020,10 @@ var PhotoGalleryWidget = ({
       setLbUiVisible(false);
     }, 5e3);
   }, []);
-  const onLbPointerMoveForUi = (0, import_react.useCallback)(() => {
+  const onLbPointerMoveForUi = (0, import_react5.useCallback)(() => {
     scheduleLbUiHide();
   }, [scheduleLbUiHide]);
-  (0, import_react.useEffect)(() => {
+  (0, import_react5.useEffect)(() => {
     if (!lightboxOpen) return;
     setLbUiVisible(true);
     if (lbUiHideTimeoutRef.current) clearTimeout(lbUiHideTimeoutRef.current);
@@ -26230,7 +28038,7 @@ var PhotoGalleryWidget = ({
       }
     };
   }, [lightboxOpen]);
-  (0, import_react.useEffect)(() => {
+  (0, import_react5.useEffect)(() => {
     if (!lightboxOpen) return;
     const onKey = (e) => {
       if (e.key === "ArrowLeft") {
@@ -26252,7 +28060,7 @@ var PhotoGalleryWidget = ({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [lightboxOpen, filteredImages.length, closeLightbox, scheduleLbUiHide]);
-  (0, import_react.useEffect)(() => {
+  (0, import_react5.useEffect)(() => {
     if (!isSlideshowActive || filteredImages.length === 0) return;
     const onKey = (e) => {
       const layout = layoutDataRef.current;
@@ -26278,7 +28086,7 @@ var PhotoGalleryWidget = ({
     return () => window.removeEventListener("keydown", onKey);
   }, [isSlideshowActive, filteredImages.length]);
   const KEY_SCROLL_STEP = 80;
-  (0, import_react.useEffect)(() => {
+  (0, import_react5.useEffect)(() => {
     if (!isEditMode || lightboxOpen) return;
     const onKey = (e) => {
       if (e.key === "Escape") {
@@ -26290,7 +28098,7 @@ var PhotoGalleryWidget = ({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [isEditMode, lightboxOpen]);
-  (0, import_react.useEffect)(() => {
+  (0, import_react5.useEffect)(() => {
     if (lightboxOpen || isSlideshowActive) return;
     const onKey = (e) => {
       const key = e.key;
@@ -26310,8 +28118,8 @@ var PhotoGalleryWidget = ({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [lightboxOpen, isSlideshowActive, settings.layout, clampScroll]);
-  const lbHasMovedRef = (0, import_react.useRef)(false);
-  const clampLbPan = (0, import_react.useCallback)((pan, zoom, imgW, imgH, viewW, viewH) => {
+  const lbHasMovedRef = (0, import_react5.useRef)(false);
+  const clampLbPan = (0, import_react5.useCallback)((pan, zoom, imgW, imgH, viewW, viewH) => {
     if (zoom <= 1) return { x: 0, y: 0 };
     const scaledW = imgW * zoom;
     const scaledH = imgH * zoom;
@@ -26322,7 +28130,7 @@ var PhotoGalleryWidget = ({
       y: Math.max(-maxY, Math.min(maxY, pan.y))
     };
   }, []);
-  const onLbPointerDown = (0, import_react.useCallback)((e) => {
+  const onLbPointerDown = (0, import_react5.useCallback)((e) => {
     if (e.button !== 0) return;
     lbPointerDownRef.current = true;
     lbHasMovedRef.current = false;
@@ -26330,7 +28138,7 @@ var PhotoGalleryWidget = ({
     lbStartYRef.current = e.clientY;
     lbStartPanRef.current = lbPan;
   }, [lbPan]);
-  const onLbPointerMove = (0, import_react.useCallback)((e) => {
+  const onLbPointerMove = (0, import_react5.useCallback)((e) => {
     if (!lbPointerDownRef.current) return;
     if ((e.buttons & 1) === 0) {
       lbPointerDownRef.current = false;
@@ -26367,20 +28175,20 @@ var PhotoGalleryWidget = ({
       e.currentTarget.setPointerCapture(e.pointerId);
     }
   }, [clampLbPan, currentImage]);
-  const onLbPointerUp = (0, import_react.useCallback)((e) => {
+  const onLbPointerUp = (0, import_react5.useCallback)((e) => {
     if (e.button !== 0) return;
     lbPointerDownRef.current = false;
     e.currentTarget.releasePointerCapture(e.pointerId);
     lbDraggingRef.current = false;
     setLbDragging(false);
   }, []);
-  const onLbPointerCancel = (0, import_react.useCallback)((e) => {
+  const onLbPointerCancel = (0, import_react5.useCallback)((e) => {
     lbPointerDownRef.current = false;
     lbDraggingRef.current = false;
     setLbDragging(false);
   }, []);
-  const lbPinchRef = (0, import_react.useRef)(null);
-  (0, import_react.useEffect)(() => {
+  const lbPinchRef = (0, import_react5.useRef)(null);
+  (0, import_react5.useEffect)(() => {
     if (!lightboxOpen) return;
     const el = lightboxViewerRef.current;
     if (!el) return;
@@ -26431,8 +28239,44 @@ var PhotoGalleryWidget = ({
         }
       }
     };
-    const onTouchEnd = () => {
+    const onTouchEnd = (e) => {
       lbPinchRef.current = null;
+      if (e.changedTouches.length === 1 && !lbPinchRef.current) {
+        const touch = e.changedTouches[0];
+        const now = Date.now();
+        const lastTap = lastTapRef.current;
+        if (lastTap && now - lastTap.time < 300) {
+          const dist2 = Math.hypot(touch.clientX - lastTap.x, touch.clientY - lastTap.y);
+          if (dist2 < 50) {
+            e.preventDefault();
+            if (lbZoomRef.current > 1) {
+              setLbZoom(1);
+              setLbPan({ x: 0, y: 0 });
+            } else {
+              const newZoom = 2.5;
+              setLbZoom(newZoom);
+              if (currentImage && el) {
+                const viewRect = el.getBoundingClientRect();
+                const centerX = viewRect.width / 2;
+                const centerY = viewRect.height / 2;
+                const tapX = touch.clientX - viewRect.left;
+                const tapY = touch.clientY - viewRect.top;
+                const panX = (centerX - tapX) * (newZoom - 1) / newZoom;
+                const panY = (centerY - tapY) * (newZoom - 1) / newZoom;
+                const cached = cacheRef.current.get(currentImage.path);
+                if (cached && cached !== "loading") {
+                  const { w: imgW, h: imgH } = getImageDimensions(cached);
+                  const clamped = clampLbPan({ x: panX, y: panY }, newZoom, imgW, imgH, viewRect.width, viewRect.height);
+                  setLbPan(clamped);
+                }
+              }
+            }
+            lastTapRef.current = null;
+            return;
+          }
+        }
+        lastTapRef.current = { time: now, x: touch.clientX, y: touch.clientY };
+      }
     };
     el.addEventListener("wheel", onWheel, { passive: false });
     el.addEventListener("touchstart", onTouchStart, { passive: false });
@@ -26447,7 +28291,19 @@ var PhotoGalleryWidget = ({
       el.removeEventListener("touchcancel", onTouchEnd);
     };
   }, [lightboxOpen, currentImage, lbPan, clampLbPan]);
-  const foldersList = (0, import_react.useMemo)(() => {
+  (0, import_react5.useEffect)(() => {
+    const video = lightboxVideoRef.current;
+    if (!video) return;
+    const onEnterPip = () => setIsPipActive(true);
+    const onLeavePip = () => setIsPipActive(false);
+    video.addEventListener("enterpictureinpicture", onEnterPip);
+    video.addEventListener("leavepictureinpicture", onLeavePip);
+    return () => {
+      video.removeEventListener("enterpictureinpicture", onEnterPip);
+      video.removeEventListener("leavepictureinpicture", onLeavePip);
+    };
+  }, [lightboxOpen, currentImage]);
+  const foldersList = (0, import_react5.useMemo)(() => {
     if (!(app == null ? void 0 : app.vault)) return [];
     const files = app.vault.getFiles();
     const folders = /* @__PURE__ */ new Set();
@@ -26465,16 +28321,16 @@ var PhotoGalleryWidget = ({
     return list;
   }, [app, settings.folders, folderSearch]);
   if (!app) {
-    return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "var(--text-muted)", fontSize: 14 }, children: t(locale, "vaultUnavailable") });
+    return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { style: { display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "var(--text-muted)", fontSize: 14 }, children: t(locale, "vaultUnavailable") });
   }
-  const cycleLayout = (0, import_react.useCallback)(() => {
-    const order = ["justified", "square", "panorama-square", "panorama-justified"];
+  const cycleLayout = (0, import_react5.useCallback)(() => {
+    const order = ["justified", "square", "detail", "panorama-square", "panorama-justified"];
     const idx = order.indexOf(settings.layout);
     const next = order[(idx + 1) % order.length];
     setSettings((s) => ({ ...s, layout: next }));
     saveState(true);
   }, [settings.layout, saveState]);
-  const cycleSlideshowDuration = (0, import_react.useCallback)(() => {
+  const cycleSlideshowDuration = (0, import_react5.useCallback)(() => {
     if (countdownIntervalRef.current) {
       clearInterval(countdownIntervalRef.current);
       countdownIntervalRef.current = null;
@@ -26489,7 +28345,7 @@ var PhotoGalleryWidget = ({
   }, [settings.slideshowIntervalSec, saveState]);
   const formatDuration = (sec) => sec === 0 ? "OFF" : sec >= 60 ? `${Math.round(sec / 60)}min` : `${sec}s`;
   const slideshowDurationLabel = formatDuration(settings.slideshowIntervalSec);
-  const scheduleToolbarHide = (0, import_react.useCallback)(() => {
+  const scheduleToolbarHide = (0, import_react5.useCallback)(() => {
     var _a2;
     if (toolbarHideTimeoutRef.current) {
       clearTimeout(toolbarHideTimeoutRef.current);
@@ -26501,33 +28357,33 @@ var PhotoGalleryWidget = ({
       setToolbarVisible(false);
     }, 1e4);
   }, [settings.toolbarPinned]);
-  const cancelToolbarHide = (0, import_react.useCallback)(() => {
+  const cancelToolbarHide = (0, import_react5.useCallback)(() => {
     if (toolbarHideTimeoutRef.current) {
       clearTimeout(toolbarHideTimeoutRef.current);
       toolbarHideTimeoutRef.current = null;
     }
   }, []);
-  const onToolbarPointerEnter = (0, import_react.useCallback)(() => {
+  const onToolbarPointerEnter = (0, import_react5.useCallback)(() => {
     setToolbarVisible(true);
     cancelToolbarHide();
   }, [cancelToolbarHide]);
-  const onToolbarPointerLeave = (0, import_react.useCallback)(() => {
+  const onToolbarPointerLeave = (0, import_react5.useCallback)(() => {
     scheduleToolbarHide();
   }, [scheduleToolbarHide]);
-  (0, import_react.useEffect)(() => {
+  (0, import_react5.useEffect)(() => {
     if (settings.toolbarPinned) {
       cancelToolbarHide();
       setToolbarVisible(true);
     }
     return () => cancelToolbarHide();
   }, [settings.toolbarPinned, cancelToolbarHide]);
-  const scrollToTop = (0, import_react.useCallback)(() => {
+  const scrollToTop = (0, import_react5.useCallback)(() => {
     scrollRef.current = 0;
     scrollRefX.current = 0;
     setTargetScroll(0);
     setTargetScrollX(0);
   }, []);
-  const onHeaderBarClick = (0, import_react.useCallback)(
+  const onHeaderBarClick = (0, import_react5.useCallback)(
     (e) => {
       const target = e.target;
       if (target instanceof Element && target.closest("button, input, select, label")) return;
@@ -26535,14 +28391,14 @@ var PhotoGalleryWidget = ({
     },
     [scrollToTop]
   );
-  return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
     "div",
     {
       ref: containerRef,
       className: "gal-container",
       style: { fontFamily: "var(--font-interface)" },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("style", { children: `
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("style", { children: `
         .gal-container, .gal-portal-root { --gal-bg: var(--background-primary); --gal-header: var(--background-secondary); --gal-accent: var(--interactive-accent); --gal-text: var(--text-normal); --gal-muted: var(--text-muted); --gal-border: var(--background-modifier-border); }
         .gal-container { position: relative; overflow: hidden; background: var(--gal-bg); border-radius: 8px; }
         .gal-container:fullscreen, .gal-container:-webkit-full-screen, .gal-container:-moz-full-screen, .gal-container:-ms-fullscreen { width: 100vw !important; height: 100vh !important; max-width: none !important; max-height: none !important; inset: 0 !important; z-index: 999999 !important; }
@@ -26613,12 +28469,12 @@ var PhotoGalleryWidget = ({
         .gal-toolbar-hover-zone { position: absolute; top: 0; left: 0; right: 0; height: 12px; background: var(--gal-header); border-bottom: 1px solid var(--gal-border); z-index: 12; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .gal-toolbar-hover-zone::after { content: ''; width: 24px; height: 4px; background: var(--gal-muted); border-radius: 2px; opacity: 0.6; }
       ` }),
-        !isSlideshowActive && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+        !isSlideshowActive && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
           "div",
           {
             className: "gal-toolbar-wrap",
             style: { maxHeight: toolbarVisible ? 200 : 12, minHeight: 12 },
-            children: toolbarVisible ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+            children: toolbarVisible ? /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
               "div",
               {
                 className: "gal-header",
@@ -26627,7 +28483,7 @@ var PhotoGalleryWidget = ({
                 onPointerEnter: onToolbarPointerEnter,
                 onPointerLeave: onToolbarPointerLeave,
                 children: [
-                  compact ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+                  compact ? /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
                     "button",
                     {
                       type: "button",
@@ -26635,26 +28491,31 @@ var PhotoGalleryWidget = ({
                       title: t(locale, "layoutCycle"),
                       onClick: cycleLayout,
                       children: [
-                        settings.layout === "square" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", { viewBox: "0 0 24 24", width: 18, height: 18, fill: "none", stroke: "currentColor", strokeWidth: 2.5, children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", { x: 3, y: 3, width: 7, height: 7 }),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", { x: 14, y: 3, width: 7, height: 7 }),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", { x: 3, y: 14, width: 7, height: 7 }),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", { x: 14, y: 14, width: 7, height: 7 })
+                        settings.layout === "square" && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("svg", { viewBox: "0 0 24 24", width: 18, height: 18, fill: "none", stroke: "currentColor", strokeWidth: 2.5, children: [
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("rect", { x: 3, y: 3, width: 7, height: 7 }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("rect", { x: 14, y: 3, width: 7, height: 7 }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("rect", { x: 3, y: 14, width: 7, height: 7 }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("rect", { x: 14, y: 14, width: 7, height: 7 })
                         ] }),
-                        settings.layout === "justified" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", { viewBox: "0 0 24 24", width: 18, height: 18, fill: "none", stroke: "currentColor", strokeWidth: 2.5, children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", { x: 3, y: 3, width: 18, height: 7 }),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", { x: 3, y: 14, width: 10, height: 7 }),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", { x: 15, y: 14, width: 6, height: 7 })
+                        settings.layout === "justified" && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("svg", { viewBox: "0 0 24 24", width: 18, height: 18, fill: "none", stroke: "currentColor", strokeWidth: 2.5, children: [
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("rect", { x: 3, y: 3, width: 18, height: 7 }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("rect", { x: 3, y: 14, width: 10, height: 7 }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("rect", { x: 15, y: 14, width: 6, height: 7 })
                         ] }),
-                        isPanoramaLayout && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", { viewBox: "0 0 24 24", width: 18, height: 18, fill: "none", stroke: "currentColor", strokeWidth: 2.5, children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", { x: 1, y: 5, width: 6, height: 14, rx: 1 }),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", { x: 9, y: 5, width: 6, height: 14, rx: 1 }),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", { x: 17, y: 5, width: 6, height: 14, rx: 1 })
+                        settings.layout === "detail" && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("svg", { viewBox: "0 0 24 24", width: 18, height: 18, fill: "none", stroke: "currentColor", strokeWidth: 2.5, children: [
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("line", { x1: 3, y1: 6, x2: 21, y2: 6 }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("line", { x1: 3, y1: 12, x2: 21, y2: 12 }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("line", { x1: 3, y1: 18, x2: 21, y2: 18 })
+                        ] }),
+                        isPanoramaLayout && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("svg", { viewBox: "0 0 24 24", width: 18, height: 18, fill: "none", stroke: "currentColor", strokeWidth: 2.5, children: [
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("rect", { x: 1, y: 5, width: 6, height: 14, rx: 1 }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("rect", { x: 9, y: 5, width: 6, height: 14, rx: 1 }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("rect", { x: 17, y: 5, width: 6, height: 14, rx: 1 })
                         ] })
                       ]
                     }
-                  ) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "gal-flex-row", style: { background: "var(--background-primary-alt)", padding: 2, borderRadius: 6, border: "1px solid var(--gal-border)" }, children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                  ) : /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "gal-flex-row", style: { background: "var(--background-primary-alt)", padding: 2, borderRadius: 6, border: "1px solid var(--gal-border)" }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                       "button",
                       {
                         type: "button",
@@ -26664,14 +28525,14 @@ var PhotoGalleryWidget = ({
                           setSettings((s) => ({ ...s, layout: "justified" }));
                           saveState(true);
                         },
-                        children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", { viewBox: "0 0 24 24", width: 18, height: 18, fill: "none", stroke: "currentColor", strokeWidth: 2.5, children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", { x: 3, y: 3, width: 18, height: 7 }),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", { x: 3, y: 14, width: 10, height: 7 }),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", { x: 15, y: 14, width: 6, height: 7 })
+                        children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("svg", { viewBox: "0 0 24 24", width: 18, height: 18, fill: "none", stroke: "currentColor", strokeWidth: 2.5, children: [
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("rect", { x: 3, y: 3, width: 18, height: 7 }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("rect", { x: 3, y: 14, width: 10, height: 7 }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("rect", { x: 15, y: 14, width: 6, height: 7 })
                         ] })
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                       "button",
                       {
                         type: "button",
@@ -26681,15 +28542,32 @@ var PhotoGalleryWidget = ({
                           setSettings((s) => ({ ...s, layout: "square" }));
                           saveState(true);
                         },
-                        children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", { viewBox: "0 0 24 24", width: 18, height: 18, fill: "none", stroke: "currentColor", strokeWidth: 2.5, children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", { x: 3, y: 3, width: 7, height: 7 }),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", { x: 14, y: 3, width: 7, height: 7 }),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", { x: 3, y: 14, width: 7, height: 7 }),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", { x: 14, y: 14, width: 7, height: 7 })
+                        children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("svg", { viewBox: "0 0 24 24", width: 18, height: 18, fill: "none", stroke: "currentColor", strokeWidth: 2.5, children: [
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("rect", { x: 3, y: 3, width: 7, height: 7 }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("rect", { x: 14, y: 3, width: 7, height: 7 }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("rect", { x: 3, y: 14, width: 7, height: 7 }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("rect", { x: 14, y: 14, width: 7, height: 7 })
                         ] })
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+                      "button",
+                      {
+                        type: "button",
+                        className: `gal-btn ${settings.layout === "detail" ? "active" : ""}`,
+                        title: t(locale, "detailViewHint"),
+                        onClick: () => {
+                          setSettings((s) => ({ ...s, layout: "detail" }));
+                          saveState(true);
+                        },
+                        children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("svg", { viewBox: "0 0 24 24", width: 18, height: 18, fill: "none", stroke: "currentColor", strokeWidth: 2.5, children: [
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("line", { x1: 3, y1: 6, x2: 21, y2: 6 }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("line", { x1: 3, y1: 12, x2: 21, y2: 12 }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("line", { x1: 3, y1: 18, x2: 21, y2: 18 })
+                        ] })
+                      }
+                    ),
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                       "button",
                       {
                         type: "button",
@@ -26706,16 +28584,16 @@ var PhotoGalleryWidget = ({
                           }
                           saveState(true);
                         },
-                        children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", { viewBox: "0 0 24 24", width: 18, height: 18, fill: "none", stroke: "currentColor", strokeWidth: 2.5, children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", { x: 1, y: 5, width: 6, height: 14, rx: 1 }),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", { x: 9, y: 5, width: 6, height: 14, rx: 1 }),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", { x: 17, y: 5, width: 6, height: 14, rx: 1 })
+                        children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("svg", { viewBox: "0 0 24 24", width: 18, height: 18, fill: "none", stroke: "currentColor", strokeWidth: 2.5, children: [
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("rect", { x: 1, y: 5, width: 6, height: 14, rx: 1 }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("rect", { x: 9, y: 5, width: 6, height: 14, rx: 1 }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("rect", { x: 17, y: 5, width: 6, height: 14, rx: 1 })
                         ] })
                       }
                     )
                   ] }),
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { position: "relative" }, children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { style: { position: "relative" }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                       "button",
                       {
                         ref: searchBtnRef,
@@ -26724,63 +28602,51 @@ var PhotoGalleryWidget = ({
                         title: t(locale, "search"),
                         "aria-label": t(locale, "search"),
                         onClick: () => setSearchExpanded((e) => !e),
-                        children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", { viewBox: "0 0 24 24", width: 18, height: 18, fill: "none", stroke: "currentColor", strokeWidth: 2.5, children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", { cx: 11, cy: 11, r: 8 }),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", { x1: 21, y1: 21, x2: 16.65, y2: 16.65 })
+                        children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("svg", { viewBox: "0 0 24 24", width: 18, height: 18, fill: "none", stroke: "currentColor", strokeWidth: 2.5, children: [
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("circle", { cx: 11, cy: 11, r: 8 }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("line", { x1: 21, y1: 21, x2: 16.65, y2: 16.65 })
                         ] })
                       }
                     ),
-                    searchExpanded && searchPopupStyle && (0, import_react_dom.createPortal)(
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "gal-portal-root", children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                    searchExpanded && searchPopupStyle && (0, import_react_dom3.createPortal)(
+                      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "gal-portal-root", children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                           "div",
                           {
-                            className: "fixed inset-0",
-                            style: { zIndex: popupZIndex - 1, cursor: "default" },
+                            style: { position: "fixed", inset: 0, zIndex: popupZIndex - 1, cursor: "default" },
                             onClick: () => setSearchExpanded(false),
-                            onPointerDown: () => setSearchExpanded(false),
+                            onPointerDown: (e) => {
+                              const target = e.target;
+                              if (target.closest(".lumina-search-suggestions-portal") || target.closest(".lumina-search-container")) return;
+                              setSearchExpanded(false);
+                            },
                             "aria-hidden": true
                           }
                         ),
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "gal-popup gal-search-dropdown", style: searchPopupStyle, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "gal-flex-row", style: { padding: 8, background: "var(--gal-header)", borderBottom: "1px solid var(--gal-border)" }, children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-                            "input",
-                            {
-                              type: "text",
-                              style: { flex: 1, minWidth: 120, background: "var(--background-primary)", border: "1px solid var(--gal-border)", borderRadius: 4, padding: "6px 8px", fontSize: 14, color: "var(--gal-text)", outline: "none" },
-                              placeholder: t(locale, "searchPlaceholder"),
-                              value: settings.search,
-                              onChange: (e) => {
-                                setSettings((s) => ({ ...s, search: e.target.value }));
-                                saveState(false);
-                              },
-                              autoFocus: true
-                            }
-                          ),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-                            "button",
-                            {
-                              type: "button",
-                              className: "gal-btn p-1",
-                              title: t(locale, "clearSearch"),
-                              "aria-label": t(locale, "clearSearch"),
-                              onClick: () => {
-                                setSettings((s) => ({ ...s, search: "" }));
-                                saveState(true);
-                              },
-                              children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", { viewBox: "0 0 24 24", width: 18, height: 18, fill: "none", stroke: "currentColor", strokeWidth: 2.5, children: [
-                                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", { x1: 18, y1: 6, x2: 6, y2: 18 }),
-                                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", { x1: 6, y1: 6, x2: 18, y2: 18 })
-                              ] })
-                            }
-                          )
-                        ] }) })
+                        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: "gal-popup gal-search-dropdown", style: searchPopupStyle, children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { style: { padding: 8 }, children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+                          SearchBarWithTags,
+                          {
+                            value: settings.search,
+                            onChange: (val) => {
+                              setSettings((s) => ({ ...s, search: val }));
+                              saveState(false);
+                            },
+                            searchMode: settings.searchMode,
+                            onSearchModeChange: (mode) => {
+                              setSettings((s) => ({ ...s, searchMode: mode }));
+                              saveState(true);
+                            },
+                            allHashTags: availableHashTags,
+                            allNoteLinks: availableNoteLinks,
+                            locale
+                          }
+                        ) }) })
                       ] }),
                       isFullscreen && containerRef.current ? containerRef.current : document.body
                     )
                   ] }),
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { position: "relative" }, children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { style: { position: "relative" }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                       "button",
                       {
                         ref: sortBtnRef,
@@ -26788,15 +28654,15 @@ var PhotoGalleryWidget = ({
                         className: `gal-btn ${settings.sortBy !== "mtime-desc" ? "active" : ""}`,
                         title: t(locale, "sortBy"),
                         onClick: () => setSortPopup((p) => !p),
-                        children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", { viewBox: "0 0 24 24", width: 18, height: 18, fill: "none", stroke: "currentColor", strokeWidth: 2, children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", { x1: 12, y1: 5, x2: 12, y2: 19 }),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("polyline", { points: "19 12 12 19 5 12" })
+                        children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("svg", { viewBox: "0 0 24 24", width: 18, height: 18, fill: "none", stroke: "currentColor", strokeWidth: 2, children: [
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("line", { x1: 12, y1: 5, x2: 12, y2: 19 }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("polyline", { points: "19 12 12 19 5 12" })
                         ] })
                       }
                     ),
-                    sortPopup && sortPopupStyle && (0, import_react_dom.createPortal)(
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "gal-portal-root", children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                    sortPopup && sortPopupStyle && (0, import_react_dom3.createPortal)(
+                      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "gal-portal-root", children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                           "div",
                           {
                             className: "fixed inset-0",
@@ -26806,9 +28672,9 @@ var PhotoGalleryWidget = ({
                             "aria-hidden": true
                           }
                         ),
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "gal-popup gal-popup-sort", style: sortPopupStyle, children: SORT_OPTIONS.map((opt) => {
+                        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: "gal-popup gal-popup-sort", style: sortPopupStyle, children: SORT_OPTIONS.map((opt) => {
                           const isActive = settings.sortBy === opt.val;
-                          return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                          return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                             "button",
                             {
                               type: "button",
@@ -26828,21 +28694,21 @@ var PhotoGalleryWidget = ({
                       isFullscreen && containerRef.current ? containerRef.current : document.body
                     )
                   ] }),
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { position: "relative" }, children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { style: { position: "relative" }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                       "button",
                       {
                         ref: folderBtnRef,
                         type: "button",
-                        className: `gal-btn gal-btn-folder ${folderPopup ? "active" : ""} ${settings.folders.length > 0 || !settings.includeAll || !settings.showPhotos || !settings.showVideos || ((_b = settings.search) != null ? _b : "").trim() !== "" ? "gal-filter-active" : ""}`,
+                        className: `gal-btn gal-btn-folder ${folderPopup ? "active" : ""} ${settings.folders.length > 0 || !settings.includeAll || !settings.showPhotos || !settings.showVideos || settings.showOther || ((_b = settings.search) != null ? _b : "").trim() !== "" ? "gal-filter-active" : ""}`,
                         title: t(locale, "filter"),
                         onClick: () => setFolderPopup((p) => !p),
-                        children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("svg", { viewBox: "0 0 24 24", width: 20, height: 20, fill: "none", stroke: "currentColor", strokeWidth: 2, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" }) })
+                        children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("svg", { viewBox: "0 0 24 24", width: 20, height: 20, fill: "none", stroke: "currentColor", strokeWidth: 2, children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("path", { d: "M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" }) })
                       }
                     ),
-                    folderPopup && folderPopupStyle && (0, import_react_dom.createPortal)(
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "gal-portal-root", children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                    folderPopup && folderPopupStyle && (0, import_react_dom3.createPortal)(
+                      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "gal-portal-root", children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                           "div",
                           {
                             className: "fixed inset-0",
@@ -26852,11 +28718,11 @@ var PhotoGalleryWidget = ({
                             "aria-hidden": true
                           }
                         ),
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "gal-popup gal-popup-folder", style: folderPopupStyle, children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "gal-flex-col", style: { padding: 8, borderBottom: "1px solid var(--gal-border)" }, children: [
-                            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { style: { fontSize: 12, fontWeight: 600, color: "var(--gal-muted)", marginBottom: 6 }, children: t(locale, "filter") }),
-                            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", { className: "gal-flex-row", style: { fontSize: 14, marginBottom: 4 }, children: [
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "gal-popup gal-popup-folder", style: folderPopupStyle, children: [
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "gal-flex-col", style: { padding: 8, borderBottom: "1px solid var(--gal-border)" }, children: [
+                            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { style: { fontSize: 12, fontWeight: 600, color: "var(--gal-muted)", marginBottom: 6 }, children: t(locale, "filter") }),
+                            /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { className: "gal-flex-row", style: { fontSize: 14, marginBottom: 4 }, children: [
+                              /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                                 "input",
                                 {
                                   type: "checkbox",
@@ -26869,8 +28735,8 @@ var PhotoGalleryWidget = ({
                               ),
                               t(locale, "photos")
                             ] }),
-                            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", { className: "gal-flex-row", style: { fontSize: 14, marginBottom: 8 }, children: [
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                            /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { className: "gal-flex-row", style: { fontSize: 14, marginBottom: 8 }, children: [
+                              /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                                 "input",
                                 {
                                   type: "checkbox",
@@ -26883,18 +28749,48 @@ var PhotoGalleryWidget = ({
                               ),
                               t(locale, "videos")
                             ] }),
-                            /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                            /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { className: "gal-flex-row", style: { fontSize: 14, marginBottom: 8 }, children: [
+                              /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+                                "input",
+                                {
+                                  type: "checkbox",
+                                  checked: settings.showOther,
+                                  onChange: (e) => {
+                                    setSettings((s) => ({ ...s, showOther: e.target.checked }));
+                                    saveState(true);
+                                    refreshGallery();
+                                  }
+                                }
+                              ),
+                              t(locale, "other")
+                            ] }),
+                            /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { className: "gal-flex-row", style: { fontSize: 14, marginBottom: 8 }, children: [
+                              /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+                                "input",
+                                {
+                                  type: "checkbox",
+                                  checked: settings.showAllFiles,
+                                  onChange: (e) => {
+                                    setSettings((s) => ({ ...s, showAllFiles: e.target.checked }));
+                                    saveState(true);
+                                    refreshGallery();
+                                  }
+                                }
+                              ),
+                              t(locale, "allFiles")
+                            ] }),
+                            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                               "input",
                               {
                                 type: "text",
-                                className: "w-full bg-[var(--background-primary)] border border-[var(--gal-border)] rounded px-2 py-1 text-sm",
+                                className: "gal-folder-search-input",
                                 placeholder: t(locale, "filterFolders"),
                                 value: folderSearch,
                                 onChange: (e) => setFolderSearch(e.target.value.toLowerCase())
                               }
                             ),
-                            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", { className: "gal-flex-row", style: { fontSize: 14 }, children: [
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                            /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { className: "gal-flex-row", style: { fontSize: 14 }, children: [
+                              /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                                 "input",
                                 {
                                   type: "checkbox",
@@ -26909,15 +28805,15 @@ var PhotoGalleryWidget = ({
                               t(locale, "allVault")
                             ] })
                           ] }),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "gal-folder-list", children: foldersList.map((f) => {
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: "gal-folder-list", children: foldersList.map((f) => {
                             const checked = settings.folders.includes(f);
-                            return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+                            return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
                               "label",
                               {
                                 className: `gal-flex-row gal-folder-item ${checked ? "gal-folder-checked" : ""}`,
                                 style: { padding: "6px 8px", fontSize: 14, borderRadius: 4, cursor: "pointer" },
                                 children: [
-                                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                                  /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                                     "input",
                                     {
                                       type: "checkbox",
@@ -26931,7 +28827,7 @@ var PhotoGalleryWidget = ({
                                       }
                                     }
                                   ),
-                                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: f })
+                                  /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: f })
                                 ]
                               },
                               f
@@ -26942,20 +28838,27 @@ var PhotoGalleryWidget = ({
                       isFullscreen && containerRef.current ? containerRef.current : document.body
                     )
                   ] }),
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                     "button",
                     {
                       type: "button",
                       className: `gal-btn ${settings.showNames ? "active" : ""}`,
-                      title: t(locale, "toggleFilenames"),
+                      title: settings.showNames && settings.showTags ? t(locale, "toggleFilenames") : settings.showNames ? t(locale, "toggleFilenamesAndTags") : t(locale, "toggleFilenames"),
                       onClick: () => {
-                        setSettings((s) => ({ ...s, showNames: !s.showNames }));
+                        setSettings((s) => {
+                          if (!s.showNames) return { ...s, showNames: true, showTags: false };
+                          if (!s.showTags) return { ...s, showTags: true };
+                          return { ...s, showNames: false, showTags: false };
+                        });
                         saveState(true);
                       },
-                      children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("svg", { viewBox: "0 0 24 24", width: 20, height: 20, fill: "none", stroke: "currentColor", strokeWidth: 2, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M4 7V4h16v3M9 20h6M12 4v16" }) })
+                      children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("svg", { viewBox: "0 0 24 24", width: 20, height: 20, fill: "none", stroke: "currentColor", strokeWidth: 2, children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("path", { d: "M4 7V4h16v3M9 20h6M12 4v16" }),
+                        settings.showTags && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("circle", { cx: 19, cy: 19, r: 4, fill: "currentColor", stroke: "none" })
+                      ] })
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                     "button",
                     {
                       type: "button",
@@ -26965,18 +28868,18 @@ var PhotoGalleryWidget = ({
                         setIsEditMode((e) => !e);
                         setSelection(/* @__PURE__ */ new Set());
                       },
-                      children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", { viewBox: "0 0 24 24", width: 20, height: 20, fill: "none", stroke: "currentColor", strokeWidth: 2, children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" }),
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z" })
+                      children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("svg", { viewBox: "0 0 24 24", width: 20, height: 20, fill: "none", stroke: "currentColor", strokeWidth: 2, children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("path", { d: "M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" }),
+                        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("path", { d: "M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z" })
                       ] })
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "gal-flex-row", style: { background: "var(--background-primary-alt)", padding: "2px 8px", borderRadius: 20, border: "1px solid var(--gal-border)" }, children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "gal-flex-row", style: { background: "var(--background-primary-alt)", padding: "2px 8px", borderRadius: 20, border: "1px solid var(--gal-border)" }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                       "button",
                       {
                         type: "button",
-                        className: "text-[var(--gal-text)] font-bold text-sm px-1.5 hover:text-[var(--gal-accent)]",
+                        className: "gal-zoom-btn",
                         onClick: () => {
                           setSettings((s) => ({ ...s, zoom: Math.max(ZOOM_MIN, zoomMultiply(s.zoom, -1)) }));
                           saveState(false);
@@ -26984,7 +28887,7 @@ var PhotoGalleryWidget = ({
                         children: "\u2212"
                       }
                     ),
-                    !extraCompact && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                    !extraCompact && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                       "input",
                       {
                         type: "range",
@@ -27002,11 +28905,11 @@ var PhotoGalleryWidget = ({
                         }
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                       "button",
                       {
                         type: "button",
-                        className: "text-[var(--gal-text)] font-bold text-sm px-1.5 hover:text-[var(--gal-accent)]",
+                        className: "gal-zoom-btn",
                         onClick: () => {
                           setSettings((s) => ({ ...s, zoom: Math.min(ZOOM_MAX, zoomMultiply(s.zoom, 1)) }));
                           saveState(false);
@@ -27015,7 +28918,7 @@ var PhotoGalleryWidget = ({
                       }
                     )
                   ] }),
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                     "button",
                     {
                       type: "button",
@@ -27025,13 +28928,13 @@ var PhotoGalleryWidget = ({
                         setSettings((s) => ({ ...s, toolbarPinned: !s.toolbarPinned }));
                         saveState(true);
                       },
-                      children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", { viewBox: "0 0 24 24", width: 18, height: 18, fill: "none", stroke: "currentColor", strokeWidth: 2, children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" }),
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", { cx: 12, cy: 12, r: 3 })
+                      children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("svg", { viewBox: "0 0 24 24", width: 18, height: 18, fill: "none", stroke: "currentColor", strokeWidth: 2, children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("path", { d: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" }),
+                        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("circle", { cx: 12, cy: 12, r: 3 })
                       ] })
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+                  /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
                     "button",
                     {
                       type: "button",
@@ -27039,21 +28942,21 @@ var PhotoGalleryWidget = ({
                       title: t(locale, "slideshowHint"),
                       onClick: cycleSlideshowDuration,
                       children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", { viewBox: "0 0 24 24", width: 20, height: 20, fill: "none", stroke: "currentColor", strokeWidth: 2, children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", { x: 2, y: 4, width: 20, height: 16, rx: 1 }),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("polygon", { points: "10 8 10 16 16 12", fill: "currentColor", stroke: "none" })
+                        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("svg", { viewBox: "0 0 24 24", width: 20, height: 20, fill: "none", stroke: "currentColor", strokeWidth: 2, children: [
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("rect", { x: 2, y: 4, width: 20, height: 16, rx: 1 }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("polygon", { points: "10 8 10 16 16 12", fill: "currentColor", stroke: "none" })
                         ] }),
-                        slideshowCountdown > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "gal-slideshow-badge", children: slideshowCountdown }),
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "gal-slideshow-duration", children: slideshowDurationLabel })
+                        slideshowCountdown > 0 && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { className: "gal-slideshow-badge", children: slideshowCountdown }),
+                        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { className: "gal-slideshow-duration", children: slideshowDurationLabel })
                       ]
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { type: "button", className: "gal-btn", title: t(locale, "help"), onClick: () => setHelpModal(true), children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", { viewBox: "0 0 24 24", width: 20, height: 20, fill: "none", stroke: "currentColor", strokeWidth: 2, children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", { cx: 12, cy: 12, r: 10 }),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", { x1: 12, y1: 16, x2: 12, y2: 12 }),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("line", { x1: 12, y1: 8, x2: 12.01, y2: 8 })
+                  /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", className: "gal-btn", title: t(locale, "help"), onClick: () => setHelpModal(true), children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("svg", { viewBox: "0 0 24 24", width: 20, height: 20, fill: "none", stroke: "currentColor", strokeWidth: 2, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("circle", { cx: 12, cy: 12, r: 10 }),
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("line", { x1: 12, y1: 16, x2: 12, y2: 12 }),
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("line", { x1: 12, y1: 8, x2: 12.01, y2: 8 })
                   ] }) }),
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                     "button",
                     {
                       type: "button",
@@ -27064,12 +28967,12 @@ var PhotoGalleryWidget = ({
                         if (!document.fullscreenElement) (_b2 = (_a2 = containerRef.current) == null ? void 0 : _a2.requestFullscreen) == null ? void 0 : _b2.call(_a2);
                         else (_c2 = document.exitFullscreen) == null ? void 0 : _c2.call(document);
                       },
-                      children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("svg", { viewBox: "0 0 24 24", width: 20, height: 20, fill: "none", stroke: "currentColor", strokeWidth: 2, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" }) })
+                      children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("svg", { viewBox: "0 0 24 24", width: 20, height: 20, fill: "none", stroke: "currentColor", strokeWidth: 2, children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("path", { d: "M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" }) })
                     }
                   )
                 ]
               }
-            ) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+            ) : /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
               "div",
               {
                 className: "gal-toolbar-hover-zone",
@@ -27080,7 +28983,28 @@ var PhotoGalleryWidget = ({
             )
           }
         ),
-        !isSlideshowActive && isEditMode && selection.size > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+        (() => {
+          const filterTokens = (settings.search || "").match(/#[\w\-/]+|\[\[[^\]]+\]\]/g);
+          if (!filterTokens || filterTokens.length === 0) return null;
+          return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: "gal-filter-bar", children: filterTokens.map((token, i) => /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("span", { className: `gal-filter-bubble ${token.startsWith("#") ? "gal-filter-tag" : "gal-filter-link"}`, children: [
+            token,
+            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+              "button",
+              {
+                type: "button",
+                className: "gal-filter-bubble-x",
+                title: t(locale, "removeFilter"),
+                onClick: () => {
+                  const newSearch = settings.search.replace(token, "").replace(/\s{2,}/g, " ").trim();
+                  setSettings((s) => ({ ...s, search: newSearch }));
+                  saveState(true);
+                },
+                children: "\xD7"
+              }
+            )
+          ] }, i)) });
+        })(),
+        !isSlideshowActive && isEditMode && selection.size > 0 && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
           "div",
           {
             draggable: true,
@@ -27118,13 +29042,13 @@ var PhotoGalleryWidget = ({
             ]
           }
         ),
-        !isSlideshowActive && isEditMode && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "gal-edit-toolbar gal-flex-row", style: { flexShrink: 0, flexWrap: "wrap", padding: "8px 12px", background: "var(--gal-header)", borderBottom: "1px solid var(--gal-border)", zIndex: 20 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { className: "text-[var(--gal-muted)] text-xs mr-2", children: [
+        !isSlideshowActive && isEditMode && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "gal-edit-toolbar gal-flex-row", style: { flexShrink: 0, flexWrap: "wrap", padding: "8px 12px", background: "var(--gal-header)", borderBottom: "1px solid var(--gal-border)", zIndex: 20 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("span", { className: "text-[var(--gal-muted)] text-xs mr-2", children: [
             selection.size,
             " ",
             t(locale, "selected")
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
             "button",
             {
               type: "button",
@@ -27133,7 +29057,7 @@ var PhotoGalleryWidget = ({
               children: t(locale, "addToNote")
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
             "button",
             {
               type: "button",
@@ -27149,7 +29073,25 @@ var PhotoGalleryWidget = ({
               children: t(locale, "copyLinks")
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
+            "button",
+            {
+              type: "button",
+              className: "gal-edit-toolbar-btn",
+              onClick: () => openBatchTagModal(Array.from(selection)),
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("svg", { width: "14", height: "14", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", style: { marginRight: 4 }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("path", { d: "M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("line", { x1: "7", y1: "7", x2: "7.01", y2: "7" })
+                ] }),
+                t(locale, "manageTags"),
+                " (",
+                selection.size,
+                ")"
+              ]
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
             "button",
             {
               type: "button",
@@ -27167,7 +29109,7 @@ var PhotoGalleryWidget = ({
               children: t(locale, "delete")
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
             "button",
             {
               type: "button",
@@ -27180,7 +29122,7 @@ var PhotoGalleryWidget = ({
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
           "div",
           {
             ref: galMainRef,
@@ -27223,7 +29165,7 @@ var PhotoGalleryWidget = ({
               isSlideshowActive && filteredImages.length > 0 && (() => {
                 const slide = filteredImages[Math.min(slideshowIndex, filteredImages.length - 1)];
                 if (!slide || slide.mediaType !== "video" && !isGif(slide.path)) return null;
-                return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                   "div",
                   {
                     style: {
@@ -27235,7 +29177,7 @@ var PhotoGalleryWidget = ({
                       pointerEvents: "none",
                       zIndex: 5
                     },
-                    children: slide.mediaType === "video" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                    children: slide.mediaType === "video" ? /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                       "video",
                       {
                         src: slide.url,
@@ -27246,7 +29188,7 @@ var PhotoGalleryWidget = ({
                         style: { maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }
                       },
                       slide.path
-                    ) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                    ) : /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                       "img",
                       {
                         src: slide.url,
@@ -27258,7 +29200,193 @@ var PhotoGalleryWidget = ({
                   }
                 );
               })(),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+              settings.layout === "detail" ? /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
+                "div",
+                {
+                  ref: detailViewRef,
+                  className: "gal-detail-view",
+                  style: { flex: 1, width: "100%", height: "100%", overflowY: "auto", overflowX: "hidden", overscrollBehavior: "contain", WebkitOverflowScrolling: "touch", background: "var(--gal-bg)" },
+                  onScroll: (e) => {
+                    const el = e.currentTarget;
+                    setDetailScrollInfo({ scrollTop: el.scrollTop, scrollHeight: el.scrollHeight, clientHeight: el.clientHeight });
+                  },
+                  children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { style: { display: "flex", alignItems: "center", padding: "8px 12px", borderBottom: "1px solid var(--gal-border)", background: "var(--gal-header)", fontSize: 12, fontWeight: 600, color: "var(--gal-muted)", gap: 4, position: "sticky", top: 0, zIndex: 2 }, children: [
+                      isEditMode && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { style: { width: 32 } }),
+                      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { style: { width: 40, textAlign: "center" } }),
+                      [
+                        { field: "name", label: t(locale, "fileName"), style: { flex: 2, minWidth: 0 } },
+                        { field: "type", label: t(locale, "fileType"), style: { width: 60, textAlign: "center" } },
+                        { field: "size", label: t(locale, "fileSize"), style: { width: 80, textAlign: "right" } },
+                        { field: "mtime", label: t(locale, "dateModified"), style: { width: 120, textAlign: "right" } }
+                      ].map((col) => /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
+                        "div",
+                        {
+                          style: { ...col.style, cursor: "pointer", userSelect: "none", display: "flex", alignItems: "center", gap: 2 },
+                          onClick: () => {
+                            setSettings((s) => s.detailSortField === col.field ? { ...s, detailSortAsc: !s.detailSortAsc } : { ...s, detailSortField: col.field, detailSortAsc: true });
+                            saveState(true);
+                          },
+                          title: settings.detailSortField === col.field ? settings.detailSortAsc ? t(locale, "sortDescending") : t(locale, "sortAscending") : t(locale, "sortAscending"),
+                          children: [
+                            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: col.label }),
+                            settings.detailSortField === col.field && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { style: { fontSize: 10, opacity: 0.8 }, children: settings.detailSortAsc ? "\u25B2" : "\u25BC" })
+                          ]
+                        },
+                        col.field
+                      )),
+                      pluginSettings.enableTagSystem && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
+                        "div",
+                        {
+                          style: { flex: 1, minWidth: 0, cursor: "pointer", userSelect: "none", display: "flex", alignItems: "center", gap: 2 },
+                          onClick: () => {
+                            setSettings((s) => s.detailSortField === "tags" ? { ...s, detailSortAsc: !s.detailSortAsc } : { ...s, detailSortField: "tags", detailSortAsc: true });
+                            saveState(true);
+                          },
+                          title: settings.detailSortField === "tags" ? settings.detailSortAsc ? t(locale, "sortDescending") : t(locale, "sortAscending") : t(locale, "sortAscending"),
+                          children: [
+                            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: t(locale, "tags") }),
+                            settings.detailSortField === "tags" && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { style: { fontSize: 10, opacity: 0.8 }, children: settings.detailSortAsc ? "\u25B2" : "\u25BC" })
+                          ]
+                        }
+                      )
+                    ] }),
+                    filteredImages.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { style: { padding: 40, textAlign: "center", color: "var(--gal-muted)", fontSize: 14 }, children: t(locale, "noResults") }) : (() => {
+                      const sorted = [...filteredImages].sort((a, b) => {
+                        const dir = settings.detailSortAsc ? 1 : -1;
+                        switch (settings.detailSortField) {
+                          case "name":
+                            return dir * a.name.localeCompare(b.name);
+                          case "type": {
+                            const ea = (a.name.split(".").pop() || "").toLowerCase();
+                            const eb = (b.name.split(".").pop() || "").toLowerCase();
+                            return dir * ea.localeCompare(eb);
+                          }
+                          case "size":
+                            return dir * (a.size - b.size);
+                          case "mtime":
+                            return dir * (a.mtime - b.mtime);
+                          case "tags": {
+                            const ta = tagManager.getTags(a.path).length;
+                            const tb = tagManager.getTags(b.path).length;
+                            return dir * (ta - tb);
+                          }
+                          default:
+                            return 0;
+                        }
+                      });
+                      return sorted.map((img, idx) => {
+                        var _a2;
+                        const isSelected = selection.has(img.path);
+                        const globalIdx = filteredImages.indexOf(img);
+                        const ext = ((_a2 = img.name.split(".").pop()) == null ? void 0 : _a2.toLowerCase()) || "";
+                        const sizeStr = img.size < 1024 ? `${img.size} B` : img.size < 1048576 ? `${(img.size / 1024).toFixed(1)} KB` : `${(img.size / 1048576).toFixed(1)} MB`;
+                        const dateStr = new Date(img.mtime).toLocaleDateString(locale, { year: "numeric", month: "short", day: "numeric" });
+                        const fileTags = tagManager.getTags(img.path);
+                        return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
+                          "div",
+                          {
+                            style: {
+                              display: "flex",
+                              alignItems: "center",
+                              padding: "6px 12px",
+                              gap: 4,
+                              borderBottom: "1px solid var(--gal-border)",
+                              background: isSelected ? "rgba(14, 165, 233, 0.15)" : idx % 2 === 0 ? "var(--gal-bg)" : "var(--background-primary-alt)",
+                              cursor: "pointer",
+                              fontSize: 13,
+                              color: "var(--gal-text)",
+                              transition: "background 0.15s"
+                            },
+                            onClick: (e) => {
+                              if (isEditMode) {
+                                if (e.shiftKey && lastSelectedIndexRef.current >= 0) {
+                                  const start = Math.min(lastSelectedIndexRef.current, globalIdx);
+                                  const end = Math.max(lastSelectedIndexRef.current, globalIdx);
+                                  const newSel = new Set(selection);
+                                  for (let i = start; i <= end; i++) newSel.add(filteredImages[i].path);
+                                  setSelection(newSel);
+                                } else if (e.ctrlKey || e.metaKey) {
+                                  const newSel = new Set(selection);
+                                  if (newSel.has(img.path)) newSel.delete(img.path);
+                                  else newSel.add(img.path);
+                                  setSelection(newSel);
+                                } else {
+                                  const newSel = new Set(selection);
+                                  if (newSel.has(img.path)) newSel.delete(img.path);
+                                  else newSel.add(img.path);
+                                  setSelection(newSel);
+                                }
+                                lastSelectedIndexRef.current = globalIdx;
+                              }
+                            },
+                            onDoubleClick: () => {
+                              if (!isEditMode) {
+                                setLightboxIndex(globalIdx);
+                                setLightboxOpen(true);
+                                setLbZoom(1);
+                                setLbPan({ x: 0, y: 0 });
+                              }
+                            },
+                            onContextMenu: (e) => {
+                              e.preventDefault();
+                              const paths = selection.size > 0 && selection.has(img.path) ? Array.from(selection) : [img.path];
+                              setContextMenu({ x: e.clientX, y: e.clientY, paths });
+                            },
+                            children: [
+                              isEditMode && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { style: { width: 32, display: "flex", alignItems: "center", justifyContent: "center" }, children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+                                "input",
+                                {
+                                  type: "checkbox",
+                                  checked: isSelected,
+                                  "aria-label": img.name,
+                                  style: { accentColor: "var(--gal-accent)" },
+                                  onChange: (e) => {
+                                    e.stopPropagation();
+                                    const newSel = new Set(selection);
+                                    if (e.target.checked) newSel.add(img.path);
+                                    else newSel.delete(img.path);
+                                    setSelection(newSel);
+                                    lastSelectedIndexRef.current = globalIdx;
+                                  },
+                                  onClick: (e) => e.stopPropagation()
+                                }
+                              ) }),
+                              /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { style: { width: 40, height: 32, borderRadius: 4, overflow: "hidden", flexShrink: 0, background: "#111", display: "flex", alignItems: "center", justifyContent: "center" }, children: img.mediaType === "video" ? /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("svg", { viewBox: "0 0 24 24", width: 16, height: 16, fill: "none", stroke: "var(--gal-muted)", strokeWidth: 2, children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("polygon", { points: "5,3 19,12 5,21" }) }) : img.mediaType === "image" ? /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("img", { src: img.url, alt: "", style: { width: "100%", height: "100%", objectFit: "cover" }, loading: "lazy" }) : /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("svg", { viewBox: "0 0 24 24", width: 16, height: 16, fill: "none", stroke: "var(--gal-muted)", strokeWidth: 2, children: [
+                                /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("path", { d: "M14,2H6A2,2,0,0,0,4,4V20a2,2,0,0,0,2,2H18a2,2,0,0,0,2-2V8Z" }),
+                                /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("polyline", { points: "14,2 14,8 20,8" })
+                              ] }) }),
+                              /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { style: { flex: 2, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontWeight: 500 }, children: img.name }),
+                              /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { style: { width: 60, textAlign: "center", color: "var(--gal-muted)", textTransform: "uppercase", fontSize: 11, fontWeight: 600 }, children: ext }),
+                              /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { style: { width: 80, textAlign: "right", color: "var(--gal-muted)" }, children: sizeStr }),
+                              /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { style: { width: 120, textAlign: "right", color: "var(--gal-muted)" }, children: dateStr }),
+                              pluginSettings.enableTagSystem && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { style: { flex: 1, minWidth: 0, display: "flex", flexWrap: "wrap", gap: 3, overflow: "hidden" }, children: [
+                                fileTags.slice(0, 3).map((tag) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+                                  "span",
+                                  {
+                                    className: "gal-detail-tag-bubble",
+                                    onClick: (e) => {
+                                      e.stopPropagation();
+                                      handleTagClick("#" + tag);
+                                    },
+                                    children: tag
+                                  },
+                                  tag
+                                )),
+                                fileTags.length > 3 && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("span", { style: { fontSize: 10, color: "var(--text-faint)" }, children: [
+                                  "+",
+                                  fileTags.length - 3
+                                ] })
+                              ] })
+                            ]
+                          },
+                          img.path
+                        );
+                      });
+                    })()
+                  ]
+                }
+              ) : /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                 "canvas",
                 {
                   ref: canvasRef,
@@ -27271,8 +29399,8 @@ var PhotoGalleryWidget = ({
                   onContextMenu: onCanvasContextMenu
                 }
               ),
-              canShowTimeline && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+              canShowTimeline && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                   "div",
                   {
                     ref: timelineScrubRef,
@@ -27282,25 +29410,25 @@ var PhotoGalleryWidget = ({
                     onPointerUp: onTimelineScrubPointerUp,
                     onPointerLeave: onTimelineScrubPointerLeave,
                     onPointerCancel: onTimelineScrubPointerLeave,
-                    children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "gal-timeline-track", children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                    children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "gal-timeline-track", children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                         "div",
                         {
                           className: "gal-timeline-thumb",
                           style: {
-                            top: maxScroll > 0 ? `${targetScroll / maxScroll * 100}%` : "0%",
+                            top: maxScroll > 0 ? `${(settings.layout === "detail" ? detailScrollInfo.scrollTop : targetScroll) / maxScroll * 100}%` : "0%",
                             transform: "translate(-50%, -50%)"
                           }
                         }
                       ),
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "gal-timeline-markers", children: timelineSections.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+                      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: "gal-timeline-markers", children: timelineSections.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
                         "div",
                         {
                           className: "gal-timeline-marker",
                           style: { top: totalContentHeight > 0 ? `${s.y / totalContentHeight * 100}%` : "0%" },
                           children: [
-                            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "gal-timeline-marker-label", title: s.label, children: s.label }),
-                            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "gal-timeline-marker-dot" })
+                            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { className: "gal-timeline-marker-label", title: s.label, children: s.label }),
+                            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { className: "gal-timeline-marker-dot" })
                           ]
                         },
                         i
@@ -27308,7 +29436,7 @@ var PhotoGalleryWidget = ({
                     ] })
                   }
                 ),
-                timelineLabel && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                timelineLabel && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                   "div",
                   {
                     className: "gal-timeline-label",
@@ -27317,7 +29445,7 @@ var PhotoGalleryWidget = ({
                   }
                 )
               ] }),
-              !isSlideshowActive && layoutData.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "gal-media-overlay", children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+              !isSlideshowActive && settings.layout !== "detail" && layoutData.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: "gal-media-overlay", children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
                 "div",
                 {
                   ref: overlayContentRef,
@@ -27335,7 +29463,7 @@ var PhotoGalleryWidget = ({
                         const m = allImages.find((x) => x.path === path);
                         return m ? `![[${m.name}]]` : "";
                       }).filter(Boolean).join("\n");
-                      return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+                      return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
                         "div",
                         {
                           style: {
@@ -27390,8 +29518,13 @@ var PhotoGalleryWidget = ({
                           },
                           onContextMenu: (e) => {
                             e.preventDefault();
-                            setLightboxIndex(i);
-                            setLightboxOpen(true);
+                            if (isEditMode) {
+                              const paths = selection.has(imgData.path) ? Array.from(selection) : [imgData.path];
+                              setContextMenu({ x: e.clientX, y: e.clientY, paths });
+                            } else {
+                              setLightboxIndex(i);
+                              setLightboxOpen(true);
+                            }
                           },
                           ...imgData.mediaType === "video" ? {
                             onMouseEnter: (e) => {
@@ -27433,7 +29566,7 @@ var PhotoGalleryWidget = ({
                             }
                           } : {},
                           children: [
-                            imgData.mediaType === "video" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                            imgData.mediaType === "video" ? /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                               "video",
                               {
                                 src: imgData.url,
@@ -27448,7 +29581,7 @@ var PhotoGalleryWidget = ({
                                   pointerEvents: isEditMode ? "none" : "auto"
                                 }
                               }
-                            ) : isGif(imgData.path) ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                            ) : isGif(imgData.path) ? /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                               "img",
                               {
                                 src: imgData.url,
@@ -27457,7 +29590,7 @@ var PhotoGalleryWidget = ({
                                 draggable: false
                               }
                             ) : null,
-                            isEditMode && selection.has(imgData.path) && (imgData.mediaType === "video" || isGif(imgData.path)) && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                            isEditMode && selection.has(imgData.path) && (imgData.mediaType === "video" || isGif(imgData.path)) && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                               "div",
                               {
                                 style: {
@@ -27475,10 +29608,55 @@ var PhotoGalleryWidget = ({
                         imgData.path
                       );
                     }),
+                    settings.showTags && layoutData.map((layout, i) => {
+                      const imgData = filteredImages[i];
+                      if (!imgData) return null;
+                      const fileTags = tagManager.getTags(imgData.path);
+                      if (fileTags.length === 0) return null;
+                      return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
+                        "div",
+                        {
+                          style: {
+                            position: "absolute",
+                            left: layout.x,
+                            top: layout.y + layout.h - 28,
+                            width: layout.w,
+                            height: 28,
+                            pointerEvents: "auto",
+                            display: "flex",
+                            flexWrap: "nowrap",
+                            alignItems: "flex-end",
+                            gap: 2,
+                            padding: "0 3px 3px",
+                            boxSizing: "border-box",
+                            overflow: "hidden"
+                          },
+                          children: [
+                            fileTags.slice(0, 4).map((tag) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+                              "span",
+                              {
+                                className: "gal-thumb-tag-bubble",
+                                onClick: (e) => {
+                                  e.stopPropagation();
+                                  handleTagClick("#" + tag);
+                                },
+                                children: tag
+                              },
+                              tag
+                            )),
+                            fileTags.length > 4 && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("span", { className: "gal-thumb-tag-bubble gal-thumb-tag-more", children: [
+                              "+",
+                              fileTags.length - 4
+                            ] })
+                          ]
+                        },
+                        `tags-${imgData.path}`
+                      );
+                    }),
                     settings.showNames && textH > 0 && layoutData.map((layout, i) => {
                       const imgData = filteredImages[i];
                       if (!imgData) return null;
-                      return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                      return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                         "div",
                         {
                           "aria-hidden": true,
@@ -27524,8 +29702,8 @@ var PhotoGalleryWidget = ({
                   ]
                 }
               ) }),
-              nameTooltip && (0, import_react_dom.createPortal)(
-                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+              nameTooltip && (0, import_react_dom3.createPortal)(
+                /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
                   "div",
                   {
                     className: "gal-portal-root",
@@ -27545,14 +29723,14 @@ var PhotoGalleryWidget = ({
                       lineHeight: 1.4
                     },
                     children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontWeight: 600, marginBottom: 6, wordBreak: "break-all" }, children: nameTooltip.imgData.name }),
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 11, opacity: 0.85, marginBottom: 3 }, children: nameTooltip.imgData.path }),
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { fontSize: 11, opacity: 0.9, display: "flex", flexWrap: "wrap", gap: "4px 8px" }, children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: new Date(nameTooltip.imgData.mtime).toLocaleDateString(locale.startsWith("zh") ? "zh-CN" : locale, { dateStyle: "medium" }) }),
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "\u2022" }),
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: nameTooltip.imgData.size / 1024 < 1024 ? `${(nameTooltip.imgData.size / 1024).toFixed(1)} KB` : `${(nameTooltip.imgData.size / 1024 / 1024).toFixed(2)} MB` }),
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "\u2022" }),
-                        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { style: { fontWeight: 600, marginBottom: 6, wordBreak: "break-all" }, children: nameTooltip.imgData.name }),
+                      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { style: { fontSize: 11, opacity: 0.85, marginBottom: 3 }, children: nameTooltip.imgData.path }),
+                      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { style: { fontSize: 11, opacity: 0.9, display: "flex", flexWrap: "wrap", gap: "4px 8px", marginBottom: 6 }, children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: new Date(nameTooltip.imgData.mtime).toLocaleDateString(locale.startsWith("zh") ? "zh-CN" : locale, { dateStyle: "medium" }) }),
+                        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u2022" }),
+                        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: nameTooltip.imgData.size / 1024 < 1024 ? `${(nameTooltip.imgData.size / 1024).toFixed(1)} KB` : `${(nameTooltip.imgData.size / 1024 / 1024).toFixed(2)} MB` }),
+                        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u2022" }),
+                        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("span", { children: [
                           ".",
                           (nameTooltip.imgData.path.split(".").pop() || "").toLowerCase()
                         ] }),
@@ -27560,9 +29738,9 @@ var PhotoGalleryWidget = ({
                           const cached = cacheRef.current.get(nameTooltip.imgData.path);
                           if (cached && cached !== "loading") {
                             const { w, h } = getImageDimensions(cached);
-                            return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "\u2022" }),
-                              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
+                            return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
+                              /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u2022" }),
+                              /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("span", { children: [
                                 w,
                                 " \xD7 ",
                                 h
@@ -27571,7 +29749,16 @@ var PhotoGalleryWidget = ({
                           }
                           return null;
                         })()
-                      ] })
+                      ] }),
+                      pluginSettings.enableTagSystem && tagManager.getTags(nameTooltip.imgData.path).length > 0 && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { style: { marginTop: 4, display: "flex", flexWrap: "wrap", gap: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+                        TagList,
+                        {
+                          tags: tagManager.getTags(nameTooltip.imgData.path),
+                          maxVisible: 10,
+                          showCount: false,
+                          onTagClick: handleTagClick
+                        }
+                      ) })
                     ]
                   }
                 ),
@@ -27581,7 +29768,7 @@ var PhotoGalleryWidget = ({
           }
         ),
         "      ",
-        lightboxOpen && (currentImage || lightboxEmbed) && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+        lightboxOpen && (currentImage || lightboxEmbed) && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
           "div",
           {
             className: "gal-lightbox",
@@ -27593,7 +29780,7 @@ var PhotoGalleryWidget = ({
             },
             onPointerMove: onLbPointerMoveForUi,
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                 "div",
                 {
                   ref: lightboxViewerRef,
@@ -27607,20 +29794,18 @@ var PhotoGalleryWidget = ({
                     e.stopPropagation();
                     closeLightbox();
                   },
-                  children: lightboxEmbed ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "100%", padding: 24 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                  children: lightboxEmbed ? /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: "gal-lightbox-embed-container", children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                     "iframe",
                     {
-                      width: "560",
-                      height: "315",
                       src: lightboxEmbed.embedSrc,
                       title: "YouTube video player",
                       frameBorder: "0",
                       allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
                       referrerPolicy: "strict-origin-when-cross-origin",
                       allowFullScreen: true,
-                      style: { maxWidth: "100%", maxHeight: "100%", aspectRatio: "16/9" }
+                      className: "gal-lightbox-embed-iframe"
                     }
-                  ) }) : currentImage ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                  ) }) : currentImage ? /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                     "div",
                     {
                       draggable: false,
@@ -27632,29 +29817,37 @@ var PhotoGalleryWidget = ({
                         maxHeight: "100%",
                         cursor: lbZoom > 1 ? lbDragging ? "grabbing" : "grab" : "default"
                       },
-                      children: currentImage.mediaType === "video" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                      children: currentImage.mediaType === "video" ? /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                         "video",
                         {
+                          ref: lightboxVideoRef,
                           src: currentImage.url,
                           controls: true,
                           autoPlay: true,
                           loop: true,
                           playsInline: true,
                           draggable: false,
-                          className: "max-w-full max-h-full object-contain select-none",
                           style: {
+                            maxWidth: "100%",
+                            maxHeight: "100%",
+                            objectFit: "contain",
+                            userSelect: "none",
                             transform: `translate(${lbPan.x}px, ${lbPan.y}px) scale(${lbZoom})`,
                             pointerEvents: "auto"
                           }
                         }
-                      ) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                      ) : /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                         "img",
                         {
                           src: currentImage.url,
                           alt: currentImage.name,
                           draggable: false,
-                          className: "max-w-full max-h-full object-contain select-none pointer-events-none",
                           style: {
+                            maxWidth: "100%",
+                            maxHeight: "100%",
+                            objectFit: "contain",
+                            userSelect: "none",
+                            pointerEvents: "none",
                             transform: `translate(${lbPan.x}px, ${lbPan.y}px) scale(${lbZoom})`
                           }
                         }
@@ -27663,7 +29856,54 @@ var PhotoGalleryWidget = ({
                   ) : null
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+              ((currentImage == null ? void 0 : currentImage.mediaType) === "video" || lightboxEmbed) && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: `gal-video-controls ${lbUiVisible ? "visible" : ""}`, children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+                "button",
+                {
+                  type: "button",
+                  className: `gal-video-control-btn ${isPipActive ? "pip-active" : ""}`,
+                  title: t(locale, "pip"),
+                  onClick: async () => {
+                    var _a2;
+                    try {
+                      if (document.pictureInPictureElement) {
+                        await document.exitPictureInPicture();
+                        return;
+                      }
+                      if (!document.pictureInPictureEnabled) return;
+                      const localVideo = lightboxVideoRef.current;
+                      if (localVideo) {
+                        await localVideo.requestPictureInPicture();
+                        return;
+                      }
+                      const iframe = document.querySelector(".gal-lightbox-embed-iframe");
+                      if (iframe) {
+                        try {
+                          const iframeDoc = iframe.contentDocument || ((_a2 = iframe.contentWindow) == null ? void 0 : _a2.document);
+                          if (iframeDoc) {
+                            const videos = iframeDoc.querySelectorAll("video");
+                            if (videos.length > 0) {
+                              await videos[0].requestPictureInPicture();
+                              return;
+                            }
+                          }
+                        } catch (e) {
+                        }
+                      }
+                      const allVideos = document.querySelectorAll("video");
+                      if (allVideos.length > 0) {
+                        await allVideos[allVideos.length - 1].requestPictureInPicture();
+                      }
+                    } catch (err) {
+                      console.error("PIP error:", err);
+                    }
+                  },
+                  children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("rect", { x: "2", y: "3", width: "20", height: "14", rx: "2" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("rect", { x: "12", y: "9", width: "8", height: "6", rx: "1", fill: "currentColor", stroke: "none" })
+                  ] })
+                }
+              ) }),
+              /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
                 "div",
                 {
                   className: `gal-lightbox-ui ${!lbUiVisible ? "gal-lightbox-ui-hidden" : ""}`,
@@ -27678,7 +29918,7 @@ var PhotoGalleryWidget = ({
                     background: "transparent"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                       "button",
                       {
                         type: "button",
@@ -27691,8 +29931,8 @@ var PhotoGalleryWidget = ({
                         children: "\u2715"
                       }
                     ),
-                    !lightboxEmbed && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { position: "absolute", top: "50%", left: 0, right: 0, transform: "translateY(-50%)", display: "flex", justifyContent: "space-between", pointerEvents: "none" }, children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                    !lightboxEmbed && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { style: { position: "absolute", top: "50%", left: 0, right: 0, transform: "translateY(-50%)", display: "flex", justifyContent: "space-between", pointerEvents: "none" }, children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                         "button",
                         {
                           type: "button",
@@ -27710,7 +29950,7 @@ var PhotoGalleryWidget = ({
                           children: "\u276E"
                         }
                       ),
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                         "button",
                         {
                           type: "button",
@@ -27729,21 +29969,21 @@ var PhotoGalleryWidget = ({
                         }
                       )
                     ] }),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                       "div",
                       {
-                        className: "py-5 text-center text-white",
+                        className: "gal-lightbox-info",
                         style: {
                           pointerEvents: lbUiVisible ? "auto" : "none",
                           background: "linear-gradient(to top, rgba(0,0,0,0.8), transparent)"
                         },
-                        children: lightboxEmbed ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "text-sm truncate px-4", title: lightboxEmbed.url, children: lightboxEmbed.url }),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", marginTop: 8 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                        children: lightboxEmbed ? /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { style: { fontSize: 13, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", padding: "0 16px" }, title: lightboxEmbed.url, children: lightboxEmbed.url }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { style: { display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", marginTop: 8 }, children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                             "button",
                             {
                               type: "button",
-                              className: "px-3 py-1 rounded bg-white/20 hover:bg-white/30 text-sm",
+                              className: "gal-lightbox-action-btn",
                               onClick: async () => {
                                 await navigator.clipboard.writeText(lightboxEmbed.embedHtml);
                                 alert(t(locale, "copied"));
@@ -27751,20 +29991,29 @@ var PhotoGalleryWidget = ({
                               children: t(locale, "copyEmbedHtml")
                             }
                           ) })
-                        ] }) : currentImage ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { children: currentImage.name }),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "text-sm opacity-80", children: [
+                        ] }) : currentImage ? /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { children: currentImage.name }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { style: { fontSize: 13, opacity: 0.8 }, children: [
                             (currentImage.size / 1024 / 1024).toFixed(2),
                             " MB \u2022",
                             " ",
                             new Date(currentImage.mtime).toLocaleString()
                           ] }),
-                          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", marginTop: 8 }, children: [
-                            /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                          pluginSettings.enableTagSystem && tagManager.getTags(currentImage.path).length > 0 && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { style: { display: "flex", justifyContent: "center", marginTop: 8 }, children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+                            TagList,
+                            {
+                              tags: tagManager.getTags(currentImage.path),
+                              maxVisible: 15,
+                              showCount: false,
+                              onTagClick: handleTagClick
+                            }
+                          ) }),
+                          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { style: { display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", marginTop: 8 }, children: [
+                            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                               "button",
                               {
                                 type: "button",
-                                className: "px-3 py-1 rounded bg-white/20 hover:bg-white/30 text-sm",
+                                className: "gal-lightbox-action-btn",
                                 onClick: async () => {
                                   await navigator.clipboard.writeText(`![[${currentImage.name}]]`);
                                   alert(t(locale, "copied"));
@@ -27772,11 +30021,11 @@ var PhotoGalleryWidget = ({
                                 children: t(locale, "copyLink")
                               }
                             ),
-                            /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                               "button",
                               {
                                 type: "button",
-                                className: "px-3 py-1 rounded bg-white/20 hover:bg-white/30 text-sm",
+                                className: "gal-lightbox-action-btn",
                                 onClick: () => {
                                   setSelection(/* @__PURE__ */ new Set([currentImage.path]));
                                   setNoteModal(true);
@@ -27784,11 +30033,37 @@ var PhotoGalleryWidget = ({
                                 children: t(locale, "addToNote")
                               }
                             ),
-                            /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                            pluginSettings.enableTagSystem && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                               "button",
                               {
                                 type: "button",
-                                className: "gal-lightbox-btn-delete px-3 py-1 rounded text-sm",
+                                className: "gal-lightbox-action-btn",
+                                onClick: () => {
+                                  openBatchTagModal([currentImage.path]);
+                                },
+                                children: t(locale, "manageTags")
+                              }
+                            ),
+                            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+                              "button",
+                              {
+                                type: "button",
+                                className: "gal-lightbox-action-btn",
+                                onClick: () => {
+                                  var _a2;
+                                  const obsidianApp = api.getObsidianApp();
+                                  if ((_a2 = obsidianApp == null ? void 0 : obsidianApp.workspace) == null ? void 0 : _a2.openLinkText) {
+                                    obsidianApp.workspace.openLinkText(currentImage.path, "");
+                                  }
+                                },
+                                children: t(locale, "openFile")
+                              }
+                            ),
+                            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+                              "button",
+                              {
+                                type: "button",
+                                className: "gal-lightbox-action-btn gal-lightbox-btn-delete",
                                 onClick: async () => {
                                   if (!confirm(t(locale, "deleteConfirmSingle", { name: currentImage.name }))) return;
                                   const file = app.vault.getAbstractFileByPath(currentImage.path);
@@ -27811,36 +30086,36 @@ var PhotoGalleryWidget = ({
             ]
           }
         ),
-        noteModal && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+        noteModal && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
           "div",
           {
             className: "gal-note-modal-overlay",
             onClick: () => setNoteModal(false),
-            children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+            children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
               "div",
               {
                 className: "gal-note-modal-box",
                 onClick: (e) => e.stopPropagation(),
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "px-4 py-3 bg-[var(--gal-header)] border-b border-[var(--gal-border)] flex justify-between items-center font-bold", children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: t(locale, "addToNoteTitle") }),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { type: "button", className: "text-[var(--gal-muted)] text-xl", onClick: () => setNoteModal(false), children: "\u2715" })
+                  /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { style: { padding: "12px 16px", background: "var(--gal-header)", borderBottom: "1px solid var(--gal-border)", display: "flex", justifyContent: "space-between", alignItems: "center", fontWeight: "bold" }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: t(locale, "addToNoteTitle") }),
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", style: { color: "var(--gal-muted)", fontSize: 20, background: "none", border: "none", cursor: "pointer" }, onClick: () => setNoteModal(false), children: "\u2715" })
                   ] }),
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "p-4 flex flex-col gap-3", children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { style: { padding: 16, display: "flex", flexDirection: "column", gap: 12 }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                       "input",
                       {
                         type: "text",
-                        className: "w-full px-2 py-2 border border-[var(--gal-border)] rounded-md bg-[var(--background-primary)] text-[var(--gal-text)]",
+                        style: { width: "100%", padding: "8px", border: "1px solid var(--gal-border)", borderRadius: 6, background: "var(--background-primary)", color: "var(--gal-text)" },
                         placeholder: t(locale, "searchNotes"),
                         value: noteSearch,
                         onChange: (e) => setNoteSearch(e.target.value)
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "gal-note-list", children: ((_i = (_h = (_g = app.vault).getMarkdownFiles) == null ? void 0 : _h.call(_g)) != null ? _i : []).filter((f) => f.path.toLowerCase().includes(noteSearch.toLowerCase())).slice(0, 50).map((f) => {
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: "gal-note-list", children: ((_i = (_h = (_g = app.vault).getMarkdownFiles) == null ? void 0 : _h.call(_g)) != null ? _i : []).filter((f) => f.path.toLowerCase().includes(noteSearch.toLowerCase())).slice(0, 50).map((f) => {
                       var _a2, _b2;
                       const name = (_b2 = (_a2 = f.name) != null ? _a2 : f.path.split("/").pop()) != null ? _b2 : f.path;
-                      return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+                      return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
                         "button",
                         {
                           type: "button",
@@ -27861,8 +30136,8 @@ var PhotoGalleryWidget = ({
                             setSelection(/* @__PURE__ */ new Set());
                           },
                           children: [
-                            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "gal-note-item-name", children: name }),
-                            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "gal-note-item-path", children: f.path })
+                            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { className: "gal-note-item-name", children: name }),
+                            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { className: "gal-note-item-path", children: f.path })
                           ]
                         },
                         f.path
@@ -27874,55 +30149,88 @@ var PhotoGalleryWidget = ({
             )
           }
         ),
-        helpModal && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "gal-modal-overlay", onClick: () => setHelpModal(false), children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
+        helpModal && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: "gal-modal-overlay", onClick: () => setHelpModal(false), children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
           "div",
           {
-            className: "bg-[var(--gal-bg)] w-[450px] max-w-[90%] rounded-xl border border-[var(--gal-border)] shadow-xl overflow-hidden flex flex-col",
+            style: { background: "var(--gal-bg)", width: 450, maxWidth: "90%", borderRadius: 12, border: "1px solid var(--gal-border)", boxShadow: "0 10px 30px rgba(0,0,0,0.3)", overflow: "hidden", display: "flex", flexDirection: "column" },
             onClick: (e) => e.stopPropagation(),
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "px-4 py-3 bg-[var(--gal-header)] border-b border-[var(--gal-border)] flex justify-between items-center font-bold", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: t(locale, "galleryGuide") }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { type: "button", className: "text-[var(--gal-muted)] text-xl", onClick: () => setHelpModal(false), children: "\u2715" })
+              /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { style: { padding: "12px 16px", background: "var(--gal-header)", borderBottom: "1px solid var(--gal-border)", display: "flex", justifyContent: "space-between", alignItems: "center", fontWeight: 700 }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: t(locale, "galleryGuide") }),
+                /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", style: { background: "none", border: "none", color: "var(--gal-muted)", fontSize: 20, cursor: "pointer" }, onClick: () => setHelpModal(false), children: "\u2715" })
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "p-4 text-sm leading-relaxed text-[var(--gal-text)]", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "mb-3", children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", { className: "text-[var(--gal-accent)] border-b border-[var(--gal-border)] pb-1 mb-1", children: t(locale, "interactions") }),
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ul", { className: "list-disc pl-5 space-y-1", children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: t(locale, "helpDoubleClick") }),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: t(locale, "helpLeftClick") }),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: t(locale, "helpDrag") }),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: t(locale, "helpCtrlWheel") }),
-                    /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: t(locale, "helpPinch") })
+              /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { style: { padding: 16, fontSize: 13, lineHeight: 1.6, color: "var(--gal-text)" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { style: { marginBottom: 12 }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("h4", { style: { color: "var(--gal-accent)", borderBottom: "1px solid var(--gal-border)", paddingBottom: 4, marginBottom: 4 }, children: t(locale, "interactions") }),
+                  /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("ul", { style: { listStyle: "disc", paddingLeft: 20 }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("li", { children: t(locale, "helpDoubleClick") }),
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("li", { children: t(locale, "helpLeftClick") }),
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("li", { children: t(locale, "helpDrag") }),
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("li", { children: t(locale, "helpCtrlWheel") }),
+                    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("li", { children: t(locale, "helpPinch") })
                   ] })
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "mb-3", children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", { className: "text-[var(--gal-accent)] border-b border-[var(--gal-border)] pb-1 mb-1", children: t(locale, "lightbox") }),
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", { className: "list-disc pl-5 space-y-1", children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: t(locale, "helpArrows") }) })
+                /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { style: { marginBottom: 12 }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("h4", { style: { color: "var(--gal-accent)", borderBottom: "1px solid var(--gal-border)", paddingBottom: 4, marginBottom: 4 }, children: t(locale, "lightbox") }),
+                  /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("ul", { style: { listStyle: "disc", paddingLeft: 20 }, children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("li", { children: t(locale, "helpArrows") }) })
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", { className: "text-[var(--gal-accent)] border-b border-[var(--gal-border)] pb-1 mb-1", children: t(locale, "features") }),
-                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", { className: "list-disc pl-5 space-y-1", children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: "Folders, Sort, Layout (Square/Justified), Edit Mode, Fullscreen." }) })
+                /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("h4", { style: { color: "var(--gal-accent)", borderBottom: "1px solid var(--gal-border)", paddingBottom: 4, marginBottom: 4 }, children: t(locale, "features") }),
+                  /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("ul", { style: { listStyle: "disc", paddingLeft: 20 }, children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("li", { children: t(locale, "featuresListDetail") }) })
                 ] })
               ] })
             ]
           }
-        ) })
+        ) }),
+        contextMenu && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+          GalleryContextMenu,
+          {
+            x: contextMenu.x,
+            y: contextMenu.y,
+            selectedPaths: contextMenu.paths,
+            enableTagSystem: pluginSettings.enableTagSystem,
+            onManageTags: () => {
+              if (!selection.has(contextMenu.paths[0]) || selection.size === 0) {
+                setSelection(new Set(contextMenu.paths));
+              }
+              openBatchTagModal(contextMenu.paths);
+              setContextMenu(null);
+            },
+            onDelete: async () => {
+              const pathsToDelete = contextMenu.paths;
+              if (!confirm(t(locale, "deleteConfirm", { n: pathsToDelete.length }))) {
+                setContextMenu(null);
+                return;
+              }
+              for (const path of pathsToDelete) {
+                const file = app.vault.getAbstractFileByPath(path);
+                if (file) await app.vault.trash(file, true);
+              }
+              setSelection(/* @__PURE__ */ new Set());
+              setContextMenu(null);
+              refreshGallery();
+            },
+            onClose: () => setContextMenu(null),
+            locale
+          }
+        )
       ]
     }
   );
 };
 
 // src/services/bridge.ts
-var import_obsidian = require("obsidian");
+var import_obsidian2 = require("obsidian");
 var isRemotePath = (value) => /^https?:\/\//i.test(value) || /^data:/i.test(value) || /^app:\/\//i.test(value) || /^file:\/\//i.test(value);
 var createBridge = (plugin) => ({
   getObsidianApp() {
     return plugin.app;
   },
   async loadWidgetState(id) {
-    var _a, _b;
+    var _a;
     const stored = await plugin.loadData();
-    return (_b = (_a = stored == null ? void 0 : stored.widgetState) == null ? void 0 : _a[id]) != null ? _b : null;
+    const widgetState = stored == null ? void 0 : stored.widgetState;
+    return (_a = widgetState == null ? void 0 : widgetState[id]) != null ? _a : null;
   },
   async saveWidgetState(id, data) {
     var _a, _b;
@@ -27933,8 +30241,8 @@ var createBridge = (plugin) => ({
   resolveResourcePath(path) {
     if (!path) return path;
     if (isRemotePath(path)) return path;
-    const file = plugin.app.vault.getAbstractFileByPath((0, import_obsidian.normalizePath)(path));
-    if (file && "path" in file) {
+    const file = plugin.app.vault.getAbstractFileByPath((0, import_obsidian2.normalizePath)(path));
+    if (file && file instanceof import_obsidian2.TFile) {
       return plugin.app.vault.getResourcePath(file);
     }
     return path;
@@ -27945,12 +30253,21 @@ var createBridge = (plugin) => ({
   getLocale() {
     var _a, _b;
     return (_b = (_a = plugin.getLocale) == null ? void 0 : _a.call(plugin)) != null ? _b : "en";
+  },
+  getTagManager() {
+    return plugin.tagManager;
+  },
+  getFrontmatterService() {
+    return plugin.frontmatterService;
+  },
+  getPluginSettings() {
+    return plugin.settings;
   }
 });
 
 // src/view.tsx
 var VIEW_TYPE_LUMINA = "lumina-view";
-var LuminaView = class extends import_obsidian2.ItemView {
+var LuminaView = class extends import_obsidian3.ItemView {
   constructor(leaf, plugin) {
     super(leaf);
     this.root = null;
@@ -27968,9 +30285,9 @@ var LuminaView = class extends import_obsidian2.ItemView {
     container.empty();
     container.addClass("lumina-view-container");
     const rootEl = container.createDiv({ cls: "lumina-view-root" });
-    this.root = (0, import_client.createRoot)(rootEl);
+    this.root = (0, import_client2.createRoot)(rootEl);
     const api = createBridge(this.plugin);
-    this.root.render(import_react2.default.createElement(PhotoGalleryWidget, { api }));
+    this.root.render(import_react6.default.createElement(PhotoGalleryWidget, { api }));
   }
   async onClose() {
     var _a;
@@ -27981,29 +30298,3364 @@ var LuminaView = class extends import_obsidian2.ItemView {
 };
 
 // src/settings.ts
-var import_obsidian3 = require("obsidian");
+var import_obsidian4 = require("obsidian");
 var DEFAULT_SETTINGS2 = {
-  locale: "en"
+  locale: "en",
+  enableTagSystem: true,
+  enableVirtualSearch: true,
+  virtualSearchClickAction: "obsidian",
+  showFileExplorerTagsIndicator: false,
+  tagIndicatorPosition: "left",
+  tagIndicatorStyle: "dot",
+  tagIndicatorColor: "var(--interactive-accent)",
+  tagIndicatorSize: 8,
+  tagIndicatorLucideIcon: "tag",
+  tagIndicatorCompensateShift: false,
+  blockImageClickAction: "preview",
+  tagClickAction: "lumina",
+  // Gallery defaults
+  defaultLayout: "justified",
+  defaultZoom: 200,
+  defaultShowNames: false,
+  defaultMediaFilter: "all",
+  // Performance
+  thumbnailQuality: "medium",
+  maxCacheSizeMB: 500,
+  enableStartupSync: true,
+  showDebugLogs: false,
+  // Backup
+  autoBackupEnabled: false,
+  autoBackupIntervalHours: 24,
+  autoBackupPath: ""
 };
-var LuminaSettingTab = class extends import_obsidian3.PluginSettingTab {
+var IconPickerModal = class extends import_obsidian4.Modal {
+  constructor(app, locale, initialIcon, onPick) {
+    super(app);
+    this.iconIds = (0, import_obsidian4.getIconIds)();
+    this.locale = locale;
+    this.initialIcon = initialIcon;
+    this.onPick = onPick;
+  }
+  onOpen() {
+    const { contentEl } = this;
+    contentEl.empty();
+    contentEl.addClass("lumina-icon-picker-modal");
+    contentEl.createEl("h3", { text: t(this.locale, "iconPickerTitle") });
+    const search = new import_obsidian4.SearchComponent(contentEl);
+    search.setPlaceholder(t(this.locale, "iconPickerSearchPlaceholder"));
+    search.setValue("");
+    const grid = contentEl.createDiv({ cls: "lumina-icon-picker-grid" });
+    const empty = contentEl.createDiv({ cls: "lumina-icon-picker-empty" });
+    const render = (query) => {
+      const normalized = query.trim().toLowerCase();
+      const icons = normalized.length === 0 ? this.iconIds : this.iconIds.filter((iconId) => iconId.toLowerCase().includes(normalized));
+      grid.empty();
+      empty.empty();
+      if (icons.length === 0) {
+        empty.setText(t(this.locale, "iconPickerNoResults"));
+        return;
+      }
+      const fragment = document.createDocumentFragment();
+      icons.forEach((iconId) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "lumina-icon-picker-item";
+        button.title = iconId;
+        button.setAttribute("aria-label", iconId);
+        const iconEl = document.createElement("span");
+        iconEl.className = "lumina-icon-picker-item-icon";
+        try {
+          (0, import_obsidian4.setIcon)(iconEl, iconId);
+        } catch (e) {
+          (0, import_obsidian4.setIcon)(iconEl, "tag");
+        }
+        const labelEl = document.createElement("span");
+        labelEl.className = "lumina-icon-picker-item-label";
+        labelEl.textContent = iconId;
+        button.appendChild(iconEl);
+        button.appendChild(labelEl);
+        button.addEventListener("click", () => {
+          this.onPick(iconId);
+          this.close();
+        });
+        fragment.appendChild(button);
+      });
+      grid.appendChild(fragment);
+    };
+    search.onChange((value) => render(value));
+    render("");
+  }
+};
+var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
   constructor(app, plugin) {
     super(app, plugin);
     this.plugin = plugin;
+    this.indicatorSaveTimeout = null;
+  }
+  applyIndicatorPreview() {
+    var _a;
+    if (!this.plugin.settings.enableTagSystem) return;
+    if (!this.plugin.settings.showFileExplorerTagsIndicator) return;
+    (_a = this.plugin.tagIndicatorService) == null ? void 0 : _a.refreshNow();
+  }
+  saveIndicatorSettingsDebounced() {
+    if (this.indicatorSaveTimeout) {
+      clearTimeout(this.indicatorSaveTimeout);
+    }
+    this.indicatorSaveTimeout = setTimeout(() => {
+      this.indicatorSaveTimeout = null;
+      void this.plugin.saveSettings();
+    }, 250);
+  }
+  parseColorToHexAndAlpha(inputColor) {
+    var _a;
+    const rgba = (_a = this.resolveColorToRgba(inputColor)) != null ? _a : this.resolveColorToRgba("var(--interactive-accent)");
+    if (!rgba) {
+      return { hex: "#7f7f7f", alpha: 1 };
+    }
+    return {
+      hex: this.rgbToHex(rgba.r, rgba.g, rgba.b),
+      alpha: rgba.a
+    };
+  }
+  resolveColorToRgba(value) {
+    const probe = document.createElement("span");
+    probe.style.color = "";
+    probe.style.color = value;
+    if (!probe.style.color) return null;
+    document.body.appendChild(probe);
+    const computed = getComputedStyle(probe).color;
+    probe.remove();
+    const match = computed.match(
+      /rgba?\(\s*([0-9.]+)[,\s]+([0-9.]+)[,\s]+([0-9.]+)(?:[,\s/]+([0-9.]+))?\s*\)/i
+    );
+    if (!match) return null;
+    const r = Math.max(0, Math.min(255, Math.round(Number(match[1]))));
+    const g = Math.max(0, Math.min(255, Math.round(Number(match[2]))));
+    const b = Math.max(0, Math.min(255, Math.round(Number(match[3]))));
+    const aRaw = match[4] == null ? 1 : Number(match[4]);
+    const a = Math.max(0, Math.min(1, Number.isFinite(aRaw) ? aRaw : 1));
+    return { r, g, b, a };
+  }
+  rgbToHex(r, g, b) {
+    const toHex = (channel) => channel.toString(16).padStart(2, "0");
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+  }
+  hexToRgb(hex) {
+    const normalized = hex.replace("#", "").trim();
+    if (!/^[0-9a-fA-F]{6}$/.test(normalized)) {
+      return { r: 127, g: 127, b: 127 };
+    }
+    return {
+      r: Number.parseInt(normalized.slice(0, 2), 16),
+      g: Number.parseInt(normalized.slice(2, 4), 16),
+      b: Number.parseInt(normalized.slice(4, 6), 16)
+    };
+  }
+  buildCssColor(hex, alpha) {
+    const safeAlpha = Math.max(0, Math.min(1, alpha));
+    if (safeAlpha >= 0.999) {
+      return hex.toLowerCase();
+    }
+    const { r, g, b } = this.hexToRgb(hex);
+    return `rgba(${r}, ${g}, ${b}, ${safeAlpha.toFixed(2)})`;
+  }
+  updateIndicatorColor(hex, alpha) {
+    this.plugin.settings.tagIndicatorColor = this.buildCssColor(hex, alpha);
+    this.applyIndicatorPreview();
+    this.saveIndicatorSettingsDebounced();
+  }
+  updateIndicatorIconPreview(previewEl, iconName) {
+    previewEl.empty();
+    try {
+      (0, import_obsidian4.setIcon)(previewEl, iconName);
+    } catch (e) {
+      (0, import_obsidian4.setIcon)(previewEl, "tag");
+    }
   }
   display() {
     const { containerEl } = this;
+    const { locale } = this.plugin.settings;
     containerEl.empty();
     containerEl.createEl("h2", { text: "Lumina" });
-    containerEl.createEl("h3", { text: "Language / Langue / Sprache / Idioma / \u8BED\u8A00" });
-    const select = containerEl.createEl("select", { cls: "dropdown" });
-    ["en", "fr", "de", "es", "zh"].forEach((code) => {
-      const opt = select.createEl("option", { value: code, text: LOCALE_NAMES[code] });
-      if (this.plugin.settings.locale === code) opt.selected = true;
+    containerEl.createEl("h3", { text: t(locale, "generalSettings") });
+    new import_obsidian4.Setting(containerEl).setName("Language / Langue / Sprache / Idioma / \u8BED\u8A00").addDropdown((dropdown) => {
+      ["en", "fr", "de", "es", "zh"].forEach((code) => {
+        dropdown.addOption(code, LOCALE_NAMES[code]);
+      });
+      dropdown.setValue(this.plugin.settings.locale);
+      dropdown.onChange(async (value) => {
+        this.plugin.settings.locale = value;
+        await this.plugin.saveSettings();
+        this.display();
+      });
     });
-    select.addEventListener("change", async () => {
-      this.plugin.settings.locale = select.value;
-      await this.plugin.saveSettings();
+    new import_obsidian4.Setting(containerEl).setName(t(locale, "enableTagSystem")).setDesc(t(locale, "enableTagSystemDesc")).addToggle((toggle) => {
+      toggle.setValue(this.plugin.settings.enableTagSystem);
+      toggle.onChange(async (value) => {
+        var _a, _b, _c, _d;
+        this.plugin.settings.enableTagSystem = value;
+        await this.plugin.saveSettings();
+        if (value) {
+          if (this.plugin.settings.showFileExplorerTagsIndicator) {
+            (_a = this.plugin.tagIndicatorService) == null ? void 0 : _a.start();
+          }
+          (_b = this.plugin.fileHeaderService) == null ? void 0 : _b.start();
+        } else {
+          (_c = this.plugin.tagIndicatorService) == null ? void 0 : _c.stop();
+          (_d = this.plugin.fileHeaderService) == null ? void 0 : _d.stop();
+        }
+        this.display();
+      });
     });
+    if (this.plugin.settings.enableTagSystem) {
+      containerEl.createEl("h3", { text: t(locale, "tagSettings") });
+      new import_obsidian4.Setting(containerEl).setName(t(locale, "showTagsIndicator")).setDesc(t(locale, "showTagsIndicatorDesc")).addToggle((toggle) => {
+        toggle.setValue(this.plugin.settings.showFileExplorerTagsIndicator);
+        toggle.onChange(async (value) => {
+          var _a, _b;
+          this.plugin.settings.showFileExplorerTagsIndicator = value;
+          await this.plugin.saveSettings();
+          if (value) {
+            (_a = this.plugin.tagIndicatorService) == null ? void 0 : _a.start();
+          } else {
+            (_b = this.plugin.tagIndicatorService) == null ? void 0 : _b.stop();
+          }
+        });
+      });
+      new import_obsidian4.Setting(containerEl).setName(t(locale, "tagIndicatorPosition")).setDesc(t(locale, "tagIndicatorPositionDesc")).addDropdown((dropdown) => {
+        dropdown.addOption("left", t(locale, "left"));
+        dropdown.addOption("right", t(locale, "right"));
+        dropdown.setValue(this.plugin.settings.tagIndicatorPosition);
+        dropdown.onChange((value) => {
+          this.plugin.settings.tagIndicatorPosition = value;
+          this.applyIndicatorPreview();
+          this.saveIndicatorSettingsDebounced();
+        });
+      });
+      new import_obsidian4.Setting(containerEl).setName(t(locale, "tagIndicatorCompensateShift")).setDesc(t(locale, "tagIndicatorCompensateShiftDesc")).addToggle((toggle) => {
+        toggle.setValue(this.plugin.settings.tagIndicatorCompensateShift);
+        toggle.onChange((value) => {
+          this.plugin.settings.tagIndicatorCompensateShift = value;
+          this.applyIndicatorPreview();
+          this.saveIndicatorSettingsDebounced();
+        });
+      });
+      new import_obsidian4.Setting(containerEl).setName(t(locale, "tagIndicatorStyle")).setDesc(t(locale, "tagIndicatorStyleDesc")).addDropdown((dropdown) => {
+        dropdown.addOption("dot", t(locale, "tagIndicatorStyleDot"));
+        dropdown.addOption("icon", t(locale, "tagIndicatorStyleIcon"));
+        dropdown.setValue(this.plugin.settings.tagIndicatorStyle);
+        dropdown.onChange((value) => {
+          this.plugin.settings.tagIndicatorStyle = value;
+          this.applyIndicatorPreview();
+          this.saveIndicatorSettingsDebounced();
+          this.display();
+        });
+      });
+      const colorPreset = this.parseColorToHexAndAlpha(this.plugin.settings.tagIndicatorColor);
+      let selectedHex = colorPreset.hex;
+      let selectedAlpha = colorPreset.alpha;
+      new import_obsidian4.Setting(containerEl).setName(t(locale, "tagIndicatorColor")).setDesc(t(locale, "tagIndicatorColorDesc")).addColorPicker((picker) => {
+        picker.setValue(selectedHex);
+        picker.onChange((value) => {
+          selectedHex = value;
+          this.updateIndicatorColor(selectedHex, selectedAlpha);
+        });
+      }).addSlider((slider) => {
+        slider.setLimits(0, 100, 1);
+        slider.setValue(Math.round(selectedAlpha * 100));
+        slider.setDynamicTooltip();
+        slider.onChange((value) => {
+          selectedAlpha = value / 100;
+          this.updateIndicatorColor(selectedHex, selectedAlpha);
+        });
+      });
+      new import_obsidian4.Setting(containerEl).setName(t(locale, "tagIndicatorSize")).setDesc(t(locale, "tagIndicatorSizeDesc")).addSlider((slider) => {
+        slider.setLimits(6, 24, 1);
+        slider.setValue(this.plugin.settings.tagIndicatorSize);
+        slider.setDynamicTooltip();
+        slider.onChange((value) => {
+          this.plugin.settings.tagIndicatorSize = value;
+          this.applyIndicatorPreview();
+          this.saveIndicatorSettingsDebounced();
+        });
+      });
+      if (this.plugin.settings.tagIndicatorStyle === "icon") {
+        let iconTextInput = null;
+        let iconPreview = null;
+        const iconSetting = new import_obsidian4.Setting(containerEl).setName(t(locale, "tagIndicatorIcon")).setDesc(t(locale, "tagIndicatorIconDesc")).addText((text) => {
+          text.setPlaceholder("tag");
+          text.setValue(this.plugin.settings.tagIndicatorLucideIcon);
+          iconTextInput = text.inputEl;
+          text.onChange((value) => {
+            this.plugin.settings.tagIndicatorLucideIcon = value.trim() || "tag";
+            this.applyIndicatorPreview();
+            this.saveIndicatorSettingsDebounced();
+          });
+        }).addButton((button) => {
+          button.setButtonText(t(locale, "browseIcons"));
+          button.onClick(() => {
+            new IconPickerModal(
+              this.app,
+              locale,
+              this.plugin.settings.tagIndicatorLucideIcon,
+              (iconId) => {
+                this.plugin.settings.tagIndicatorLucideIcon = iconId;
+                if (iconTextInput) {
+                  iconTextInput.value = iconId;
+                }
+                if (iconPreview) {
+                  this.updateIndicatorIconPreview(iconPreview, iconId);
+                }
+                this.applyIndicatorPreview();
+                this.saveIndicatorSettingsDebounced();
+              }
+            ).open();
+          });
+        });
+        iconPreview = iconSetting.controlEl.createSpan({ cls: "lumina-icon-preview" });
+        this.updateIndicatorIconPreview(iconPreview, this.plugin.settings.tagIndicatorLucideIcon);
+      }
+      new import_obsidian4.Setting(containerEl).setName(t(locale, "tagClickAction")).setDesc(t(locale, "tagClickActionDesc")).addDropdown((dropdown) => {
+        dropdown.addOption("lumina", t(locale, "searchInLumina"));
+        dropdown.addOption("obsidian", t(locale, "searchInObsidian"));
+        dropdown.setValue(this.plugin.settings.tagClickAction);
+        dropdown.onChange(async (value) => {
+          this.plugin.settings.tagClickAction = value;
+          await this.plugin.saveSettings();
+        });
+      });
+      containerEl.createEl("h3", { text: t(locale, "searchIntegration") });
+      new import_obsidian4.Setting(containerEl).setName(t(locale, "enableVirtualSearch")).setDesc(t(locale, "enableVirtualSearchDesc")).addToggle((toggle) => {
+        toggle.setValue(this.plugin.settings.enableVirtualSearch);
+        toggle.onChange(async (value) => {
+          var _a, _b;
+          this.plugin.settings.enableVirtualSearch = value;
+          await this.plugin.saveSettings();
+          if (value) {
+            (_a = this.plugin.virtualSearchService) == null ? void 0 : _a.enable();
+          } else {
+            (_b = this.plugin.virtualSearchService) == null ? void 0 : _b.disable();
+          }
+          this.display();
+        });
+      });
+      if (this.plugin.settings.enableVirtualSearch) {
+        new import_obsidian4.Setting(containerEl).setName(t(locale, "virtualSearchClickAction")).setDesc(t(locale, "virtualSearchClickActionDesc")).addDropdown((dropdown) => {
+          dropdown.addOption("obsidian", t(locale, "openInObsidian"));
+          dropdown.addOption("lumina", t(locale, "openInLumina"));
+          dropdown.setValue(this.plugin.settings.virtualSearchClickAction);
+          dropdown.onChange(async (value) => {
+            this.plugin.settings.virtualSearchClickAction = value;
+            await this.plugin.saveSettings();
+          });
+        });
+      }
+      containerEl.createEl("h3", { text: t(locale, "backlinksSection") });
+      new import_obsidian4.Setting(containerEl).setName(t(locale, "scanBacklinks")).setDesc(t(locale, "scanBacklinksDesc")).addButton((button) => {
+        button.setButtonText(t(locale, "scanNow"));
+        button.onClick(async () => {
+          var _a;
+          button.setDisabled(true);
+          button.setButtonText(t(locale, "scanning"));
+          try {
+            const count = await this.plugin.scanAndCreateBacklinks();
+            new import_obsidian4.Notice(((_a = t(locale, "scanComplete")) == null ? void 0 : _a.replace("{count}", String(count))) || `Scan complete! Created ${count} backlinks.`);
+          } catch (e) {
+            new import_obsidian4.Notice("Error during scan: " + e.message);
+          } finally {
+            button.setDisabled(false);
+            button.setButtonText(t(locale, "scanNow"));
+          }
+        });
+      });
+    }
+    containerEl.createEl("h3", { text: t(locale, "gallerySettings") });
+    new import_obsidian4.Setting(containerEl).setName(t(locale, "blockImageClickAction")).setDesc(t(locale, "blockImageClickActionDesc")).addDropdown((dropdown) => {
+      dropdown.addOption("preview", t(locale, "previewFullscreen"));
+      dropdown.addOption("open", t(locale, "openFile"));
+      dropdown.setValue(this.plugin.settings.blockImageClickAction);
+      dropdown.onChange(async (value) => {
+        this.plugin.settings.blockImageClickAction = value;
+        await this.plugin.saveSettings();
+      });
+    });
+    containerEl.createEl("h3", { text: t(locale, "galleryDefaults") });
+    new import_obsidian4.Setting(containerEl).setName(t(locale, "defaultLayout")).setDesc(t(locale, "defaultLayoutDesc")).addDropdown((dropdown) => {
+      dropdown.addOption("justified", t(locale, "justifiedLayout"));
+      dropdown.addOption("square", t(locale, "squareGrid"));
+      dropdown.addOption("detail", t(locale, "detailView"));
+      dropdown.addOption("panorama-square", t(locale, "panorama") + " (Square)");
+      dropdown.addOption("panorama-justified", t(locale, "panorama") + " (Justified)");
+      dropdown.setValue(this.plugin.settings.defaultLayout);
+      dropdown.onChange(async (value) => {
+        this.plugin.settings.defaultLayout = value;
+        await this.plugin.saveSettings();
+      });
+    });
+    new import_obsidian4.Setting(containerEl).setName(t(locale, "defaultZoom")).setDesc(t(locale, "defaultZoomDesc")).addSlider((slider) => {
+      slider.setLimits(50, 500, 10);
+      slider.setValue(this.plugin.settings.defaultZoom);
+      slider.setDynamicTooltip();
+      slider.onChange(async (value) => {
+        this.plugin.settings.defaultZoom = value;
+        await this.plugin.saveSettings();
+      });
+    });
+    new import_obsidian4.Setting(containerEl).setName(t(locale, "defaultShowNames")).setDesc(t(locale, "defaultShowNamesDesc")).addToggle((toggle) => {
+      toggle.setValue(this.plugin.settings.defaultShowNames);
+      toggle.onChange(async (value) => {
+        this.plugin.settings.defaultShowNames = value;
+        await this.plugin.saveSettings();
+      });
+    });
+    new import_obsidian4.Setting(containerEl).setName(t(locale, "defaultMediaFilter")).setDesc(t(locale, "defaultMediaFilterDesc")).addDropdown((dropdown) => {
+      dropdown.addOption("all", t(locale, "photos") + " + " + t(locale, "videos"));
+      dropdown.addOption("photos", t(locale, "photos"));
+      dropdown.addOption("videos", t(locale, "videos"));
+      dropdown.setValue(this.plugin.settings.defaultMediaFilter);
+      dropdown.onChange(async (value) => {
+        this.plugin.settings.defaultMediaFilter = value;
+        await this.plugin.saveSettings();
+      });
+    });
+    containerEl.createEl("h3", { text: t(locale, "performanceSettings") });
+    new import_obsidian4.Setting(containerEl).setName(t(locale, "thumbnailQuality")).setDesc(t(locale, "thumbnailQualityDesc")).addDropdown((dropdown) => {
+      dropdown.addOption("low", t(locale, "qualityLow"));
+      dropdown.addOption("medium", t(locale, "qualityMedium"));
+      dropdown.addOption("high", t(locale, "qualityHigh"));
+      dropdown.setValue(this.plugin.settings.thumbnailQuality);
+      dropdown.onChange(async (value) => {
+        this.plugin.settings.thumbnailQuality = value;
+        await this.plugin.saveSettings();
+      });
+    });
+    new import_obsidian4.Setting(containerEl).setName(t(locale, "maxCacheSize")).setDesc(t(locale, "maxCacheSizeDesc")).addSlider((slider) => {
+      slider.setLimits(100, 2e3, 100);
+      slider.setValue(this.plugin.settings.maxCacheSizeMB);
+      slider.setDynamicTooltip();
+      slider.onChange(async (value) => {
+        this.plugin.settings.maxCacheSizeMB = value;
+        await this.plugin.saveSettings();
+      });
+    });
+    new import_obsidian4.Setting(containerEl).setName(t(locale, "enableStartupSync")).setDesc(t(locale, "enableStartupSyncDesc")).addToggle((toggle) => {
+      toggle.setValue(this.plugin.settings.enableStartupSync);
+      toggle.onChange(async (value) => {
+        this.plugin.settings.enableStartupSync = value;
+        await this.plugin.saveSettings();
+      });
+    });
+    new import_obsidian4.Setting(containerEl).setName(t(locale, "debugLogs")).setDesc(t(locale, "debugLogsDesc")).addToggle((toggle) => {
+      toggle.setValue(this.plugin.settings.showDebugLogs);
+      toggle.onChange(async (value) => {
+        this.plugin.settings.showDebugLogs = value;
+        await this.plugin.saveSettings();
+      });
+    });
+    containerEl.createEl("h3", { text: t(locale, "backupRestore") });
+    new import_obsidian4.Setting(containerEl).setName(t(locale, "autoBackup")).setDesc(t(locale, "autoBackupDesc")).addToggle((toggle) => {
+      toggle.setValue(this.plugin.settings.autoBackupEnabled);
+      toggle.onChange(async (value) => {
+        this.plugin.settings.autoBackupEnabled = value;
+        await this.plugin.saveSettings();
+        this.display();
+      });
+    });
+    if (this.plugin.settings.autoBackupEnabled) {
+      new import_obsidian4.Setting(containerEl).setName(t(locale, "backupInterval")).setDesc(t(locale, "backupIntervalDesc")).addSlider((slider) => {
+        slider.setLimits(1, 168, 1);
+        slider.setValue(this.plugin.settings.autoBackupIntervalHours);
+        slider.setDynamicTooltip();
+        slider.onChange(async (value) => {
+          this.plugin.settings.autoBackupIntervalHours = value;
+          await this.plugin.saveSettings();
+        });
+      });
+      new import_obsidian4.Setting(containerEl).setName(t(locale, "backupPath")).setDesc(t(locale, "backupPathDesc")).addText((text) => {
+        text.setPlaceholder("backups/lumina");
+        text.setValue(this.plugin.settings.autoBackupPath);
+        text.onChange(async (value) => {
+          this.plugin.settings.autoBackupPath = value.trim();
+          await this.plugin.saveSettings();
+        });
+      });
+    }
+    new import_obsidian4.Setting(containerEl).setName(t(locale, "exportBackup")).addButton((btn) => {
+      btn.setButtonText(t(locale, "exportBackup"));
+      btn.onClick(async () => {
+        const folder = this.plugin.settings.autoBackupPath || "";
+        const ts = (/* @__PURE__ */ new Date()).toISOString().replace(/[:.]/g, "-").slice(0, 19);
+        const fileName = `lumina-tags-backup-${ts}.json`;
+        const sep = folder.includes("\\") ? "\\" : "/";
+        const fullPath = folder ? `${folder.replace(/[\\/]$/, "")}${sep}${fileName}` : fileName;
+        try {
+          await this.plugin.exportTagBackup(fullPath);
+          new import_obsidian4.Notice(t(locale, "backupExported"));
+        } catch (e) {
+          new import_obsidian4.Notice("Error: " + e.message);
+        }
+      });
+    });
+    new import_obsidian4.Setting(containerEl).setName(t(locale, "importBackup")).addButton((btn) => {
+      btn.setButtonText(t(locale, "importBackup"));
+      btn.onClick(() => {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = ".json";
+        input.addEventListener("change", async () => {
+          var _a;
+          const file = (_a = input.files) == null ? void 0 : _a[0];
+          if (!file) return;
+          try {
+            const text = await file.text();
+            const data = JSON.parse(text);
+            const importedMap = data.tags;
+            if (!importedMap || typeof importedMap !== "object") {
+              throw new Error("Invalid backup format");
+            }
+            const count = await this.plugin.importTagBackupFromData(importedMap);
+            new import_obsidian4.Notice(t(locale, "backupImported", { n: count }));
+          } catch (e) {
+            new import_obsidian4.Notice("Error: " + e.message);
+          }
+        });
+        input.click();
+      });
+    });
+  }
+};
+
+// src/services/tagManager.ts
+var TagManager = class {
+  constructor(initialData) {
+    this.tagMap = {};
+    this.listeners = /* @__PURE__ */ new Set();
+    this.changeListeners = /* @__PURE__ */ new Set();
+    this.version = 0;
+    // Caches - invalidated on any mutation
+    this._allTagsCache = null;
+    this._tagToFilesCache = null;
+    if (initialData) {
+      this.tagMap = { ...initialData };
+    }
+  }
+  /**
+   * Invalidate all caches (called on any mutation)
+   */
+  invalidateCaches() {
+    this._allTagsCache = null;
+    this._tagToFilesCache = null;
+  }
+  /**
+   * Build the inverted index (tag -> files) on demand
+   */
+  getTagToFilesIndex() {
+    if (!this._tagToFilesCache) {
+      this._tagToFilesCache = /* @__PURE__ */ new Map();
+      for (const [path, tags] of Object.entries(this.tagMap)) {
+        for (const tag of tags) {
+          let files = this._tagToFilesCache.get(tag);
+          if (!files) {
+            files = /* @__PURE__ */ new Set();
+            this._tagToFilesCache.set(tag, files);
+          }
+          files.add(path);
+        }
+      }
+    }
+    return this._tagToFilesCache;
+  }
+  /**
+   * Obtenir tous les tags d'un fichier
+   */
+  getTags(path) {
+    return this.tagMap[path] || [];
+  }
+  /**
+   * Obtenir tous les tags uniques du système (cached)
+   */
+  getAllTags() {
+    if (!this._allTagsCache) {
+      const allTags = /* @__PURE__ */ new Set();
+      for (const tags of Object.values(this.tagMap)) {
+        for (const tag of tags) {
+          allTags.add(tag);
+        }
+      }
+      this._allTagsCache = Array.from(allTags).sort((a, b) => a.localeCompare(b));
+    }
+    return this._allTagsCache;
+  }
+  /**
+   * Obtenir tous les chemins de fichiers qui ont des tags
+   */
+  getAllTaggedPaths() {
+    return Object.keys(this.tagMap);
+  }
+  /**
+   * Ajouter un tag à un fichier
+   */
+  addTag(path, tag) {
+    if (!tag.trim()) return;
+    const normalizedTag = tag.trim();
+    const oldTags = [...this.tagMap[path] || []];
+    if (!this.tagMap[path]) {
+      this.tagMap[path] = [];
+    }
+    if (!this.tagMap[path].includes(normalizedTag)) {
+      this.tagMap[path].push(normalizedTag);
+      this.invalidateCaches();
+      this.notifyListeners(path, oldTags);
+    }
+  }
+  /**
+   * Ajouter plusieurs tags à un fichier
+   */
+  addTags(path, tags) {
+    const oldTags = [...this.tagMap[path] || []];
+    let changed = false;
+    tags.forEach((tag) => {
+      if (!tag.trim()) return;
+      const normalizedTag = tag.trim();
+      if (!this.tagMap[path]) {
+        this.tagMap[path] = [];
+      }
+      if (!this.tagMap[path].includes(normalizedTag)) {
+        this.tagMap[path].push(normalizedTag);
+        changed = true;
+      }
+    });
+    if (changed) {
+      this.invalidateCaches();
+      this.notifyListeners(path, oldTags);
+    }
+  }
+  /**
+   * Retirer un tag d'un fichier
+   */
+  removeTag(path, tag) {
+    if (!this.tagMap[path]) return;
+    const oldTags = [...this.tagMap[path]];
+    const index = this.tagMap[path].indexOf(tag);
+    if (index !== -1) {
+      this.tagMap[path].splice(index, 1);
+      if (this.tagMap[path].length === 0) {
+        delete this.tagMap[path];
+      }
+      this.invalidateCaches();
+      this.notifyListeners(path, oldTags);
+    }
+  }
+  /**
+   * Retirer plusieurs tags d'un fichier
+   */
+  removeTags(path, tags) {
+    var _a;
+    if (!this.tagMap[path]) return;
+    const oldTags = [...this.tagMap[path]];
+    let changed = false;
+    tags.forEach((tag) => {
+      var _a2;
+      const index = (_a2 = this.tagMap[path]) == null ? void 0 : _a2.indexOf(tag);
+      if (index !== void 0 && index !== -1) {
+        this.tagMap[path].splice(index, 1);
+        changed = true;
+      }
+    });
+    if (((_a = this.tagMap[path]) == null ? void 0 : _a.length) === 0) {
+      delete this.tagMap[path];
+    }
+    if (changed) {
+      this.invalidateCaches();
+      this.notifyListeners(path, oldTags);
+    }
+  }
+  /**
+   * Définir tous les tags d'un fichier (remplace les existants)
+   */
+  setTags(path, tags) {
+    const oldTags = [...this.tagMap[path] || []];
+    const uniqueTags = [...new Set(tags.filter((t2) => t2.trim()))];
+    if (uniqueTags.length === 0) {
+      delete this.tagMap[path];
+    } else {
+      this.tagMap[path] = uniqueTags;
+    }
+    this.invalidateCaches();
+    this.notifyListeners(path, oldTags);
+  }
+  /**
+   * Supprimer tous les tags d'un fichier
+   */
+  clearTags(path) {
+    if (this.tagMap[path]) {
+      const oldTags = [...this.tagMap[path]];
+      delete this.tagMap[path];
+      this.invalidateCaches();
+      this.notifyListeners(path, oldTags);
+    }
+  }
+  /**
+   * Renommer un fichier (déplace les tags)
+   */
+  renamePath(oldPath, newPath) {
+    if (this.tagMap[oldPath]) {
+      this.tagMap[newPath] = this.tagMap[oldPath];
+      delete this.tagMap[oldPath];
+      this.invalidateCaches();
+      this.notifyListeners(newPath, []);
+    }
+  }
+  /**
+   * Obtenir le nombre de tags d'un fichier
+   */
+  getTagCount(path) {
+    var _a;
+    return ((_a = this.tagMap[path]) == null ? void 0 : _a.length) || 0;
+  }
+  /**
+   * Filtrer les fichiers par tags (recherche ET/OU)
+   */
+  filterByTags(paths, query) {
+    if (!query.trim()) return paths;
+    const orParts = query.split(/\s+OR\s+/i).map((p) => p.trim());
+    return paths.filter((path) => {
+      const tags = this.getTags(path);
+      const tagStr = tags.join(" ").toLowerCase();
+      const fileName = path.toLowerCase();
+      return orParts.some((orPart) => {
+        const andParts = orPart.split(/\s+AND\s+/i).map((p) => p.trim().toLowerCase());
+        return andParts.every((term) => tagStr.includes(term) || fileName.includes(term));
+      });
+    });
+  }
+  /**
+   * Obtenir toutes les données (pour sauvegarde) - returns reference for internal use
+   */
+  getData() {
+    return this.tagMap;
+  }
+  /**
+   * Obtenir la version actuelle (pour réactivité)
+   */
+  getVersion() {
+    return this.version;
+  }
+  /**
+   * Ajouter un listener pour les changements
+   */
+  addListener(callback) {
+    this.listeners.add(callback);
+  }
+  /**
+   * Retirer un listener
+   */
+  removeListener(callback) {
+    this.listeners.delete(callback);
+  }
+  addTagChangeListener(callback) {
+    this.changeListeners.add(callback);
+  }
+  removeTagChangeListener(callback) {
+    this.changeListeners.delete(callback);
+  }
+  /**
+   * Notifier tous les listeners
+   */
+  notifyListeners(changedPath, oldTags) {
+    this.version++;
+    this.listeners.forEach((callback) => callback(this.tagMap));
+    if (changedPath) {
+      const nextTags = this.getTags(changedPath);
+      const prevTags = oldTags || [];
+      this.changeListeners.forEach((listener) => listener(changedPath, [...nextTags], [...prevTags]));
+    }
+  }
+  /**
+   * Obtenir les fichiers ayant au moins un tag spécifique (uses inverted index)
+   */
+  getFilesWithTag(tag) {
+    const index = this.getTagToFilesIndex();
+    const files = index.get(tag);
+    return files ? Array.from(files) : [];
+  }
+  /**
+   * Obtenir les fichiers ayant tous les tags spécifiés
+   */
+  getFilesWithAllTags(tags) {
+    if (tags.length === 0) return [];
+    const index = this.getTagToFilesIndex();
+    const firstSet = index.get(tags[0]);
+    if (!firstSet) return [];
+    const result = [];
+    for (const path of firstSet) {
+      const fileTags = this.tagMap[path];
+      if (fileTags && tags.every((tag) => fileTags.includes(tag))) {
+        result.push(path);
+      }
+    }
+    return result;
+  }
+  /**
+   * Obtenir les tags communs à plusieurs fichiers
+   */
+  getCommonTags(paths) {
+    if (paths.length === 0) return [];
+    const firstTags = this.getTags(paths[0]);
+    return firstTags.filter(
+      (tag) => paths.every((path) => this.getTags(path).includes(tag))
+    );
+  }
+};
+
+// src/services/tagIndicatorService.ts
+var import_obsidian5 = require("obsidian");
+var TagIndicatorService = class {
+  constructor(tagManager, app, getAppearance) {
+    this.observer = null;
+    this.refreshTimeout = null;
+    this.observedExplorer = null;
+    this.detachFns = [];
+    this.getAppearance = () => ({
+      position: "left",
+      style: "dot",
+      color: "var(--interactive-accent)",
+      size: 8,
+      icon: "tag",
+      compensateShift: false
+    });
+    this.tagManager = tagManager;
+    this.app = app;
+    if (getAppearance) {
+      this.getAppearance = getAppearance;
+    }
+  }
+  /**
+   * Start observing and rendering badges.
+   */
+  start() {
+    this.stop();
+    this.registerMetadataListeners();
+    setTimeout(() => {
+      this.refreshIndicators();
+      this.startObserver();
+    }, 500);
+  }
+  /**
+   * Stop observer and cleanup.
+   */
+  stop() {
+    if (this.observer) {
+      this.observer.disconnect();
+      this.observer = null;
+    }
+    this.observedExplorer = null;
+    if (this.refreshTimeout) {
+      clearTimeout(this.refreshTimeout);
+      this.refreshTimeout = null;
+    }
+    this.detachFns.forEach((fn) => fn());
+    this.detachFns = [];
+    document.querySelectorAll(".lumina-tag-indicator").forEach((el) => el.remove());
+  }
+  /**
+   * Debounced refresh.
+   */
+  scheduleRefresh() {
+    if (this.refreshTimeout) {
+      clearTimeout(this.refreshTimeout);
+    }
+    this.refreshTimeout = setTimeout(() => {
+      this.refreshIndicators();
+    }, 300);
+  }
+  /**
+   * Immediate refresh (used for live settings preview).
+   */
+  refreshNow() {
+    if (this.refreshTimeout) {
+      clearTimeout(this.refreshTimeout);
+      this.refreshTimeout = null;
+    }
+    this.refreshIndicators();
+  }
+  /**
+   * Start MutationObserver on file explorer.
+   */
+  startObserver() {
+    const fileExplorer = document.querySelector(".nav-files-container");
+    if (!fileExplorer) return;
+    this.observedExplorer = fileExplorer;
+    let debounceTimer = null;
+    this.observer = new MutationObserver((mutations) => {
+      const hasRelevantChanges = mutations.some((mutation) => {
+        var _a, _b, _c;
+        if (mutation.type !== "childList") return false;
+        for (let i = 0; i < mutation.addedNodes.length; i++) {
+          const node = mutation.addedNodes[i];
+          if (node instanceof HTMLElement) {
+            if (((_a = node.classList) == null ? void 0 : _a.contains("nav-file")) || ((_b = node.classList) == null ? void 0 : _b.contains("nav-folder")) || ((_c = node.querySelector) == null ? void 0 : _c.call(node, ".nav-file-title"))) {
+              return true;
+            }
+          }
+        }
+        return false;
+      });
+      if (!hasRelevantChanges) return;
+      if (debounceTimer) clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        this.refreshIndicators();
+      }, 500);
+    });
+    this.observer.observe(fileExplorer, {
+      childList: true,
+      subtree: true,
+      attributes: false
+    });
+  }
+  /**
+   * Handle layout changes without restarting observer every time.
+   */
+  handleLayoutChange() {
+    const fileExplorer = document.querySelector(".nav-files-container");
+    if (!fileExplorer) return;
+    if (!this.observer || this.observedExplorer !== fileExplorer) {
+      this.start();
+      return;
+    }
+    this.scheduleRefresh();
+  }
+  /**
+   * Refresh all badges.
+   */
+  refreshIndicators() {
+    const appearance = this.getAppearance();
+    const position = appearance.position;
+    const appearanceSignature = this.getAppearanceSignature(appearance);
+    const fileItems = document.querySelectorAll(".nav-file-title");
+    fileItems.forEach((titleEl) => {
+      const dataPath = titleEl.getAttribute("data-path");
+      if (!dataPath) return;
+      const tags = this.collectTagsForPath(dataPath);
+      const existingBadge = titleEl.querySelector(".lumina-tag-indicator");
+      if (tags.length > 0) {
+        const newTitle = tags.join(", ");
+        const titleMatches = (existingBadge == null ? void 0 : existingBadge.title) === newTitle;
+        const appearanceMatches = (existingBadge == null ? void 0 : existingBadge.getAttribute("data-lumina-appearance")) === appearanceSignature;
+        const positionMatches = existingBadge ? existingBadge.classList.contains(
+          position === "right" ? "lumina-tag-indicator-right" : "lumina-tag-indicator-left"
+        ) : false;
+        if (existingBadge && titleMatches && appearanceMatches && positionMatches) {
+          return;
+        }
+        if (existingBadge) {
+          existingBadge.title = newTitle;
+          existingBadge.classList.toggle("lumina-tag-indicator-left", position === "left");
+          existingBadge.classList.toggle("lumina-tag-indicator-right", position === "right");
+          this.applyBadgeAppearance(existingBadge, appearance, appearanceSignature);
+          this.placeBadge(titleEl, existingBadge, position);
+          return;
+        }
+        const badge = document.createElement("span");
+        badge.className = `lumina-tag-indicator lumina-tag-indicator-${position}`;
+        badge.title = newTitle;
+        this.applyBadgeAppearance(badge, appearance, appearanceSignature);
+        this.placeBadge(titleEl, badge, position);
+        return;
+      }
+      if (existingBadge) {
+        existingBadge.remove();
+      }
+    });
+  }
+  /**
+   * Update badge for one file.
+   */
+  updateIndicator(filePath) {
+    const titleEl = document.querySelector(`.nav-file-title[data-path="${CSS.escape(filePath)}"]`);
+    if (!titleEl) return;
+    const existingBadge = titleEl.querySelector(".lumina-tag-indicator");
+    const tags = this.collectTagsForPath(filePath);
+    if (tags.length === 0) {
+      if (existingBadge) {
+        existingBadge.remove();
+      }
+      return;
+    }
+    const appearance = this.getAppearance();
+    const position = appearance.position;
+    const appearanceSignature = this.getAppearanceSignature(appearance);
+    const badge = existingBadge != null ? existingBadge : document.createElement("span");
+    badge.classList.add("lumina-tag-indicator");
+    badge.classList.toggle("lumina-tag-indicator-left", position === "left");
+    badge.classList.toggle("lumina-tag-indicator-right", position === "right");
+    badge.title = tags.join(", ");
+    this.applyBadgeAppearance(badge, appearance, appearanceSignature);
+    this.placeBadge(titleEl, badge, position);
+  }
+  placeBadge(titleEl, badge, position) {
+    if (position === "right") {
+      if (titleEl.lastChild !== badge) {
+        titleEl.appendChild(badge);
+      }
+      return;
+    }
+    if (titleEl.firstChild !== badge) {
+      titleEl.insertBefore(badge, titleEl.firstChild);
+    }
+  }
+  applyBadgeAppearance(badge, appearance, appearanceSignature) {
+    const color = this.getValidColor(appearance.color);
+    const size = this.getValidSize(appearance.size);
+    const iconName = this.getValidIcon(appearance.icon);
+    badge.setAttribute("data-lumina-appearance", appearanceSignature);
+    badge.style.color = color;
+    badge.style.width = `${size}px`;
+    badge.style.height = `${size}px`;
+    badge.style.minWidth = `${size}px`;
+    badge.style.minHeight = `${size}px`;
+    badge.style.setProperty("--lumina-tag-indicator-size", `${size}px`);
+    badge.classList.toggle(
+      "lumina-tag-indicator-compensate-shift",
+      appearance.position === "left" && appearance.compensateShift
+    );
+    if (appearance.style === "icon") {
+      badge.style.backgroundColor = "transparent";
+      badge.style.borderRadius = "0";
+      badge.style.boxShadow = "none";
+      try {
+        (0, import_obsidian5.setIcon)(badge, iconName);
+      } catch (e) {
+        (0, import_obsidian5.setIcon)(badge, "tag");
+      }
+      const iconSvg = badge.querySelector("svg");
+      if (iconSvg) {
+        iconSvg.setAttribute("width", String(size));
+        iconSvg.setAttribute("height", String(size));
+        iconSvg.style.stroke = color;
+      }
+      return;
+    }
+    if (badge.firstChild) {
+      badge.replaceChildren();
+    }
+    badge.style.backgroundColor = color;
+    badge.style.borderRadius = "50%";
+    badge.style.boxShadow = `0 0 4px ${color}`;
+  }
+  getAppearanceSignature(appearance) {
+    return [
+      appearance.position,
+      appearance.style,
+      this.getValidColor(appearance.color),
+      this.getValidSize(appearance.size),
+      this.getValidIcon(appearance.icon),
+      appearance.compensateShift ? "1" : "0"
+    ].join("|");
+  }
+  getValidColor(value) {
+    const color = value.trim();
+    return color.length > 0 ? color : "var(--interactive-accent)";
+  }
+  getValidSize(value) {
+    if (!Number.isFinite(value)) return 8;
+    return Math.max(6, Math.min(24, Math.round(value)));
+  }
+  getValidIcon(value) {
+    const icon = value.trim();
+    return icon.length > 0 ? icon : "tag";
+  }
+  collectTagsForPath(path) {
+    const combined = /* @__PURE__ */ new Set();
+    this.tagManager.getTags(path).forEach((tag) => combined.add(tag));
+    this.getVaultTags(path).forEach((tag) => combined.add(tag));
+    return Array.from(combined);
+  }
+  getVaultTags(path) {
+    var _a, _b;
+    const file = this.app.vault.getAbstractFileByPath(path);
+    if (!(file instanceof import_obsidian5.TFile)) return [];
+    const cache = this.app.metadataCache.getFileCache(file);
+    if (!cache) return [];
+    const inlineTags = ((_a = cache.tags) != null ? _a : []).map((tag) => {
+      var _a2;
+      return (_a2 = tag.tag) == null ? void 0 : _a2.replace(/^#/, "");
+    }).filter((tag) => !!tag);
+    const frontmatterTags = this.normalizeFrontmatterTags((_b = cache.frontmatter) == null ? void 0 : _b.tags);
+    return Array.from(/* @__PURE__ */ new Set([...inlineTags, ...frontmatterTags]));
+  }
+  normalizeFrontmatterTags(tags) {
+    if (!tags) return [];
+    if (Array.isArray(tags)) {
+      const results = [];
+      tags.forEach((tagValue) => {
+        if (typeof tagValue === "string") {
+          tagValue.split(/[,]/).map((tag) => tag.trim()).filter(Boolean).forEach((tag) => results.push(tag));
+        }
+      });
+      return results;
+    }
+    if (typeof tags === "string") {
+      return tags.split(/[,]/).map((tag) => tag.trim()).filter(Boolean);
+    }
+    return [];
+  }
+  registerMetadataListeners() {
+    var _a, _b, _c, _d, _e, _f;
+    const metadataCache = this.app.metadataCache;
+    const vault = this.app.vault;
+    const handleMetadataChange = () => this.scheduleRefresh();
+    (_a = metadataCache == null ? void 0 : metadataCache.on) == null ? void 0 : _a.call(metadataCache, "changed", handleMetadataChange);
+    (_b = metadataCache == null ? void 0 : metadataCache.on) == null ? void 0 : _b.call(metadataCache, "resolve", handleMetadataChange);
+    (_c = metadataCache == null ? void 0 : metadataCache.on) == null ? void 0 : _c.call(metadataCache, "resolved", handleMetadataChange);
+    this.detachFns.push(() => {
+      var _a2;
+      return (_a2 = metadataCache == null ? void 0 : metadataCache.off) == null ? void 0 : _a2.call(metadataCache, "changed", handleMetadataChange);
+    });
+    this.detachFns.push(() => {
+      var _a2;
+      return (_a2 = metadataCache == null ? void 0 : metadataCache.off) == null ? void 0 : _a2.call(metadataCache, "resolve", handleMetadataChange);
+    });
+    this.detachFns.push(() => {
+      var _a2;
+      return (_a2 = metadataCache == null ? void 0 : metadataCache.off) == null ? void 0 : _a2.call(metadataCache, "resolved", handleMetadataChange);
+    });
+    const handleVaultUpdate = () => this.scheduleRefresh();
+    (_d = vault == null ? void 0 : vault.on) == null ? void 0 : _d.call(vault, "rename", handleVaultUpdate);
+    (_e = vault == null ? void 0 : vault.on) == null ? void 0 : _e.call(vault, "delete", handleVaultUpdate);
+    (_f = vault == null ? void 0 : vault.on) == null ? void 0 : _f.call(vault, "create", handleVaultUpdate);
+    this.detachFns.push(() => {
+      var _a2;
+      return (_a2 = vault == null ? void 0 : vault.off) == null ? void 0 : _a2.call(vault, "rename", handleVaultUpdate);
+    });
+    this.detachFns.push(() => {
+      var _a2;
+      return (_a2 = vault == null ? void 0 : vault.off) == null ? void 0 : _a2.call(vault, "delete", handleVaultUpdate);
+    });
+    this.detachFns.push(() => {
+      var _a2;
+      return (_a2 = vault == null ? void 0 : vault.off) == null ? void 0 : _a2.call(vault, "create", handleVaultUpdate);
+    });
+  }
+};
+
+// src/services/frontmatterService.ts
+var import_obsidian6 = require("obsidian");
+
+// src/utils/debugLog.ts
+var _getEnabled = null;
+function initDebugLog(getEnabled) {
+  _getEnabled = getEnabled;
+}
+function debugLog(...args) {
+  if (_getEnabled && _getEnabled()) {
+    console.log("[Lumina]", ...args);
+  }
+}
+
+// src/services/frontmatterService.ts
+var FrontmatterService = class {
+  constructor(vault, app) {
+    this.vault = vault;
+    this.app = app;
+  }
+  /**
+   * Met à jour le frontmatter d'une note pour ajouter/retirer un média
+   */
+  async updateFrontmatter(noteFile, mediaPath, add) {
+    const content = await this.vault.read(noteFile);
+    const lines = content.split("\n");
+    const hasFrontmatter = lines[0] === "---";
+    let frontmatterEnd = -1;
+    if (hasFrontmatter) {
+      for (let i = 1; i < lines.length; i++) {
+        if (lines[i] === "---") {
+          frontmatterEnd = i;
+          break;
+        }
+      }
+    }
+    if (!hasFrontmatter || frontmatterEnd === -1) {
+      if (add) {
+        const newFrontmatter = ["---", "lumina_media:", `  - "[[${mediaPath}]]"`, "---", ""];
+        const newContent2 = newFrontmatter.join("\n") + content;
+        await this.vault.modify(noteFile, newContent2);
+      }
+      return;
+    }
+    const frontmatterLines = lines.slice(1, frontmatterEnd);
+    let luminaMediaIndex = -1;
+    let luminaMediaEnd = -1;
+    for (let i = 0; i < frontmatterLines.length; i++) {
+      if (frontmatterLines[i].trim().startsWith("lumina_media:")) {
+        luminaMediaIndex = i;
+        for (let j = i + 1; j < frontmatterLines.length; j++) {
+          if (!frontmatterLines[j].startsWith("  ") && !frontmatterLines[j].startsWith("	")) {
+            luminaMediaEnd = j;
+            break;
+          }
+        }
+        if (luminaMediaEnd === -1) luminaMediaEnd = frontmatterLines.length;
+        break;
+      }
+    }
+    const mediaEntry = `  - "[[${mediaPath}]]"`;
+    if (add) {
+      if (luminaMediaIndex === -1) {
+        frontmatterLines.push("lumina_media:");
+        frontmatterLines.push(mediaEntry);
+      } else {
+        const mediaLines = frontmatterLines.slice(luminaMediaIndex + 1, luminaMediaEnd);
+        const exists = mediaLines.some((line) => line.includes(`[[${mediaPath}]]`));
+        if (!exists) {
+          frontmatterLines.splice(luminaMediaEnd, 0, mediaEntry);
+        }
+      }
+    } else {
+      if (luminaMediaIndex !== -1) {
+        const mediaLines = frontmatterLines.slice(luminaMediaIndex + 1, luminaMediaEnd);
+        const toRemove = mediaLines.findIndex((line) => line.includes(`[[${mediaPath}]]`));
+        if (toRemove !== -1) {
+          frontmatterLines.splice(luminaMediaIndex + 1 + toRemove, 1);
+          if (frontmatterLines.slice(luminaMediaIndex + 1, luminaMediaEnd - 1).length === 0) {
+            frontmatterLines.splice(luminaMediaIndex, 1);
+          }
+        }
+      }
+    }
+    const newLines = [
+      "---",
+      ...frontmatterLines,
+      "---",
+      ...lines.slice(frontmatterEnd + 1)
+    ];
+    const newContent = newLines.join("\n");
+    await this.vault.modify(noteFile, newContent);
+  }
+  /**
+   * Crée ou met à jour une note de métadonnées pour un asset
+   */
+  async updateAssetNote(mediaPath, tags, linkedNotes) {
+    const metadataFolderPath = "Assets/Metadata";
+    const metadataFolder = this.vault.getAbstractFileByPath(metadataFolderPath);
+    if (!metadataFolder) {
+      await this.vault.createFolder(metadataFolderPath).catch(() => {
+      });
+    }
+    const safeName = mediaPath.replace(/[^a-zA-Z0-9_\-\.]/g, "_").replace(/_+/g, "_").slice(0, 100);
+    const notePath = `${metadataFolderPath}/${safeName}.md`;
+    const frontmatter = [
+      "---",
+      "lumina_media_metadata: true",
+      `media_path: "${mediaPath}"`,
+      "tags:",
+      ...tags.map((tag) => `  - ${tag}`),
+      "---",
+      ""
+    ];
+    const body = [
+      `# ${mediaPath.split("/").pop()}`,
+      "",
+      `![[${mediaPath}]]`,
+      ""
+    ];
+    if (linkedNotes.length > 0) {
+      body.push("## Linked Notes", "");
+      linkedNotes.forEach((note) => {
+        body.push(`- [[${note}]]`);
+      });
+      body.push("");
+    }
+    const content = [...frontmatter, ...body].join("\n");
+    const existingFile = this.vault.getAbstractFileByPath(notePath);
+    if (existingFile && existingFile instanceof import_obsidian6.TFile) {
+      await this.vault.modify(existingFile, content);
+    } else {
+      await this.vault.create(notePath, content);
+    }
+  }
+  /**
+   * Parse les tags de type [[note]] pour créer des liens
+   */
+  extractNoteLinks(tags) {
+    return tags.filter((tag) => tag.startsWith("[[") && tag.endsWith("]]")).map((tag) => tag.slice(2, -2));
+  }
+  async syncNoteProperties(path, tags) {
+    debugLog("syncNoteProperties called:", { path, tags });
+    const file = this.vault.getAbstractFileByPath(path);
+    if (!(file instanceof import_obsidian6.TFile) || file.extension.toLowerCase() !== "md") {
+      debugLog("syncNoteProperties: file not found or not .md");
+      return;
+    }
+    const cleanTags = tags.map((tag) => tag.trim()).filter(Boolean);
+    const hashtagSet = /* @__PURE__ */ new Set();
+    const linkMap = /* @__PURE__ */ new Map();
+    cleanTags.forEach((tag) => {
+      if (tag.startsWith("[[") && tag.endsWith("]]")) {
+        let linkContent = tag.slice(2, -2).trim();
+        if (linkContent.toLowerCase().endsWith(".md")) {
+          linkContent = linkContent.slice(0, -3);
+        }
+        const normalizedKey = linkContent.toLowerCase();
+        if (!linkMap.has(normalizedKey)) {
+          linkMap.set(normalizedKey, `[[${linkContent}]]`);
+        }
+      } else {
+        const normalized = tag.startsWith("#") ? tag.slice(1) : tag;
+        if (normalized) {
+          hashtagSet.add(normalized);
+        }
+      }
+    });
+    const hashtagList = Array.from(hashtagSet);
+    const linkList = Array.from(linkMap.values());
+    const content = await this.vault.read(file);
+    const { frontmatterLines, body, hasFrontmatter } = this.splitFrontmatter(content);
+    const nextFrontmatter = [...frontmatterLines];
+    this.removePropertyBlock(nextFrontmatter, "tags");
+    this.removePropertyBlock(nextFrontmatter, "links");
+    this.appendListBlock(nextFrontmatter, "tags", hashtagList);
+    this.appendListBlock(nextFrontmatter, "links", linkList);
+    if (!hasFrontmatter && nextFrontmatter.length === 0) {
+      return;
+    }
+    let newContent;
+    if (nextFrontmatter.length > 0) {
+      const fmText = nextFrontmatter.join("\n").replace(/\s+$/, "");
+      newContent = `---
+${fmText}
+---
+${hasFrontmatter ? body : content}`.replace(/\s+$/, "");
+      newContent += "\n";
+    } else {
+      const bodyOnly = body.replace(/^\n+/, "");
+      newContent = bodyOnly;
+    }
+    if (newContent !== content) {
+      debugLog("syncNoteProperties: modifying file", path);
+      await this.vault.modify(file, newContent);
+    } else {
+      debugLog("syncNoteProperties: no change needed for", path);
+    }
+  }
+  splitFrontmatter(content) {
+    var _a;
+    const lines = content.split("\n");
+    if (((_a = lines[0]) == null ? void 0 : _a.trim()) !== "---") {
+      return { frontmatterLines: [], body: content, hasFrontmatter: false };
+    }
+    const endIndex = lines.findIndex((line, idx) => idx > 0 && line.trim() === "---");
+    if (endIndex === -1) {
+      return { frontmatterLines: [], body: content, hasFrontmatter: false };
+    }
+    const frontmatterLines = lines.slice(1, endIndex);
+    const bodyLines = lines.slice(endIndex + 1);
+    return { frontmatterLines, body: bodyLines.join("\n"), hasFrontmatter: true };
+  }
+  removePropertyBlock(lines, key) {
+    var _a;
+    let index = lines.findIndex((line) => line.replace(/^\s+/, "").startsWith(`${key}:`));
+    if (index === -1) return;
+    lines.splice(index, 1);
+    while (index < lines.length) {
+      const line = lines[index];
+      if (!line.trim()) {
+        lines.splice(index, 1);
+        continue;
+      }
+      if (/^\s{2,}-/.test(line)) {
+        lines.splice(index, 1);
+        continue;
+      }
+      break;
+    }
+    while (((_a = lines[index - 1]) == null ? void 0 : _a.trim()) === "") {
+      lines.splice(index - 1, 1);
+      index--;
+      if (index <= 0) break;
+    }
+  }
+  appendListBlock(lines, key, values) {
+    if (values.length === 0) return;
+    if (lines.length > 0 && lines[lines.length - 1].trim() !== "") {
+      lines.push("");
+    }
+    lines.push(`${key}:`);
+    values.forEach((value) => {
+      if (value.includes("[") || value.includes("]") || value.includes(":") || value.includes("#")) {
+        lines.push(`  - "${value}"`);
+      } else {
+        lines.push(`  - ${value}`);
+      }
+    });
+  }
+  /**
+   * Lit les tags et links depuis le frontmatter d'un fichier markdown
+   * pour synchronisation bidirectionnelle
+   */
+  readTagsFromFrontmatter(file) {
+    const result = { hashtags: [], links: [] };
+    if (!this.app || file.extension.toLowerCase() !== "md") {
+      return result;
+    }
+    const cache = this.app.metadataCache.getFileCache(file);
+    if (!(cache == null ? void 0 : cache.frontmatter)) {
+      return result;
+    }
+    const fm = cache.frontmatter;
+    if (fm.tags) {
+      const tags = Array.isArray(fm.tags) ? fm.tags : [fm.tags];
+      tags.forEach((tag) => {
+        if (typeof tag === "string" && tag.trim()) {
+          const normalized = tag.trim().startsWith("#") ? tag.trim() : `#${tag.trim()}`;
+          result.hashtags.push(normalized);
+        }
+      });
+    }
+    if (fm.links) {
+      const links = Array.isArray(fm.links) ? fm.links : [fm.links];
+      links.forEach((link) => {
+        if (typeof link === "string" && link.trim()) {
+          let normalized = link.trim();
+          if (!normalized.startsWith("[[")) {
+            normalized = `[[${normalized}`;
+          }
+          if (!normalized.endsWith("]]")) {
+            normalized = `${normalized}]]`;
+          }
+          result.links.push(normalized);
+        }
+      });
+    }
+    return result;
+  }
+  /**
+   * Lit tous les tags d'un fichier et les retourne sous forme de liste combinée
+   */
+  getAllTagsFromFrontmatter(file) {
+    const { hashtags, links } = this.readTagsFromFrontmatter(file);
+    return [...hashtags, ...links];
+  }
+  /**
+   * Synchronise les backlinks bidirectionnels entre deux fichiers
+   * Si fileA a [[fileB]] dans ses links, alors fileB doit avoir [[fileA]] dans ses links
+   */
+  async syncBidirectionalLinks(sourceFilePath, oldLinks, newLinks) {
+    const sourceFileName = sourceFilePath.replace(/\.md$/i, "").split("/").pop() || "";
+    if (!sourceFileName) return;
+    const sourceBacklink = `[[${sourceFileName}]]`;
+    const oldSet = new Set(oldLinks.map((l) => this.normalizeLink(l)));
+    const newSet = new Set(newLinks.map((l) => this.normalizeLink(l)));
+    const addedLinks = newLinks.filter((l) => !oldSet.has(this.normalizeLink(l)));
+    const removedLinks = oldLinks.filter((l) => !newSet.has(this.normalizeLink(l)));
+    debugLog("syncBidirectionalLinks:", { sourceFilePath, sourceBacklink, addedLinks, removedLinks });
+    for (const link of addedLinks) {
+      debugLog("Adding backlink to:", link);
+      await this.addBacklinkToFile(link, sourceBacklink);
+    }
+    for (const link of removedLinks) {
+      debugLog("Removing backlink from:", link);
+      await this.removeBacklinkFromFile(link, sourceBacklink);
+    }
+  }
+  /**
+   * Normalise un lien pour comparaison (extrait le nom sans [[ ]] et sans .md)
+   */
+  normalizeLink(link) {
+    let normalized = link.replace(/^\[\[/, "").replace(/\]\]$/, "").toLowerCase().trim();
+    if (normalized.endsWith(".md")) {
+      normalized = normalized.slice(0, -3);
+    }
+    return normalized;
+  }
+  /**
+   * Ajoute un backlink au frontmatter d'un fichier cible
+   */
+  async addBacklinkToFile(targetLink, backlink) {
+    const targetName = this.normalizeLink(targetLink);
+    const targetFile = this.findFileByName(targetName);
+    debugLog("addBacklinkToFile:", { targetLink, targetName, backlink, targetFile: targetFile == null ? void 0 : targetFile.path });
+    if (!targetFile || !(targetFile instanceof import_obsidian6.TFile)) {
+      debugLog("Target file not found!");
+      return;
+    }
+    const currentTags = this.getAllTagsFromFrontmatter(targetFile);
+    const currentLinks = currentTags.filter((t2) => t2.startsWith("[[") && t2.endsWith("]]"));
+    const backlinkNormalized = this.normalizeLink(backlink);
+    const exists = currentLinks.some((l) => this.normalizeLink(l) === backlinkNormalized);
+    debugLog("currentTags:", currentTags, "exists:", exists);
+    if (!exists) {
+      const newTags = [...currentTags, backlink];
+      debugLog("Syncing properties with newTags:", newTags);
+      await this.syncNoteProperties(targetFile.path, newTags);
+    }
+  }
+  /**
+   * Retire un backlink du frontmatter d'un fichier cible
+   */
+  async removeBacklinkFromFile(targetLink, backlink) {
+    const targetName = this.normalizeLink(targetLink);
+    const targetFile = this.findFileByName(targetName);
+    if (!targetFile || !(targetFile instanceof import_obsidian6.TFile)) {
+      return;
+    }
+    const currentTags = this.getAllTagsFromFrontmatter(targetFile);
+    const backlinkNormalized = this.normalizeLink(backlink);
+    const newTags = currentTags.filter((t2) => {
+      if (t2.startsWith("[[") && t2.endsWith("]]")) {
+        return this.normalizeLink(t2) !== backlinkNormalized;
+      }
+      return true;
+    });
+    if (newTags.length !== currentTags.length) {
+      await this.syncNoteProperties(targetFile.path, newTags);
+    }
+  }
+  /**
+   * Trouve un fichier par son nom (avec ou sans chemin, avec ou sans extension)
+   */
+  findFileByName(name) {
+    if (!this.app) {
+      debugLog("findFileByName: app is null!");
+      return null;
+    }
+    let cleanName = name.includes("/") ? name.split("/").pop() || name : name;
+    if (cleanName.toLowerCase().endsWith(".md")) {
+      cleanName = cleanName.slice(0, -3);
+    }
+    const lowerName = cleanName.toLowerCase();
+    const allFiles = this.app.vault.getMarkdownFiles();
+    debugLog("findFileByName searching for:", lowerName, "among", allFiles.length, "files");
+    const found = allFiles.find((f) => f.basename.toLowerCase() === lowerName);
+    debugLog("findFileByName found:", (found == null ? void 0 : found.path) || "null");
+    return found || null;
+  }
+};
+
+// src/services/fileHeaderService.ts
+var import_obsidian7 = require("obsidian");
+var FileHeaderService = class {
+  constructor(app, tagManager, getLocale, onOpenTagModal) {
+    this.observer = null;
+    this.app = app;
+    this.tagManager = tagManager;
+    this.getLocale = getLocale;
+    this.onOpenTagModal = onOpenTagModal;
+  }
+  start() {
+    this.stop();
+    this.app.workspace.on("active-leaf-change", () => {
+      setTimeout(() => this.addTagButtonToActiveLeaf(), 100);
+    });
+    setTimeout(() => this.addTagButtonToActiveLeaf(), 500);
+    this.startObserver();
+  }
+  stop() {
+    if (this.observer) {
+      this.observer.disconnect();
+      this.observer = null;
+    }
+    document.querySelectorAll(".lumina-header-tag-btn").forEach((el) => el.remove());
+  }
+  startObserver() {
+    this.observer = new MutationObserver(() => {
+      this.addTagButtonToActiveLeaf();
+    });
+    const workspace = document.querySelector(".workspace");
+    if (workspace) {
+      this.observer.observe(workspace, {
+        childList: true,
+        subtree: true
+      });
+    }
+  }
+  addTagButtonToActiveLeaf() {
+    const activeLeaf = this.app.workspace.activeLeaf;
+    if (!activeLeaf) return;
+    const file = this.getFileFromLeaf(activeLeaf);
+    if (!file) return;
+    if (file.extension.toLowerCase() === "md") return;
+    const leafEl = activeLeaf.view.containerEl;
+    const headerEl = leafEl.querySelector(".view-header");
+    if (!headerEl) return;
+    const actionsEl = headerEl.querySelector(".view-actions");
+    if (!actionsEl) return;
+    if (actionsEl.querySelector(".lumina-header-tag-btn")) return;
+    const btn = document.createElement("a");
+    btn.className = "clickable-icon view-action lumina-header-tag-btn";
+    btn.setAttribute("aria-label", "Manage tags (Lumina)");
+    btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>`;
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      this.showTagDropdown(file, btn);
+    });
+    actionsEl.insertBefore(btn, actionsEl.firstChild);
+  }
+  getFileFromLeaf(leaf) {
+    var _a;
+    const viewState = leaf.getViewState();
+    const filePath = (_a = viewState == null ? void 0 : viewState.state) == null ? void 0 : _a.file;
+    if (!filePath || typeof filePath !== "string") return null;
+    const file = this.app.vault.getAbstractFileByPath(filePath);
+    return file instanceof import_obsidian7.TFile ? file : null;
+  }
+  showTagDropdown(file, buttonEl) {
+    const tags = this.tagManager.getTags(file.path);
+    const menu = new import_obsidian7.Menu();
+    if (tags.length === 0) {
+      menu.addItem((item) => {
+        item.setTitle("No tags");
+        item.setDisabled(true);
+      });
+    } else {
+      tags.forEach((tag) => {
+        menu.addItem((item) => {
+          item.setTitle(tag);
+          item.onClick(() => {
+            if (tag.startsWith("[[") && tag.endsWith("]]")) {
+              const linkName = tag.slice(2, -2);
+              const linkedFile = this.app.metadataCache.getFirstLinkpathDest(linkName, file.path);
+              if (linkedFile) {
+                this.app.workspace.openLinkText(linkedFile.path, file.path);
+              }
+            }
+          });
+        });
+      });
+      menu.addSeparator();
+    }
+    menu.addItem((item) => {
+      item.setTitle("Manage tags...");
+      item.setIcon("settings");
+      item.onClick(() => {
+        this.onOpenTagModal(file.path);
+      });
+    });
+    const rect = buttonEl.getBoundingClientRect();
+    menu.showAtPosition({ x: rect.left, y: rect.bottom });
+  }
+};
+
+// src/services/LuminaBlockProcessor.ts
+var import_obsidian8 = require("obsidian");
+
+// src/components/LuminaBlockEditor.tsx
+var import_react7 = __toESM(require_react());
+var import_client3 = __toESM(require_client());
+var import_jsx_runtime6 = __toESM(require_jsx_runtime());
+var LAYOUT_OPTIONS = [
+  { value: "grid", label: "Grid", icon: "\u25A6" },
+  { value: "masonry", label: "Masonry", icon: "\u25A4" },
+  { value: "justified", label: "Justified", icon: "\u25A5" },
+  { value: "square", label: "Square", icon: "\u25FB" },
+  { value: "inline", label: "Inline", icon: "\u2630" }
+];
+var SORT_OPTIONS2 = [
+  { value: "date-desc", label: "Newest first" },
+  { value: "date-asc", label: "Oldest first" },
+  { value: "name", label: "Name A-Z" },
+  { value: "random", label: "Random" }
+];
+var TYPE_OPTIONS = [
+  { value: "all", label: "All", icon: "\u{1F5BC}\uFE0F" },
+  { value: "photo", label: "Photos", icon: "\u{1F4F7}" },
+  { value: "video", label: "Videos", icon: "\u{1F3AC}" },
+  { value: "gif", label: "GIFs", icon: "\u2728" }
+];
+var ALIGN_OPTIONS = [
+  { value: "left", label: "Left", icon: "\u2B05" },
+  { value: "center", label: "Center", icon: "\u2B0C" },
+  { value: "right", label: "Right", icon: "\u27A1" }
+];
+var LuminaBlockEditor = ({
+  options: initialOptions,
+  onSave,
+  onClose,
+  app,
+  tagManager,
+  locale
+}) => {
+  const [options, setOptions] = (0, import_react7.useState)(initialOptions);
+  const [queryTokens, setQueryTokens] = (0, import_react7.useState)([]);
+  const [inputValue, setInputValue] = (0, import_react7.useState)("");
+  const [suggestions, setSuggestions] = (0, import_react7.useState)([]);
+  const [showSuggestions, setShowSuggestions] = (0, import_react7.useState)(false);
+  const [selectedSuggestion, setSelectedSuggestion] = (0, import_react7.useState)(0);
+  const [currentOperator, setCurrentOperator] = (0, import_react7.useState)("AND");
+  const [fileInput, setFileInput] = (0, import_react7.useState)("");
+  const [fileSuggestions, setFileSuggestions] = (0, import_react7.useState)([]);
+  const [showFileSuggestions, setShowFileSuggestions] = (0, import_react7.useState)(false);
+  const [draggedFileIndex, setDraggedFileIndex] = (0, import_react7.useState)(null);
+  const [dragOverIndex, setDragOverIndex] = (0, import_react7.useState)(null);
+  const inputRef = (0, import_react7.useRef)(null);
+  const fileInputRef = (0, import_react7.useRef)(null);
+  const editorRef = (0, import_react7.useRef)(null);
+  (0, import_react7.useEffect)(() => {
+    const tokens = parseQueryToTokens(initialOptions.query);
+    setQueryTokens(tokens);
+  }, []);
+  const allTags = (0, import_react7.useMemo)(() => {
+    const tagSet = /* @__PURE__ */ new Set();
+    tagManager.getAllTags().forEach((tag) => {
+      const normalized = tag.startsWith("#") ? tag.slice(1) : tag;
+      if (normalized && !normalized.startsWith("[[")) {
+        tagSet.add(normalized);
+      }
+    });
+    return Array.from(tagSet).sort();
+  }, [tagManager]);
+  const allLinks = (0, import_react7.useMemo)(() => {
+    const files = app.vault.getFiles();
+    return files.map((f) => f.name).sort();
+  }, [app]);
+  const allMediaFiles = (0, import_react7.useMemo)(() => {
+    const mediaExtensions = ["jpg", "jpeg", "png", "gif", "webp", "bmp", "svg", "mp4", "webm", "mov", "avi", "mkv"];
+    return app.vault.getFiles().filter((f) => mediaExtensions.includes(f.extension.toLowerCase())).map((f) => f.name).sort();
+  }, [app]);
+  (0, import_react7.useEffect)(() => {
+    if (!fileInput) {
+      setFileSuggestions([]);
+      setShowFileSuggestions(false);
+      return;
+    }
+    const search = fileInput.toLowerCase();
+    const results = allMediaFiles.filter((f) => f.toLowerCase().includes(search)).filter((f) => {
+      var _a;
+      return !((_a = options.files) == null ? void 0 : _a.includes(f));
+    }).slice(0, 8);
+    setFileSuggestions(results);
+    setShowFileSuggestions(results.length > 0);
+  }, [fileInput, allMediaFiles, options.files]);
+  const addFile = (fileName) => {
+    var _a, _b;
+    if (!((_a = options.files) == null ? void 0 : _a.includes(fileName))) {
+      setOptions({
+        ...options,
+        files: [...options.files || [], fileName]
+      });
+    }
+    setFileInput("");
+    setShowFileSuggestions(false);
+    (_b = fileInputRef.current) == null ? void 0 : _b.focus();
+  };
+  const removeFile = (fileName) => {
+    var _a;
+    setOptions({
+      ...options,
+      files: ((_a = options.files) == null ? void 0 : _a.filter((f) => f !== fileName)) || []
+    });
+  };
+  const handleFileDragStart = (index) => {
+    setDraggedFileIndex(index);
+  };
+  const handleFileDragOver = (e, index) => {
+    e.preventDefault();
+    if (draggedFileIndex !== null && draggedFileIndex !== index) {
+      setDragOverIndex(index);
+    }
+  };
+  const handleFileDragLeave = () => {
+    setDragOverIndex(null);
+  };
+  const handleFileDrop = (dropIndex) => {
+    if (draggedFileIndex === null || !options.files) {
+      setDragOverIndex(null);
+      return;
+    }
+    const newFiles = [...options.files];
+    const [draggedFile] = newFiles.splice(draggedFileIndex, 1);
+    newFiles.splice(dropIndex, 0, draggedFile);
+    setOptions({
+      ...options,
+      files: newFiles
+    });
+    setDraggedFileIndex(null);
+    setDragOverIndex(null);
+  };
+  const handleFileDragEnd = () => {
+    setDraggedFileIndex(null);
+    setDragOverIndex(null);
+  };
+  (0, import_react7.useEffect)(() => {
+    if (!inputValue) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+    const search = inputValue.toLowerCase();
+    let results = [];
+    if (inputValue.startsWith("[[")) {
+      const linkSearch = inputValue.slice(2).toLowerCase();
+      results = allLinks.filter((l) => l.toLowerCase().includes(linkSearch)).slice(0, 10).map((l) => `[[${l}]]`);
+    } else if (inputValue.startsWith("#")) {
+      const tagSearch = inputValue.slice(1).toLowerCase();
+      results = allTags.filter((t2) => t2.toLowerCase().includes(tagSearch)).slice(0, 10).map((t2) => `#${t2}`);
+    } else {
+      const tagResults = allTags.filter((t2) => t2.toLowerCase().includes(search)).slice(0, 5).map((t2) => `#${t2}`);
+      const linkResults = allLinks.filter((l) => l.toLowerCase().includes(search)).slice(0, 5).map((l) => `[[${l}]]`);
+      results = [...tagResults, ...linkResults];
+    }
+    setSuggestions(results);
+    setShowSuggestions(results.length > 0);
+    setSelectedSuggestion(0);
+  }, [inputValue, allTags, allLinks]);
+  const parseQueryToTokens = (query) => {
+    const tokens = [];
+    if (!query.trim()) return tokens;
+    const regex = /(!?)(\[\[[^\]]+\]\]|#[\w\-\/]+)/g;
+    let match;
+    let lastOperator = "AND";
+    const isOrMode = query.toLowerCase().includes(" or ") || query.includes(" | ");
+    const parts = query.split(/\s+(?:AND|OR|\||&)\s+/i);
+    parts.forEach((part, index) => {
+      const trimmed = part.trim();
+      if (!trimmed) return;
+      const isNot = trimmed.startsWith("!") || trimmed.startsWith("-");
+      const value = trimmed.replace(/^[!-]/, "");
+      if (value.startsWith("[[") && value.endsWith("]]")) {
+        tokens.push({
+          id: `${Date.now()}-${index}`,
+          type: "link",
+          value,
+          operator: isNot ? "NOT" : isOrMode ? "OR" : "AND"
+        });
+      } else if (value.startsWith("#") || /^[\w\-\/]+$/.test(value)) {
+        tokens.push({
+          id: `${Date.now()}-${index}`,
+          type: "tag",
+          value: value.startsWith("#") ? value : `#${value}`,
+          operator: isNot ? "NOT" : isOrMode ? "OR" : "AND"
+        });
+      }
+    });
+    return tokens;
+  };
+  const tokensToQuery = (tokens) => {
+    if (tokens.length === 0) return "";
+    const parts = tokens.map((t2) => {
+      const prefix = t2.operator === "NOT" ? "!" : "";
+      return `${prefix}${t2.value}`;
+    });
+    const andCount = tokens.filter((t2) => t2.operator === "AND").length;
+    const orCount = tokens.filter((t2) => t2.operator === "OR").length;
+    const separator = orCount > andCount ? " OR " : " ";
+    return parts.join(separator);
+  };
+  const addToken = (value) => {
+    const isLink = value.startsWith("[[");
+    const newToken = {
+      id: `${Date.now()}-${Math.random()}`,
+      type: isLink ? "link" : "tag",
+      value,
+      operator: currentOperator
+    };
+    setQueryTokens([...queryTokens, newToken]);
+    setInputValue("");
+    setShowSuggestions(false);
+  };
+  const removeToken = (id) => {
+    setQueryTokens(queryTokens.filter((t2) => t2.id !== id));
+  };
+  const toggleTokenOperator = (id) => {
+    setQueryTokens(queryTokens.map((t2) => {
+      if (t2.id === id) {
+        const operators = ["AND", "OR", "NOT"];
+        const currentIndex = operators.indexOf(t2.operator);
+        const nextOperator = operators[(currentIndex + 1) % operators.length];
+        return { ...t2, operator: nextOperator };
+      }
+      return t2;
+    }));
+  };
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (showSuggestions && suggestions[selectedSuggestion]) {
+        addToken(suggestions[selectedSuggestion]);
+      } else if (inputValue.trim()) {
+        const value = inputValue.startsWith("#") || inputValue.startsWith("[[") ? inputValue : `#${inputValue}`;
+        addToken(value);
+      }
+    } else if (e.key === "ArrowDown" && showSuggestions) {
+      e.preventDefault();
+      setSelectedSuggestion((prev) => Math.min(prev + 1, suggestions.length - 1));
+    } else if (e.key === "ArrowUp" && showSuggestions) {
+      e.preventDefault();
+      setSelectedSuggestion((prev) => Math.max(prev - 1, 0));
+    } else if (e.key === "Escape") {
+      setShowSuggestions(false);
+    } else if (e.key === "Backspace" && !inputValue && queryTokens.length > 0) {
+      setQueryTokens(queryTokens.slice(0, -1));
+    }
+  };
+  const generateSource = () => {
+    const lines = [];
+    const query = tokensToQuery(queryTokens);
+    if (query) {
+      lines.push(query);
+    }
+    if (options.files && options.files.length > 0) {
+      lines.push(`files: ${options.files.join(", ")}`);
+    }
+    if (options.layout !== "justified") lines.push(`layout: ${options.layout}`);
+    if (options.columns !== 4) lines.push(`columns: ${options.columns}`);
+    if (options.size !== 200) lines.push(`size: ${options.size}`);
+    if (options.sortBy !== "date-desc") lines.push(`sortBy: ${options.sortBy}`);
+    if (options.type !== "all") lines.push(`type: ${options.type}`);
+    if (options.video !== "mixed") lines.push(`video: ${options.video}`);
+    if (options.align !== "left") lines.push(`align: ${options.align}`);
+    if (options.showNames) lines.push(`showNames: true`);
+    if (options.showTags) lines.push(`showTags: true`);
+    if (options.maxItems !== 100) lines.push(`maxItems: ${options.maxItems}`);
+    if (options.folder) lines.push(`folder: ${options.folder}`);
+    return lines.join("\n");
+  };
+  const handleSave = () => {
+    const newSource = generateSource();
+    onSave(newSource);
+    onClose();
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-block-editor", ref: editorRef, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-header", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-title", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("svg", { width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("rect", { x: "3", y: "3", width: "18", height: "18", rx: "2", ry: "2" }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("circle", { cx: "8.5", cy: "8.5", r: "1.5" }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("polyline", { points: "21 15 16 10 5 21" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "Lumina Block Editor" })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { className: "lumina-editor-close", onClick: onClose, children: "\xD7" })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-section-title", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "\u{1F50D}" }),
+        " Filter by Tags & Links"
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-operator-toggle", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+          "button",
+          {
+            className: `lumina-op-btn ${currentOperator === "AND" ? "active" : ""}`,
+            onClick: () => setCurrentOperator("AND"),
+            title: "AND - Must have all",
+            children: "AND"
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+          "button",
+          {
+            className: `lumina-op-btn ${currentOperator === "OR" ? "active" : ""}`,
+            onClick: () => setCurrentOperator("OR"),
+            title: "OR - Have any of",
+            children: "OR"
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+          "button",
+          {
+            className: `lumina-op-btn not ${currentOperator === "NOT" ? "active" : ""}`,
+            onClick: () => setCurrentOperator("NOT"),
+            title: "NOT - Exclude",
+            children: "NOT"
+          }
+        )
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-query-input", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-query-tokens", children: [
+          queryTokens.map((token) => /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
+            "div",
+            {
+              className: `lumina-query-token ${token.type} ${token.operator.toLowerCase()}`,
+              onClick: () => toggleTokenOperator(token.id),
+              title: "Click to change operator",
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "lumina-token-operator", children: token.operator }),
+                /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "lumina-token-value", children: token.value }),
+                /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+                  "button",
+                  {
+                    className: "lumina-token-remove",
+                    onClick: (e) => {
+                      e.stopPropagation();
+                      removeToken(token.id);
+                    },
+                    children: "\xD7"
+                  }
+                )
+              ]
+            },
+            token.id
+          )),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+            "input",
+            {
+              ref: inputRef,
+              type: "text",
+              value: inputValue,
+              onChange: (e) => setInputValue(e.target.value),
+              onKeyDown: handleKeyDown,
+              onFocus: () => inputValue && setShowSuggestions(true),
+              placeholder: queryTokens.length === 0 ? "Type #tag or [[link]]..." : "Add more...",
+              className: "lumina-query-input-field"
+            }
+          )
+        ] }),
+        showSuggestions && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "lumina-query-suggestions", children: suggestions.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
+          "div",
+          {
+            className: `lumina-suggestion ${i === selectedSuggestion ? "selected" : ""}`,
+            onClick: () => addToken(s),
+            children: [
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: s.startsWith("[[") ? "link-icon" : "tag-icon", children: s.startsWith("[[") ? "\u{1F4C4}" : "#" }),
+              s
+            ]
+          },
+          s
+        )) })
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-section-title", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "\u{1F4D0}" }),
+        " Layout"
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "lumina-layout-options", children: LAYOUT_OPTIONS.map((opt) => /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
+        "button",
+        {
+          className: `lumina-layout-btn ${options.layout === opt.value ? "active" : ""}`,
+          onClick: () => setOptions({ ...options, layout: opt.value }),
+          title: opt.label,
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "lumina-layout-icon", children: opt.icon }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "lumina-layout-label", children: opt.label })
+          ]
+        },
+        opt.value
+      )) })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-row", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-field", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("label", { children: [
+            "Size: ",
+            options.size,
+            "px"
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+            "input",
+            {
+              type: "range",
+              min: "80",
+              max: "500",
+              value: options.size,
+              onChange: (e) => setOptions({ ...options, size: parseInt(e.target.value) }),
+              className: "lumina-slider",
+              title: "Image size in pixels"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-field", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("label", { children: [
+            "Columns: ",
+            options.columns
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+            "input",
+            {
+              type: "range",
+              min: "1",
+              max: "8",
+              value: options.columns,
+              onChange: (e) => setOptions({ ...options, columns: parseInt(e.target.value) }),
+              className: "lumina-slider",
+              title: "Number of columns"
+            }
+          )
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "lumina-editor-row", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-field", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("label", { children: [
+          "Max items: ",
+          options.maxItems
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+          "input",
+          {
+            type: "range",
+            min: "5",
+            max: "500",
+            step: "5",
+            value: options.maxItems,
+            onChange: (e) => setOptions({ ...options, maxItems: parseInt(e.target.value) }),
+            className: "lumina-slider",
+            title: "Maximum number of items to display"
+          }
+        )
+      ] }) })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "lumina-editor-section", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-row", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-field", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("label", { children: "Type" }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "lumina-type-options", children: TYPE_OPTIONS.map((opt) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+          "button",
+          {
+            className: `lumina-type-btn ${options.type === opt.value ? "active" : ""}`,
+            onClick: () => setOptions({ ...options, type: opt.value }),
+            title: opt.label,
+            children: opt.icon
+          },
+          opt.value
+        )) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-field", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("label", { children: "Sort" }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+          "select",
+          {
+            value: options.sortBy,
+            onChange: (e) => setOptions({ ...options, sortBy: e.target.value }),
+            className: "lumina-select",
+            title: "Sort order",
+            children: SORT_OPTIONS2.map((opt) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("option", { value: opt.value, children: opt.label }, opt.value))
+          }
+        )
+      ] })
+    ] }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-row", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-field", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("label", { children: "Videos" }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-toggle-group", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+              "button",
+              {
+                className: `lumina-toggle-btn ${options.video === "mixed" ? "active" : ""}`,
+                onClick: () => setOptions({ ...options, video: "mixed" }),
+                children: "Mixed"
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+              "button",
+              {
+                className: `lumina-toggle-btn ${options.video === "separate" ? "active" : ""}`,
+                onClick: () => setOptions({ ...options, video: "separate" }),
+                children: "Separate"
+              }
+            )
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-field", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("label", { children: "Align" }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "lumina-align-options", children: ALIGN_OPTIONS.map((opt) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+            "button",
+            {
+              className: `lumina-align-btn ${options.align === opt.value ? "active" : ""}`,
+              onClick: () => setOptions({ ...options, align: opt.value }),
+              title: opt.label,
+              children: opt.icon
+            },
+            opt.value
+          )) })
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-row checkboxes", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("label", { className: "lumina-checkbox", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+            "input",
+            {
+              type: "checkbox",
+              checked: options.showNames,
+              onChange: (e) => setOptions({ ...options, showNames: e.target.checked })
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "Show filenames" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("label", { className: "lumina-checkbox", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+            "input",
+            {
+              type: "checkbox",
+              checked: options.showTags,
+              onChange: (e) => setOptions({ ...options, showTags: e.target.checked })
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "Show tags" })
+        ] })
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-section", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-section-title", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "\u{1F4C1}" }),
+        " Specific Files (no tags)"
+      ] }),
+      options.files && options.files.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "lumina-files-list", children: options.files.map((file, index) => /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
+        "div",
+        {
+          className: `lumina-file-item ${draggedFileIndex === index ? "dragging" : ""} ${dragOverIndex === index ? "drag-over" : ""}`,
+          draggable: true,
+          onDragStart: () => handleFileDragStart(index),
+          onDragOver: (e) => handleFileDragOver(e, index),
+          onDragLeave: handleFileDragLeave,
+          onDrop: () => handleFileDrop(index),
+          onDragEnd: handleFileDragEnd,
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "lumina-file-drag-handle", children: "\u22EE\u22EE" }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "lumina-file-name", children: file }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+              "button",
+              {
+                className: "lumina-file-remove",
+                onClick: () => removeFile(file),
+                title: "Remove file",
+                children: "\xD7"
+              }
+            )
+          ]
+        },
+        file
+      )) }),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-file-input-container", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+          "input",
+          {
+            ref: fileInputRef,
+            type: "text",
+            value: fileInput,
+            onChange: (e) => setFileInput(e.target.value),
+            onKeyDown: (e) => {
+              if (e.key === "Enter" && fileSuggestions.length > 0) {
+                e.preventDefault();
+                addFile(fileSuggestions[0]);
+              }
+            },
+            onFocus: () => fileInput && setShowFileSuggestions(fileSuggestions.length > 0),
+            onBlur: () => setTimeout(() => setShowFileSuggestions(false), 200),
+            placeholder: "Type filename to add...",
+            className: "lumina-file-input"
+          }
+        ),
+        showFileSuggestions && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "lumina-file-suggestions", children: fileSuggestions.map((file) => /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
+          "div",
+          {
+            className: "lumina-file-suggestion",
+            onClick: () => addFile(file),
+            children: [
+              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "lumina-file-icon", children: file.match(/\.(mp4|webm|mov|avi|mkv)$/i) ? "\u{1F3AC}" : "\u{1F5BC}\uFE0F" }),
+              file
+            ]
+          },
+          file
+        )) })
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-actions", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { className: "lumina-btn-cancel", onClick: onClose, children: "Cancel" }),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("button", { className: "lumina-btn-save", onClick: handleSave, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("svg", { width: "14", height: "14", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("polyline", { points: "20 6 9 17 4 12" }) }),
+        "Apply"
+      ] })
+    ] })
+  ] });
+};
+function mountBlockEditor(container, options, onSave, onClose, app, tagManager, locale) {
+  const root = (0, import_client3.createRoot)(container);
+  root.render(
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+      LuminaBlockEditor,
+      {
+        options,
+        onSave,
+        onClose,
+        app,
+        tagManager,
+        locale
+      }
+    )
+  );
+  return root;
+}
+
+// src/services/LuminaBlockProcessor.ts
+var LuminaBlockProcessor = class {
+  constructor(app, plugin, tagManager) {
+    this.app = app;
+    this.plugin = plugin;
+    this.tagManager = tagManager;
+  }
+  /**
+   * Enregistre le processeur de bloc Markdown
+   */
+  register() {
+    this.plugin.registerMarkdownCodeBlockProcessor("lumina", (source, el, ctx) => {
+      this.processBlock(source, el, ctx);
+    });
+  }
+  /**
+   * Traite un bloc lumina et génère la galerie
+   */
+  async processBlock(source, el, ctx) {
+    const options = this.parseBlockOptions(source);
+    const query = this.parseQuery(options.query);
+    const matchingFiles = await this.findMatchingFiles(query, options);
+    el.empty();
+    el.addClass("lumina-block-gallery");
+    el.addClass("lumina-block-editable");
+    const editButton = el.createDiv({ cls: "lumina-block-edit-btn" });
+    editButton.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 20h9"/>
+        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+      </svg>
+      <span>Edit</span>
+    `;
+    editButton.title = "Edit Lumina block settings";
+    let editorContainer = null;
+    let editorRoot = null;
+    editButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (editorContainer) {
+        editorRoot == null ? void 0 : editorRoot.unmount();
+        editorContainer.remove();
+        editorContainer = null;
+        editorRoot = null;
+        return;
+      }
+      editorContainer = document.createElement("div");
+      editorContainer.className = "lumina-block-editor-container";
+      el.insertBefore(editorContainer, el.firstChild);
+      const handleSave = (newSource) => {
+        this.updateBlockSource(ctx, source, newSource);
+      };
+      const handleClose = () => {
+        editorRoot == null ? void 0 : editorRoot.unmount();
+        editorContainer == null ? void 0 : editorContainer.remove();
+        editorContainer = null;
+        editorRoot = null;
+      };
+      editorRoot = mountBlockEditor(
+        editorContainer,
+        options,
+        handleSave,
+        handleClose,
+        this.app,
+        this.tagManager,
+        this.plugin.settings.locale
+      );
+    });
+    if (matchingFiles.length === 0) {
+      const emptyMsg = el.createDiv({ cls: "lumina-block-empty" });
+      emptyMsg.setText(`No images found for query: ${options.query}`);
+      return;
+    }
+    const sortedFiles = this.sortFiles(matchingFiles, options.sortBy);
+    const limitedFiles = sortedFiles.slice(0, options.maxItems);
+    const videoExtensions = ["mp4", "webm", "mov", "mkv", "avi", "ogv"];
+    const isVideo = (file) => videoExtensions.includes(file.extension.toLowerCase());
+    let imagesToDisplay = limitedFiles;
+    let videosToDisplay = [];
+    if (options.video === "separate") {
+      imagesToDisplay = limitedFiles.filter((f) => !isVideo(f));
+      videosToDisplay = limitedFiles.filter((f) => isVideo(f));
+    }
+    if (imagesToDisplay.length > 0) {
+      if (options.layout === "inline") {
+        const inlineContainer = el.createDiv({ cls: `lumina-block-inline lumina-align-${options.align}` });
+        for (const file of imagesToDisplay) {
+          const item = this.createInlineItem(file, options);
+          inlineContainer.appendChild(item);
+        }
+      } else {
+        const gallery = el.createDiv({
+          cls: `lumina-block-container lumina-layout-${options.layout} lumina-align-${options.align}`
+        });
+        gallery.style.setProperty("--lumina-columns", String(options.columns));
+        gallery.style.setProperty("--lumina-size", `${options.size}px`);
+        for (const file of imagesToDisplay) {
+          const item = this.createGalleryItem(file, options);
+          gallery.appendChild(item);
+        }
+      }
+    }
+    if (videosToDisplay.length > 0) {
+      const videoSection = el.createDiv({ cls: "lumina-block-videos-section" });
+      for (const file of videosToDisplay) {
+        const videoItem = this.createSeparateVideoItem(file, options);
+        videoSection.appendChild(videoItem);
+      }
+    }
+  }
+  /**
+   * Met à jour le contenu du bloc dans le fichier source
+   */
+  async updateBlockSource(ctx, oldSource, newSource) {
+    const file = this.app.vault.getAbstractFileByPath(ctx.sourcePath);
+    if (!(file instanceof import_obsidian8.TFile)) return;
+    try {
+      const content = await this.app.vault.read(file);
+      const blockRegex = /```lumina\n([\s\S]*?)```/g;
+      let match;
+      let newContent = content;
+      while ((match = blockRegex.exec(content)) !== null) {
+        const blockSource = match[1].trim();
+        if (this.normalizeSource(blockSource) === this.normalizeSource(oldSource)) {
+          const fullOldBlock = match[0];
+          const fullNewBlock = "```lumina\n" + newSource + "\n```";
+          newContent = newContent.replace(fullOldBlock, fullNewBlock);
+          break;
+        }
+      }
+      if (newContent !== content) {
+        await this.app.vault.modify(file, newContent);
+      }
+    } catch (error) {
+      console.error("Failed to update Lumina block:", error);
+    }
+  }
+  /**
+   * Normalise une source pour la comparaison
+   */
+  normalizeSource(source) {
+    return source.split("\n").map((line) => line.trim()).filter((line) => line.length > 0).sort().join("\n");
+  }
+  /**
+   * Crée un tag cliquable qui ouvre la recherche Lumina ou Obsidian
+   * Si filePath est fourni, ajoute un bouton de suppression
+   */
+  createClickableTag(tag, filePath) {
+    const tagSpan = document.createElement("span");
+    tagSpan.className = "lumina-block-tag lumina-block-tag-clickable";
+    const isLink = tag.startsWith("[[") && tag.endsWith("]]");
+    let displayText;
+    if (isLink) {
+      const linkContent = tag.slice(2, -2);
+      const lastSlashIndex = linkContent.lastIndexOf("/");
+      displayText = `[[${lastSlashIndex >= 0 ? linkContent.slice(lastSlashIndex + 1) : linkContent}]]`;
+    } else {
+      displayText = tag.startsWith("#") ? tag : `#${tag}`;
+    }
+    const textSpan = document.createElement("span");
+    textSpan.textContent = displayText;
+    tagSpan.appendChild(textSpan);
+    if (isLink) {
+      tagSpan.classList.add("lumina-block-tag-link");
+    } else {
+      tagSpan.classList.add("lumina-block-tag-hashtag");
+    }
+    textSpan.addEventListener("click", (e) => {
+      var _a, _b, _c, _d, _e;
+      e.preventDefault();
+      e.stopPropagation();
+      if (isLink) {
+        const linkTarget = tag.slice(2, -2);
+        this.app.workspace.openLinkText(linkTarget, "", false);
+      } else {
+        const action = this.plugin.settings.tagClickAction;
+        const searchTag = tag.startsWith("#") ? tag : `#${tag}`;
+        if (action === "obsidian") {
+          (_e = (_d = (_c = (_b = (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) == null ? void 0 : _b["global-search"]) == null ? void 0 : _c.instance) == null ? void 0 : _d.openGlobalSearch) == null ? void 0 : _e.call(_d, searchTag);
+        } else {
+          this.openLuminaWithSearch(searchTag);
+        }
+      }
+    });
+    if (filePath) {
+      const removeBtn = document.createElement("button");
+      removeBtn.className = "lumina-block-tag-remove";
+      removeBtn.innerHTML = "\xD7";
+      removeBtn.title = "Remove tag";
+      removeBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.tagManager.removeTag(filePath, tag);
+        tagSpan.remove();
+      });
+      tagSpan.appendChild(removeBtn);
+    }
+    return tagSpan;
+  }
+  /**
+   * Ouvre la vue Lumina avec un terme de recherche
+   */
+  openLuminaWithSearch(searchTerm) {
+    const leaves = this.app.workspace.getLeavesOfType("lumina-view");
+    if (leaves.length > 0) {
+      this.app.workspace.revealLeaf(leaves[0]);
+      const view = leaves[0].view;
+      if (view == null ? void 0 : view.setSearchQuery) {
+        view.setSearchQuery(searchTerm);
+      }
+    } else {
+      const leaf = this.app.workspace.getLeaf(false);
+      leaf.setViewState({ type: "lumina-view", active: true }).then(() => {
+        this.app.workspace.revealLeaf(leaf);
+        setTimeout(() => {
+          const view = leaf.view;
+          if (view == null ? void 0 : view.setSearchQuery) {
+            view.setSearchQuery(searchTerm);
+          }
+        }, 100);
+      });
+    }
+  }
+  /**
+   * Crée un élément en mode inline (un par ligne, style markdown natif)
+   */
+  createInlineItem(file, options) {
+    const container = document.createElement("div");
+    container.className = "lumina-block-inline-item";
+    const resourcePath = this.app.vault.getResourcePath(file);
+    const videoExtensions = ["mp4", "webm", "mov", "mkv", "avi", "ogv"];
+    const isVideo = videoExtensions.includes(file.extension.toLowerCase());
+    if (isVideo) {
+      const video = document.createElement("video");
+      video.src = resourcePath;
+      video.controls = true;
+      video.className = "lumina-block-inline-video";
+      video.preload = "metadata";
+      container.appendChild(video);
+    } else {
+      const img = document.createElement("img");
+      img.src = resourcePath;
+      img.alt = file.basename;
+      img.className = "lumina-block-inline-image";
+      img.loading = "lazy";
+      img.addEventListener("click", () => {
+        const action = this.plugin.settings.blockImageClickAction;
+        if (action === "open") {
+          this.app.workspace.openLinkText(file.path, "", false);
+        } else {
+          this.openPreview(file);
+        }
+      });
+      container.appendChild(img);
+    }
+    if (options.showNames) {
+      const name = document.createElement("div");
+      name.className = "lumina-block-inline-name";
+      name.textContent = file.basename;
+      container.appendChild(name);
+    }
+    if (options.showTags) {
+      const tags = this.tagManager.getTags(file.path);
+      if (tags.length > 0) {
+        const tagsContainer = document.createElement("div");
+        tagsContainer.className = "lumina-block-inline-tags";
+        tags.forEach((tag) => {
+          const tagEl = this.createClickableTag(tag, file.path);
+          tagsContainer.appendChild(tagEl);
+        });
+        container.appendChild(tagsContainer);
+      }
+    }
+    return container;
+  }
+  /**
+   * Crée un élément vidéo séparé (lecteur normal avec contrôles)
+   */
+  createSeparateVideoItem(file, options) {
+    const container = document.createElement("div");
+    container.className = "lumina-block-video-item";
+    const resourcePath = this.app.vault.getResourcePath(file);
+    const video = document.createElement("video");
+    video.src = resourcePath;
+    video.controls = true;
+    video.className = "lumina-block-video-player";
+    video.preload = "metadata";
+    container.appendChild(video);
+    if (options.showNames) {
+      const name = document.createElement("div");
+      name.className = "lumina-block-video-name";
+      name.textContent = file.basename;
+      container.appendChild(name);
+    }
+    if (options.showTags) {
+      const tags = this.tagManager.getTags(file.path);
+      if (tags.length > 0) {
+        const tagsContainer = document.createElement("div");
+        tagsContainer.className = "lumina-block-video-tags";
+        tags.forEach((tag) => {
+          const tagEl = this.createClickableTag(tag, file.path);
+          tagsContainer.appendChild(tagEl);
+        });
+        container.appendChild(tagsContainer);
+      }
+    }
+    return container;
+  }
+  /**
+   * Parse les options du bloc
+   */
+  parseBlockOptions(source) {
+    const lines = source.trim().split("\n");
+    const options = {
+      query: "",
+      files: [],
+      layout: "justified",
+      columns: 4,
+      showNames: false,
+      showTags: false,
+      maxItems: 100,
+      sortBy: "date-desc",
+      size: 200,
+      type: "all",
+      video: "mixed",
+      align: "left"
+    };
+    const queryLines = [];
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed) continue;
+      const colonIndex = trimmed.indexOf(":");
+      if (colonIndex > 0 && !trimmed.startsWith("[[") && !trimmed.includes("[[")) {
+        const key = trimmed.substring(0, colonIndex).trim().toLowerCase();
+        const value = trimmed.substring(colonIndex + 1).trim();
+        switch (key) {
+          case "layout":
+            if (["masonry", "justified", "square", "grid", "inline"].includes(value)) {
+              options.layout = value;
+            }
+            break;
+          case "columns":
+            const cols = parseInt(value, 10);
+            if (cols >= 1 && cols <= 10) options.columns = cols;
+            break;
+          case "shownames":
+            options.showNames = value === "true";
+            break;
+          case "showtags":
+            options.showTags = value === "true";
+            break;
+          case "maxitems":
+            const max = parseInt(value, 10);
+            if (max > 0) options.maxItems = max;
+            break;
+          case "sortby":
+            if (["date-desc", "date-asc", "name", "random"].includes(value)) {
+              options.sortBy = value;
+            }
+            break;
+          case "size":
+            const size = parseInt(value, 10);
+            if (size >= 50 && size <= 1e3) options.size = size;
+            break;
+          case "date":
+            if (value.startsWith("after:")) {
+              options.dateAfter = value.substring(6).trim();
+            } else if (value.startsWith("before:")) {
+              options.dateBefore = value.substring(7).trim();
+            }
+            break;
+          case "folder":
+            options.folder = value.replace(/^["']|["']$/g, "");
+            break;
+          case "type":
+            if (["photo", "video", "gif", "all"].includes(value)) {
+              options.type = value;
+            }
+            break;
+          case "video":
+            if (["mixed", "separate"].includes(value)) {
+              options.video = value;
+            }
+            break;
+          case "align":
+            if (["left", "center", "right"].includes(value)) {
+              options.align = value;
+            }
+            break;
+          case "files":
+            options.files = value.split(",").map((f) => f.trim()).filter((f) => f.length > 0);
+            break;
+        }
+      } else {
+        queryLines.push(trimmed);
+      }
+    }
+    options.query = queryLines.join(" ");
+    return options;
+  }
+  /**
+   * Parse la requête de recherche
+   */
+  parseQuery(queryStr) {
+    const result = {
+      includes: [],
+      excludes: []
+    };
+    if (!queryStr.trim()) return result;
+    const notPattern = /NOT\s+(#[\w-]+|\[\[[^\]]+\]\])/gi;
+    let notMatch;
+    while ((notMatch = notPattern.exec(queryStr)) !== null) {
+      const value = notMatch[1];
+      const type = value.startsWith("#") ? "tag" : "link";
+      result.excludes.push({ type, value });
+    }
+    let cleanQuery = queryStr.replace(notPattern, "").trim();
+    cleanQuery = cleanQuery.replace(/[()]/g, " ");
+    const orGroups = cleanQuery.split(/\s+OR\s+/i);
+    for (const orGroup of orGroups) {
+      const andTerms = orGroup.split(/\s+AND\s+/i);
+      for (let i = 0; i < andTerms.length; i++) {
+        const term = andTerms[i].trim();
+        if (!term) continue;
+        const tagMatches = term.match(/#[\w-]+/g) || [];
+        const linkMatches = term.match(/\[\[[^\]]+\]\]/g) || [];
+        for (const tag of tagMatches) {
+          result.includes.push({
+            type: "tag",
+            value: tag,
+            operator: i === 0 && result.includes.length > 0 ? "OR" : "AND"
+          });
+        }
+        for (const link of linkMatches) {
+          result.includes.push({
+            type: "link",
+            value: link,
+            operator: i === 0 && result.includes.length > 0 ? "OR" : "AND"
+          });
+        }
+      }
+    }
+    return result;
+  }
+  /**
+   * Trouve les fichiers correspondant à la requête
+   */
+  async findMatchingFiles(query, options) {
+    const allFiles = this.app.vault.getFiles();
+    const mediaFiles = allFiles.filter((f) => this.isMediaFile(f, options.type || "all"));
+    const results = [];
+    const addedPaths = /* @__PURE__ */ new Set();
+    if (options.files && options.files.length > 0) {
+      for (const fileName of options.files) {
+        const matchingFile = allFiles.find((f) => {
+          if (f.path === fileName) return true;
+          if (f.name === fileName) return true;
+          if (f.basename === fileName) return true;
+          if (f.path.endsWith("/" + fileName) || f.path.endsWith("\\" + fileName)) return true;
+          return false;
+        });
+        if (matchingFile && !addedPaths.has(matchingFile.path)) {
+          results.push(matchingFile);
+          addedPaths.add(matchingFile.path);
+        }
+      }
+    }
+    if (query.includes.length === 0 && query.excludes.length === 0 && options.files && options.files.length > 0) {
+      return results;
+    }
+    for (const file of mediaFiles) {
+      if (addedPaths.has(file.path)) continue;
+      if (options.folder && !file.path.startsWith(options.folder)) {
+        continue;
+      }
+      if (options.dateAfter || options.dateBefore) {
+        const stat = await this.app.vault.adapter.stat(file.path);
+        if (stat) {
+          const fileDate = new Date(stat.mtime);
+          if (options.dateAfter && fileDate < new Date(options.dateAfter)) continue;
+          if (options.dateBefore && fileDate > new Date(options.dateBefore)) continue;
+        }
+      }
+      const fileTags = this.tagManager.getTags(file.path);
+      let excluded = false;
+      for (const exclude of query.excludes) {
+        if (this.fileHasTag(fileTags, exclude.value)) {
+          excluded = true;
+          break;
+        }
+      }
+      if (excluded) continue;
+      if (query.includes.length === 0) {
+        results.push(file);
+        continue;
+      }
+      let matches = false;
+      let currentGroupMatches = true;
+      for (let i = 0; i < query.includes.length; i++) {
+        const inc = query.includes[i];
+        const hasTag = this.fileHasTag(fileTags, inc.value);
+        if (i === 0) {
+          currentGroupMatches = hasTag;
+        } else if (inc.operator === "OR") {
+          if (currentGroupMatches) {
+            matches = true;
+            break;
+          }
+          currentGroupMatches = hasTag;
+        } else {
+          currentGroupMatches = currentGroupMatches && hasTag;
+        }
+      }
+      if (currentGroupMatches || matches) {
+        results.push(file);
+      }
+    }
+    return results;
+  }
+  /**
+   * Vérifie si un fichier a un tag/link
+   */
+  fileHasTag(fileTags, searchValue) {
+    const searchLower = searchValue.toLowerCase();
+    return fileTags.some((tag) => {
+      const tagLower = tag.toLowerCase();
+      if (tagLower === searchLower) return true;
+      if (searchValue.startsWith("#")) {
+        const searchWithout = searchValue.substring(1).toLowerCase();
+        if (tagLower === searchWithout || tagLower === `#${searchWithout}`) return true;
+      }
+      return false;
+    });
+  }
+  /**
+   * Vérifie si un fichier est un média du type souhaité
+   */
+  isMediaFile(file, type) {
+    const ext = file.extension.toLowerCase();
+    const photoExts = ["png", "jpg", "jpeg", "webp", "bmp", "tiff", "avif"];
+    const videoExts = ["mp4", "webm", "mov", "avi", "mkv"];
+    const gifExts = ["gif"];
+    switch (type) {
+      case "photo":
+        return photoExts.includes(ext);
+      case "video":
+        return videoExts.includes(ext);
+      case "gif":
+        return gifExts.includes(ext);
+      case "all":
+      default:
+        return [...photoExts, ...videoExts, ...gifExts].includes(ext);
+    }
+  }
+  /**
+   * Trie les fichiers
+   */
+  sortFiles(files, sortBy) {
+    const sorted = [...files];
+    switch (sortBy) {
+      case "date-desc":
+        sorted.sort((a, b) => b.stat.mtime - a.stat.mtime);
+        break;
+      case "date-asc":
+        sorted.sort((a, b) => a.stat.mtime - b.stat.mtime);
+        break;
+      case "name":
+        sorted.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case "random":
+        for (let i = sorted.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [sorted[i], sorted[j]] = [sorted[j], sorted[i]];
+        }
+        break;
+    }
+    return sorted;
+  }
+  /**
+   * Crée un élément de galerie pour un fichier
+   */
+  createGalleryItem(file, options) {
+    const item = document.createElement("div");
+    item.className = "lumina-block-item";
+    const isVideo = ["mp4", "webm", "mov", "avi", "mkv"].includes(file.extension.toLowerCase());
+    if (isVideo) {
+      const video = document.createElement("video");
+      video.src = this.app.vault.getResourcePath(file);
+      video.controls = true;
+      video.preload = "metadata";
+      video.className = "lumina-block-media";
+      item.appendChild(video);
+    } else {
+      const img = document.createElement("img");
+      img.src = this.app.vault.getResourcePath(file);
+      img.alt = file.basename;
+      img.className = "lumina-block-media";
+      img.loading = "lazy";
+      img.addEventListener("click", () => {
+        const action = this.plugin.settings.blockImageClickAction;
+        if (action === "open") {
+          this.app.workspace.openLinkText(file.path, "", false);
+        } else {
+          this.openPreview(file);
+        }
+      });
+      item.appendChild(img);
+    }
+    if (options.showNames) {
+      const nameEl = document.createElement("div");
+      nameEl.className = "lumina-block-name";
+      nameEl.textContent = file.basename;
+      item.appendChild(nameEl);
+    }
+    if (options.showTags) {
+      const tags = this.tagManager.getTags(file.path);
+      if (tags.length > 0) {
+        const tagsEl = document.createElement("div");
+        tagsEl.className = "lumina-block-tags";
+        tags.forEach((tag) => {
+          const tagSpan = this.createClickableTag(tag, file.path);
+          tagsEl.appendChild(tagSpan);
+        });
+        item.appendChild(tagsEl);
+      }
+    }
+    return item;
+  }
+  /**
+   * Ouvre un aperçu plein écran de l'image
+   */
+  openPreview(file) {
+    const overlay = document.createElement("div");
+    overlay.className = "lumina-block-preview-overlay";
+    const isVideo = ["mp4", "webm", "mov", "avi", "mkv"].includes(file.extension.toLowerCase());
+    if (isVideo) {
+      const video = document.createElement("video");
+      video.src = this.app.vault.getResourcePath(file);
+      video.controls = true;
+      video.autoplay = true;
+      video.className = "lumina-block-preview-media";
+      overlay.appendChild(video);
+    } else {
+      const img = document.createElement("img");
+      img.src = this.app.vault.getResourcePath(file);
+      img.alt = file.basename;
+      img.className = "lumina-block-preview-media";
+      overlay.appendChild(img);
+    }
+    overlay.addEventListener("click", () => {
+      overlay.remove();
+    });
+    const handleEscape = (e) => {
+      if (e.key === "Escape") {
+        overlay.remove();
+        document.removeEventListener("keydown", handleEscape);
+      }
+    };
+    document.addEventListener("keydown", handleEscape);
+    document.body.appendChild(overlay);
+  }
+};
+
+// src/services/VirtualSearchService.ts
+var import_obsidian9 = require("obsidian");
+var VirtualSearchService = class {
+  constructor(app, plugin, tagManager) {
+    this.isEnabled = false;
+    this.searchObserver = null;
+    this.inputHandler = null;
+    this.lastQuery = "";
+    this.lastInjectTime = 0;
+    this.mediaExtensions = /* @__PURE__ */ new Set(["jpg", "jpeg", "png", "gif", "webp", "bmp", "svg", "mp4", "webm", "mov", "avi", "mkv", "pdf"]);
+    this.app = app;
+    this.plugin = plugin;
+    this.tagManager = tagManager;
+  }
+  /**
+   * Enable the virtual search integration
+   */
+  enable() {
+    if (this.isEnabled) return;
+    try {
+      this.setupSearchObserver();
+      this.isEnabled = true;
+      debugLog("Virtual Search Service enabled");
+    } catch (error) {
+      console.error("Lumina: Failed to enable Virtual Search Service", error);
+    }
+  }
+  /**
+   * Disable the virtual search integration
+   */
+  disable() {
+    var _a;
+    if (!this.isEnabled) return;
+    try {
+      (_a = this.searchObserver) == null ? void 0 : _a.disconnect();
+      this.searchObserver = null;
+      if (this.inputHandler) {
+        document.removeEventListener("input", this.inputHandler, true);
+        this.inputHandler = null;
+      }
+      document.querySelectorAll(".lumina-virtual-result, .lumina-virtual-header, .lumina-virtual-section").forEach((el) => el.remove());
+      this.isEnabled = false;
+      debugLog("Virtual Search Service disabled");
+    } catch (error) {
+      console.error("Lumina: Failed to disable Virtual Search Service", error);
+    }
+  }
+  /**
+   * Check if a file is a media file based on extension
+   */
+  isMediaFile(path) {
+    var _a;
+    const ext = ((_a = path.split(".").pop()) == null ? void 0 : _a.toLowerCase()) || "";
+    return this.mediaExtensions.has(ext);
+  }
+  /**
+   * Get the search leaf and view
+   */
+  getSearchView() {
+    const searchLeaf = this.app.workspace.getLeavesOfType("search")[0];
+    if (!searchLeaf) return null;
+    return { leaf: searchLeaf, view: searchLeaf.view };
+  }
+  /**
+   * Setup observer for the search view - uses targeted observation
+   */
+  setupSearchObserver() {
+    const debouncedInject = (0, import_obsidian9.debounce)((query) => {
+      this.injectSearchResults(query);
+    }, 400, true);
+    this.searchObserver = new MutationObserver(() => {
+      var _a, _b, _c;
+      const searchData = this.getSearchView();
+      if (!searchData) return;
+      const view = searchData.view;
+      const currentQuery = ((_a = view == null ? void 0 : view.searchQuery) == null ? void 0 : _a.query) || ((_b = view == null ? void 0 : view.getQuery) == null ? void 0 : _b.call(view)) || "";
+      if (currentQuery && currentQuery !== this.lastQuery) {
+        this.lastQuery = currentQuery;
+        debugLog("Search query from view:", currentQuery);
+        debouncedInject(currentQuery);
+      }
+      if (((_c = view == null ? void 0 : view.dom) == null ? void 0 : _c.resultDomLookup) && currentQuery) {
+        const now = Date.now();
+        if (now - this.lastInjectTime > 600) {
+          this.lastInjectTime = now;
+          debouncedInject(currentQuery);
+        }
+      }
+    });
+    const tryObserveSearch = () => {
+      const searchLeaf = this.app.workspace.getLeavesOfType("search")[0];
+      if (searchLeaf == null ? void 0 : searchLeaf.containerEl) {
+        this.searchObserver.observe(searchLeaf.containerEl, {
+          childList: true,
+          subtree: true
+        });
+        debugLog("Search observer attached to search leaf");
+      } else {
+        const workspace = document.querySelector(".workspace");
+        if (workspace) {
+          this.searchObserver.observe(workspace, {
+            childList: true,
+            subtree: true
+          });
+          debugLog("Search observer fallback: attached to workspace");
+        }
+      }
+    };
+    tryObserveSearch();
+    this.plugin.registerEvent(
+      this.app.workspace.on("layout-change", () => {
+        var _a;
+        if (!this.isEnabled) return;
+        (_a = this.searchObserver) == null ? void 0 : _a.disconnect();
+        tryObserveSearch();
+      })
+    );
+    this.inputHandler = (e) => {
+      var _a, _b;
+      const target = e.target;
+      if ((target == null ? void 0 : target.closest(".search-input-container")) || ((_a = target == null ? void 0 : target.classList) == null ? void 0 : _a.contains("search-input"))) {
+        const input = target;
+        const query = (_b = input.value) == null ? void 0 : _b.trim();
+        if (query && query !== this.lastQuery) {
+          this.lastQuery = query;
+          debugLog("Search input detected:", query);
+          debouncedInject(query);
+        }
+      }
+    };
+    document.addEventListener("input", this.inputHandler, true);
+    debugLog("Search observer setup complete");
+  }
+  /**
+   * Search for media files that match the query
+   */
+  searchMedia(query) {
+    var _a;
+    const results = [];
+    let cleanQuery = query.replace(/^tag:/i, "").trim();
+    const searchTags = this.extractSearchTags(cleanQuery);
+    const searchLinks = this.extractSearchLinks(cleanQuery);
+    const searchText = cleanQuery.replace(/#[\w\-\/]+/g, "").replace(/\[\[[^\]]+\]\]/g, "").trim().toLowerCase();
+    const allTaggedPaths = this.tagManager.getAllTaggedPaths();
+    debugLog("Searching media - Query:", cleanQuery, "Tags found:", searchTags, "Total tagged paths:", allTaggedPaths.length);
+    for (const path of allTaggedPaths) {
+      if (!this.isMediaFile(path)) continue;
+      const fileTags = this.tagManager.getTags(path);
+      let score = 0;
+      for (const searchTag of searchTags) {
+        const normalizedSearch = searchTag.replace(/^#/, "").toLowerCase();
+        for (const fileTag of fileTags) {
+          const normalizedFileTag = fileTag.replace(/^#/, "").toLowerCase();
+          if (normalizedFileTag === normalizedSearch) {
+            score += 100;
+          } else if (normalizedFileTag.includes(normalizedSearch) || normalizedSearch.includes(normalizedFileTag)) {
+            score += 50;
+          }
+        }
+      }
+      for (const searchLink of searchLinks) {
+        const normalizedSearch = searchLink.replace(/^\[\[|\]\]$/g, "").toLowerCase();
+        for (const fileTag of fileTags) {
+          if (fileTag.startsWith("[[") && fileTag.endsWith("]]")) {
+            const normalizedFileLink = fileTag.replace(/^\[\[|\]\]$/g, "").toLowerCase();
+            if (normalizedFileLink === normalizedSearch) {
+              score += 100;
+            } else if (normalizedFileLink.includes(normalizedSearch)) {
+              score += 50;
+            }
+          }
+        }
+      }
+      if (searchText) {
+        const filename = ((_a = path.split("/").pop()) == null ? void 0 : _a.toLowerCase()) || "";
+        if (filename.includes(searchText)) {
+          score += 75;
+        }
+        for (const tag of fileTags) {
+          if (tag.toLowerCase().includes(searchText)) {
+            score += 25;
+          }
+        }
+      }
+      const queryLower = cleanQuery.toLowerCase().trim();
+      for (const fileTag of fileTags) {
+        const tagLower = fileTag.replace(/^#/, "").toLowerCase();
+        if (tagLower === queryLower || fileTag.toLowerCase() === queryLower) {
+          score += 100;
+        } else if (tagLower.includes(queryLower) || queryLower.includes(tagLower)) {
+          score += 40;
+        }
+      }
+      if (score > 0) {
+        results.push({ path, score, tags: fileTags });
+      }
+    }
+    results.sort((a, b) => b.score - a.score);
+    debugLog("Found", results.length, "media results");
+    return results;
+  }
+  /**
+   * Inject search results into the search view
+   */
+  injectSearchResults(query) {
+    var _a, _b;
+    const searchData = this.getSearchView();
+    if (!searchData) {
+      debugLog("No search leaf found");
+      return;
+    }
+    const view = searchData.view;
+    let resultsContainer = null;
+    if ((_a = view == null ? void 0 : view.dom) == null ? void 0 : _a.resultDom) {
+      resultsContainer = view.dom.resultDom;
+    } else if ((_b = view == null ? void 0 : view.dom) == null ? void 0 : _b.el) {
+      resultsContainer = view.dom.el.querySelector(".search-result-container, .search-results-children");
+    } else {
+      const searchLeafEl = searchData.leaf.containerEl;
+      if (searchLeafEl) {
+        resultsContainer = searchLeafEl.querySelector(".search-result-container, .search-results-children");
+      }
+    }
+    if (!resultsContainer) {
+      resultsContainer = document.querySelector(".search-result-container");
+    }
+    if (!resultsContainer) {
+      debugLog("No results container found");
+      return;
+    }
+    resultsContainer.querySelectorAll(".lumina-virtual-result, .lumina-virtual-header, .lumina-virtual-section").forEach((el) => el.remove());
+    const results = this.searchMedia(query);
+    if (results.length === 0) {
+      debugLog("No media results to inject for query:", query);
+      return;
+    }
+    const locale = this.plugin.settings.locale;
+    const section = document.createElement("div");
+    section.className = "lumina-virtual-section";
+    const header = document.createElement("div");
+    header.className = "tree-item lumina-virtual-header";
+    header.innerHTML = `
+      <div class="tree-item-self is-clickable" style="padding: 8px 12px; margin-top: 12px; background: linear-gradient(135deg, var(--interactive-accent) 0%, var(--interactive-accent-hover) 100%); border-radius: 6px;">
+        <div class="tree-item-inner" style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 16px;">\u{1F4F7}</span>
+          <span style="font-weight: 600; color: white;">Lumina Media</span>
+          <span style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 10px; font-size: 11px; color: white;">${results.length}</span>
+        </div>
+      </div>
+    `;
+    section.appendChild(header);
+    const displayResults = results.slice(0, 15);
+    for (const result of displayResults) {
+      const item = this.createResultElement(result);
+      section.appendChild(item);
+    }
+    if (results.length > 15) {
+      const more = document.createElement("div");
+      more.className = "lumina-virtual-more";
+      more.style.cssText = "padding: 8px 12px; color: var(--text-muted); font-size: 12px; text-align: center;";
+      more.textContent = `... +${results.length - 15}`;
+      section.appendChild(more);
+    }
+    resultsContainer.appendChild(section);
+    debugLog("Injected", displayResults.length, "virtual results into container");
+  }
+  /**
+   * Create a DOM element for a virtual search result
+   */
+  createResultElement(result) {
+    var _a;
+    const locale = this.plugin.settings.locale;
+    const container = document.createElement("div");
+    container.className = "tree-item search-result lumina-virtual-result";
+    container.dataset.luminaPath = result.path;
+    const ext = ((_a = result.path.split(".").pop()) == null ? void 0 : _a.toLowerCase()) || "";
+    let icon = "\u{1F5BC}\uFE0F";
+    let iconBg = "rgba(76, 175, 80, 0.15)";
+    if (["mp4", "webm", "mov", "avi", "mkv"].includes(ext)) {
+      icon = "\u{1F3AC}";
+      iconBg = "rgba(33, 150, 243, 0.15)";
+    } else if (ext === "gif") {
+      icon = "\u2728";
+      iconBg = "rgba(255, 152, 0, 0.15)";
+    } else if (ext === "pdf") {
+      icon = "\u{1F4C4}";
+      iconBg = "rgba(244, 67, 54, 0.15)";
+    }
+    const filename = result.path.split("/").pop() || result.path;
+    const folder = result.path.includes("/") ? result.path.substring(0, result.path.lastIndexOf("/")) : "";
+    container.innerHTML = `
+      <div class="tree-item-self search-result-file-title is-clickable" style="padding: 8px 12px; border-left: 3px solid var(--interactive-accent); margin-left: 8px; margin-top: 4px; background: var(--background-secondary); border-radius: 0 6px 6px 0;">
+        <div class="tree-item-inner" style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 18px; background: ${iconBg}; padding: 4px; border-radius: 6px;">${icon}</span>
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-weight: 500; color: var(--text-normal); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${filename}</div>
+            ${folder ? `<div style="font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${folder}</div>` : ""}
+          </div>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; padding-left: 36px;">
+          ${result.tags.slice(0, 4).map((tag) => `<span style="background: var(--background-modifier-hover); padding: 2px 8px; border-radius: 10px; font-size: 10px; color: var(--text-muted);">${tag}</span>`).join("")}
+          ${result.tags.length > 4 ? `<span style="font-size: 10px; color: var(--text-faint);">+${result.tags.length - 4}</span>` : ""}
+        </div>
+      </div>
+    `;
+    const clickable = container.querySelector(".tree-item-self");
+    clickable == null ? void 0 : clickable.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const clickAction = this.plugin.settings.virtualSearchClickAction || "obsidian";
+      if (clickAction === "obsidian") {
+        this.openMediaInObsidian(result.path);
+      } else {
+        this.openMediaInLumina(result.path);
+      }
+    });
+    container.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+      this.showMediaContextMenu(e, result.path, result.tags);
+    });
+    return container;
+  }
+  /**
+   * Extract #tags from search query
+   */
+  extractSearchTags(query) {
+    const tagRegex = /#[\w\-\/]+/g;
+    const matches = query.match(tagRegex) || [];
+    const words = query.split(/\s+/).filter((w) => w.length > 1 && !w.startsWith("#") && !w.startsWith("[["));
+    return [...matches, ...words];
+  }
+  /**
+   * Extract [[links]] from search query
+   */
+  extractSearchLinks(query) {
+    const linkRegex = /\[\[[^\]]+\]\]/g;
+    return query.match(linkRegex) || [];
+  }
+  /**
+   * Open a media file in Obsidian's native viewer
+   */
+  openMediaInObsidian(path) {
+    debugLog("Opening media in Obsidian:", path);
+    const file = this.app.vault.getAbstractFileByPath(path);
+    if (file instanceof import_obsidian9.TFile) {
+      this.app.workspace.getLeaf("tab").openFile(file);
+    } else {
+      debugLog("File not found:", path);
+    }
+  }
+  /**
+   * Open a media file in Lumina lightbox
+   */
+  openMediaInLumina(path) {
+    var _a;
+    debugLog("Opening media in Lumina:", path);
+    const leaves = this.app.workspace.getLeavesOfType("lumina-gallery");
+    if (leaves.length > 0) {
+      this.app.workspace.revealLeaf(leaves[0]);
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent("lumina:open-file", { detail: { path } }));
+      }, 100);
+    } else {
+      (_a = this.app.workspace.getRightLeaf(false)) == null ? void 0 : _a.setViewState({
+        type: "lumina-gallery",
+        active: true
+      }).then(() => {
+        setTimeout(() => {
+          window.dispatchEvent(new CustomEvent("lumina:open-file", { detail: { path } }));
+        }, 500);
+      });
+    }
+  }
+  /**
+   * Show context menu for media file (i18n)
+   */
+  showMediaContextMenu(event, path, tags) {
+    const locale = this.plugin.settings.locale;
+    const menu = new import_obsidian9.Menu();
+    menu.addItem((item) => {
+      item.setTitle(t(locale, "openInObsidian")).setIcon("file").onClick(() => this.openMediaInObsidian(path));
+    });
+    menu.addItem((item) => {
+      item.setTitle(t(locale, "openInLumina")).setIcon("image").onClick(() => this.openMediaInLumina(path));
+    });
+    menu.addSeparator();
+    menu.addItem((item) => {
+      item.setTitle(t(locale, "copyPath")).setIcon("copy").onClick(() => navigator.clipboard.writeText(path));
+    });
+    if (tags.length > 0) {
+      menu.addSeparator();
+      menu.addItem((item) => {
+        item.setTitle(`${t(locale, "tags")}: ${tags.slice(0, 3).join(", ")}${tags.length > 3 ? "..." : ""}`).setDisabled(true);
+      });
+    }
+    menu.showAtMouseEvent(event);
+  }
+  /**
+   * Get media files with a specific tag
+   */
+  getMediaWithTag(tag) {
+    const normalizedTag = tag.startsWith("#") ? tag : `#${tag}`;
+    const results = [];
+    for (const path of this.tagManager.getAllTaggedPaths()) {
+      if (!this.isMediaFile(path)) continue;
+      const fileTags = this.tagManager.getTags(path);
+      for (const fileTag of fileTags) {
+        const normalizedFileTag = fileTag.startsWith("#") ? fileTag : `#${fileTag}`;
+        if (normalizedFileTag.toLowerCase() === normalizedTag.toLowerCase()) {
+          results.push(path);
+          break;
+        }
+      }
+    }
+    return results;
   }
 };
 
@@ -28016,15 +33668,147 @@ function getWorkerUrl() {
     return "./worker.js";
   }
 }
-var LuminaPlugin = class extends import_obsidian4.Plugin {
+var LuminaPlugin = class extends import_obsidian10.Plugin {
   constructor() {
     super(...arguments);
     this.workerUrl = getWorkerUrl();
     this.settings = { ...DEFAULT_SETTINGS2 };
+    this.tagManager = new TagManager();
+    this.tagIndicatorService = null;
+    this.frontmatterService = null;
+    this.fileHeaderService = null;
+    this.luminaBlockProcessor = null;
+    this.virtualSearchService = null;
+    // Cached data for debounced saves
+    this._cachedData = null;
+    this._saveTimer = null;
+    this._backupTimer = null;
   }
   async onload() {
+    initDebugLog(() => this.settings.showDebugLogs);
     await this.loadSettings();
     this.addSettingTab(new LuminaSettingTab(this.app, this));
+    const data = await this.loadData();
+    this._cachedData = data;
+    const tagMapData = data == null ? void 0 : data.tagMap;
+    this.tagManager = new TagManager(tagMapData);
+    this.frontmatterService = new FrontmatterService(this.app.vault, this.app);
+    this.tagIndicatorService = new TagIndicatorService(
+      this.tagManager,
+      this.app,
+      () => ({
+        position: this.settings.tagIndicatorPosition,
+        style: this.settings.tagIndicatorStyle,
+        color: this.settings.tagIndicatorColor,
+        size: this.settings.tagIndicatorSize,
+        icon: this.settings.tagIndicatorLucideIcon,
+        compensateShift: this.settings.tagIndicatorCompensateShift
+      })
+    );
+    this.luminaBlockProcessor = new LuminaBlockProcessor(this.app, this, this.tagManager);
+    this.luminaBlockProcessor.register();
+    this.tagManager.addListener(() => {
+      var _a;
+      this.saveTagMapDebounced();
+      (_a = this.tagIndicatorService) == null ? void 0 : _a.scheduleRefresh();
+    });
+    let isSyncingFromFrontmatter = false;
+    let isSyncingBidirectional = false;
+    this.tagManager.addTagChangeListener(async (path, tags, oldTags) => {
+      if (isSyncingFromFrontmatter || isSyncingBidirectional) return;
+      const isMdFile = path.toLowerCase().endsWith(".md");
+      if (isMdFile && this.frontmatterService) {
+        await this.frontmatterService.syncNoteProperties(path, tags);
+        const oldLinks = (oldTags || []).filter((t2) => t2.startsWith("[[") && t2.endsWith("]]"));
+        const newLinks = tags.filter((t2) => t2.startsWith("[[") && t2.endsWith("]]"));
+        if (oldLinks.length > 0 || newLinks.length > 0) {
+          isSyncingBidirectional = true;
+          try {
+            await this.frontmatterService.syncBidirectionalLinks(path, oldLinks, newLinks);
+          } finally {
+            isSyncingBidirectional = false;
+          }
+        }
+      } else if (!isMdFile && this.frontmatterService) {
+        const oldLinks = (oldTags || []).filter((t2) => t2.startsWith("[[") && t2.endsWith("]]"));
+        const newLinks = tags.filter((t2) => t2.startsWith("[[") && t2.endsWith("]]"));
+        if (oldLinks.length > 0 || newLinks.length > 0) {
+          isSyncingBidirectional = true;
+          try {
+            await this.syncNonMdBacklinks(path, oldLinks, newLinks);
+          } finally {
+            isSyncingBidirectional = false;
+          }
+        }
+      }
+    });
+    this.registerEvent(
+      this.app.metadataCache.on("changed", async (file) => {
+        debugLog("metadataCache changed event for:", file.path, "ext:", file.extension);
+        if (file.extension.toLowerCase() !== "md") return;
+        if (!this.frontmatterService) {
+          debugLog("frontmatterService is null!");
+          return;
+        }
+        if (isSyncingBidirectional) {
+          debugLog("Skipping - isSyncingBidirectional is true");
+          return;
+        }
+        const frontmatterTags = this.frontmatterService.getAllTagsFromFrontmatter(file);
+        const currentTags = this.tagManager.getTags(file.path);
+        debugLog("metadataCache changed:", file.path, "fm:", frontmatterTags.length, "current:", currentTags.length);
+        const frontmatterSet = new Set(frontmatterTags);
+        const currentSet = new Set(currentTags);
+        const areDifferent = frontmatterTags.length !== currentTags.length || frontmatterTags.some((t2) => !currentSet.has(t2)) || currentTags.some((t2) => !frontmatterSet.has(t2));
+        if (areDifferent) {
+          const oldLinks = currentTags.filter((t2) => t2.startsWith("[[") && t2.endsWith("]]"));
+          const newLinks = frontmatterTags.filter((t2) => t2.startsWith("[[") && t2.endsWith("]]"));
+          debugLog("Tags differ, oldLinks:", oldLinks.length, "newLinks:", newLinks.length);
+          isSyncingFromFrontmatter = true;
+          if (frontmatterTags.length > 0) {
+            this.tagManager.setTags(file.path, frontmatterTags);
+          } else {
+            this.tagManager.clearTags(file.path);
+          }
+          isSyncingFromFrontmatter = false;
+          if (oldLinks.length > 0 || newLinks.length > 0) {
+            debugLog("Calling syncBidirectionalLinks...");
+            isSyncingBidirectional = true;
+            try {
+              await this.frontmatterService.syncBidirectionalLinks(file.path, oldLinks, newLinks);
+              debugLog("syncBidirectionalLinks completed");
+            } finally {
+              isSyncingBidirectional = false;
+            }
+          }
+        }
+      })
+    );
+    this.app.workspace.onLayoutReady(() => {
+      var _a;
+      if (this.settings.enableStartupSync) {
+        setTimeout(() => this.syncAllFromFrontmatter(), 100);
+      }
+      this.virtualSearchService = new VirtualSearchService(this.app, this, this.tagManager);
+      if (this.settings.enableVirtualSearch) {
+        this.virtualSearchService.enable();
+      }
+      if (this.settings.enableTagSystem && this.settings.showFileExplorerTagsIndicator) {
+        (_a = this.tagIndicatorService) == null ? void 0 : _a.start();
+      }
+      this.fileHeaderService = new FileHeaderService(
+        this.app,
+        this.tagManager,
+        () => this.settings.locale,
+        (filePath) => this.openTagModal(filePath)
+      );
+      if (this.settings.enableTagSystem) {
+        this.fileHeaderService.start();
+      }
+      this.exposePublicAPI();
+      this.writeSharedTagFile(this.tagManager.getData());
+      this.startAutoBackupTimer();
+    });
     this.registerView(VIEW_TYPE_LUMINA, (leaf) => new LuminaView(leaf, this));
     const openLabel = t(this.settings.locale, "openLumina");
     this.addRibbonIcon("image", openLabel, () => this.activateView());
@@ -28033,19 +33817,609 @@ var LuminaPlugin = class extends import_obsidian4.Plugin {
       name: openLabel,
       callback: () => this.activateView()
     });
+    this.addCommand({
+      id: "manage-tags",
+      name: t(this.settings.locale, "manageTags"),
+      checkCallback: (checking) => {
+        const file = this.app.workspace.getActiveFile();
+        if (file) {
+          if (!checking) {
+            new TagManagerModal(
+              this.app,
+              file.path,
+              file.name,
+              this.tagManager,
+              this.settings.locale
+            ).open();
+          }
+          return true;
+        }
+        return false;
+      }
+    });
+    this.addCommand({
+      id: "insert-lumina-block",
+      name: t(this.settings.locale, "insertLuminaBlock"),
+      editorCallback: (editor) => {
+        const cursor = editor.getCursor();
+        const template = "```lumina\n#tag1 OR #tag2\n```\n";
+        editor.replaceRange(template, cursor);
+      }
+    });
+    this.registerEvent(
+      this.app.workspace.on("file-menu", (menu, file) => {
+        if (file instanceof import_obsidian10.TFile) {
+          menu.addItem((item) => {
+            item.setTitle(t(this.settings.locale, "manageTags")).setIcon("tag").onClick(() => {
+              new TagManagerModal(
+                this.app,
+                file.path,
+                file.name,
+                this.tagManager,
+                this.settings.locale
+              ).open();
+            });
+          });
+        }
+      })
+    );
+    this.registerEvent(
+      this.app.workspace.on("files-menu", (menu, files) => {
+        const tFiles = files.filter((f) => f instanceof import_obsidian10.TFile);
+        if (tFiles.length > 0) {
+          menu.addItem((item) => {
+            item.setTitle(t(this.settings.locale, "manageTags") + ` (${tFiles.length})`).setIcon("tag").onClick(() => {
+              new BatchTagModal(
+                this.app,
+                tFiles.map((f) => f.path),
+                this.tagManager,
+                this.settings.locale
+              ).open();
+            });
+          });
+        }
+      })
+    );
+    this.registerDomEvent(document, "keydown", (evt) => {
+      if (!this.settings.enableTagSystem) return;
+      if (evt.shiftKey && evt.key === "T" && !evt.ctrlKey && !evt.altKey && !evt.metaKey) {
+        const target = evt.target;
+        if (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable) {
+          return;
+        }
+        const selectedFiles = this.getSelectedFilesFromExplorer();
+        if (selectedFiles.length > 0) {
+          evt.preventDefault();
+          evt.stopPropagation();
+          if (selectedFiles.length === 1) {
+            new TagManagerModal(
+              this.app,
+              selectedFiles[0].path,
+              selectedFiles[0].name,
+              this.tagManager,
+              this.settings.locale
+            ).open();
+          } else {
+            new BatchTagModal(
+              this.app,
+              selectedFiles.map((f) => f.path),
+              this.tagManager,
+              this.settings.locale
+            ).open();
+          }
+        }
+      }
+    });
+    this.registerEvent(
+      this.app.vault.on("rename", (file, oldPath) => {
+        var _a;
+        if (file instanceof import_obsidian10.TFile) {
+          this.tagManager.renamePath(oldPath, file.path);
+          (_a = this.tagIndicatorService) == null ? void 0 : _a.updateIndicator(file.path);
+        }
+      })
+    );
+    this.registerEvent(
+      this.app.vault.on("delete", (file) => {
+        if (file instanceof import_obsidian10.TFile) {
+          this.tagManager.clearTags(file.path);
+        }
+      })
+    );
+    this.registerEvent(
+      this.app.workspace.on("layout-change", () => {
+        var _a;
+        if (this.settings.enableTagSystem && this.settings.showFileExplorerTagsIndicator) {
+          (_a = this.tagIndicatorService) == null ? void 0 : _a.handleLayoutChange();
+        }
+      })
+    );
+    this.registerEvent(
+      this.app.workspace.on("file-menu", (menu, file) => {
+        if (file instanceof import_obsidian10.TFile && file.extension.toLowerCase() === "md") {
+          menu.addItem((item) => {
+            item.setTitle(t(this.settings.locale, "insertLuminaBlock"));
+            item.setIcon("image");
+            item.onClick(() => {
+              this.insertLuminaBlock(file);
+            });
+          });
+        }
+      })
+    );
+    this.registerEvent(
+      this.app.workspace.on("editor-menu", (menu, editor, view) => {
+        menu.addItem((item) => {
+          item.setTitle(t(this.settings.locale, "insertLuminaBlock"));
+          item.setIcon("image");
+          item.onClick(() => {
+            this.insertLuminaBlockAtCursor(editor);
+          });
+        });
+      })
+    );
+  }
+  /**
+   * Expose public API for other plugins via window.LuminaAPI
+   */
+  exposePublicAPI() {
+    const api = {
+      getTags: (path) => this.tagManager.getTags(path),
+      getAllTags: () => this.tagManager.getAllTags(),
+      getAllTaggedPaths: () => this.tagManager.getAllTaggedPaths(),
+      getFilesWithTag: (tag) => this.tagManager.getFilesWithTag(tag),
+      getFilesWithAllTags: (tags) => this.tagManager.getFilesWithAllTags(tags),
+      getVersion: () => this.tagManager.getVersion(),
+      onTagChange: (callback) => {
+        this.tagManager.addTagChangeListener(callback);
+        return () => this.tagManager.removeTagChangeListener(callback);
+      },
+      ready: true
+    };
+    window.LuminaAPI = api;
+    window.dispatchEvent(new CustomEvent("lumina:api-ready", { detail: api }));
+    debugLog("Public API exposed via window.LuminaAPI");
+  }
+  /**
+   * Opens the tag management modal for a file
+   */
+  openTagModal(filePath) {
+    const fileName = filePath.split("/").pop() || filePath;
+    new TagManagerModal(
+      this.app,
+      filePath,
+      fileName,
+      this.tagManager,
+      this.settings.locale
+    ).open();
+  }
+  /**
+   * Gets selected files from the Obsidian file explorer
+   * Supports multi-selection (Ctrl+click, Shift+click)
+   */
+  getSelectedFilesFromExplorer() {
+    var _a, _b, _c, _d;
+    const selectedFiles = [];
+    const addedPaths = /* @__PURE__ */ new Set();
+    const fileExplorerLeaf = this.app.workspace.getLeavesOfType("file-explorer")[0];
+    if (fileExplorerLeaf == null ? void 0 : fileExplorerLeaf.view) {
+      const view = fileExplorerLeaf.view;
+      if ((_a = view.tree) == null ? void 0 : _a.selectedDoms) {
+        const selectedDoms = view.tree.selectedDoms;
+        if (selectedDoms instanceof Map && selectedDoms.size > 0) {
+          for (const [path] of selectedDoms) {
+            if (!addedPaths.has(path)) {
+              const file = this.app.vault.getAbstractFileByPath(path);
+              if (file instanceof import_obsidian10.TFile) {
+                selectedFiles.push(file);
+                addedPaths.add(path);
+              }
+            }
+          }
+        }
+      }
+      if (selectedFiles.length === 0 && view.selectedItems) {
+        const items = Array.isArray(view.selectedItems) ? view.selectedItems : view.selectedItems instanceof Set ? Array.from(view.selectedItems) : view.selectedItems instanceof Map ? Array.from(view.selectedItems.values()) : [];
+        for (const item of items) {
+          const file = (item == null ? void 0 : item.file) || item;
+          if (file instanceof import_obsidian10.TFile && !addedPaths.has(file.path)) {
+            selectedFiles.push(file);
+            addedPaths.add(file.path);
+          }
+        }
+      }
+      if (selectedFiles.length === 0 && ((_b = view.tree) == null ? void 0 : _b.selectedItems)) {
+        const items = Array.isArray(view.tree.selectedItems) ? view.tree.selectedItems : view.tree.selectedItems instanceof Set ? Array.from(view.tree.selectedItems) : view.tree.selectedItems instanceof Map ? Array.from(view.tree.selectedItems.values()) : [];
+        for (const item of items) {
+          const file = (item == null ? void 0 : item.file) || item;
+          if (file instanceof import_obsidian10.TFile && !addedPaths.has(file.path)) {
+            selectedFiles.push(file);
+            addedPaths.add(file.path);
+          }
+        }
+      }
+      if (selectedFiles.length === 0 && view.fileItems) {
+        for (const [path, item] of Object.entries(view.fileItems)) {
+          const typedItem = item;
+          const el = typedItem.el || typedItem.selfEl;
+          const isSelected = (el == null ? void 0 : el.classList.contains("is-selected")) || (el == null ? void 0 : el.classList.contains("is-active")) || (el == null ? void 0 : el.hasAttribute("data-selected")) || (el == null ? void 0 : el.closest(".is-selected")) !== null;
+          if (isSelected && typedItem.file instanceof import_obsidian10.TFile) {
+            if (!addedPaths.has(path)) {
+              selectedFiles.push(typedItem.file);
+              addedPaths.add(path);
+            }
+          }
+        }
+      }
+      if (selectedFiles.length === 0 && view.file instanceof import_obsidian10.TFile) {
+        selectedFiles.push(view.file);
+        addedPaths.add(view.file.path);
+      }
+      if (selectedFiles.length === 0 && ((_d = (_c = view.tree) == null ? void 0 : _c.focusedItem) == null ? void 0 : _d.file) instanceof import_obsidian10.TFile) {
+        selectedFiles.push(view.tree.focusedItem.file);
+        addedPaths.add(view.tree.focusedItem.file.path);
+      }
+    }
+    if (selectedFiles.length === 0) {
+      const selectors = [
+        ".nav-file-title.is-selected",
+        ".nav-file.is-selected .nav-file-title",
+        ".tree-item.is-selected .tree-item-self",
+        ".tree-item-self.is-selected",
+        ".nav-file-title.is-active",
+        ".nav-file.is-active .nav-file-title",
+        '[data-selected="true"]',
+        ".nav-file-title.has-focus",
+        ".tree-item-self.has-focus",
+        '[aria-selected="true"]'
+      ];
+      const selectedElements = document.querySelectorAll(selectors.join(", "));
+      selectedElements.forEach((el) => {
+        let filePath = el.getAttribute("data-path");
+        if (!filePath) {
+          const parent = el.closest("[data-path]");
+          if (parent) {
+            filePath = parent.getAttribute("data-path");
+          }
+        }
+        if (filePath && !addedPaths.has(filePath)) {
+          const file = this.app.vault.getAbstractFileByPath(filePath);
+          if (file instanceof import_obsidian10.TFile) {
+            selectedFiles.push(file);
+            addedPaths.add(filePath);
+          }
+        }
+      });
+    }
+    if (selectedFiles.length === 0) {
+      const activeFile = this.app.workspace.getActiveFile();
+      if (activeFile && !addedPaths.has(activeFile.path)) {
+        selectedFiles.push(activeFile);
+      }
+    }
+    return selectedFiles;
+  }
+  /**
+   * Inserts a Lumina block into a file
+   */
+  async insertLuminaBlock(file) {
+    const content = await this.app.vault.read(file);
+    const block = "\n```lumina\n#photo\nlayout: justified\ncolumns: 4\nshowNames: false\n```\n";
+    await this.app.vault.modify(file, content + block);
+  }
+  /**
+   * Inserts a Lumina block at cursor position
+   */
+  insertLuminaBlockAtCursor(editor) {
+    const block = "```lumina\n#photo\nlayout: justified\ncolumns: 4\nshowNames: false\n```\n";
+    editor.replaceSelection(block);
   }
   async loadSettings() {
     const data = await this.loadData();
+    this._cachedData = data;
     this.settings = { ...DEFAULT_SETTINGS2, ...data == null ? void 0 : data.settings };
   }
   async saveSettings() {
-    const data = await this.loadData();
-    await this.saveData({ ...data, settings: this.settings });
+    if (!this._cachedData) {
+      this._cachedData = await this.loadData();
+    }
+    this._cachedData = { ...this._cachedData, settings: this.settings };
+    await this.saveData(this._cachedData);
+    window.dispatchEvent(new CustomEvent("lumina:settings-changed", { detail: this.settings }));
+  }
+  /**
+   * Starts the auto backup timer based on settings
+   */
+  startAutoBackupTimer() {
+    if (this._backupTimer) {
+      clearInterval(this._backupTimer);
+      this._backupTimer = null;
+    }
+    if (!this.settings.autoBackupEnabled || this.settings.autoBackupIntervalHours <= 0) return;
+    const intervalMs = this.settings.autoBackupIntervalHours * 60 * 60 * 1e3;
+    this._backupTimer = setInterval(async () => {
+      try {
+        const folder = this.settings.autoBackupPath || "";
+        const ts = (/* @__PURE__ */ new Date()).toISOString().replace(/[:.]/g, "-").slice(0, 19);
+        const fileName = `lumina-tags-backup-${ts}.json`;
+        const sep = folder.includes("\\") ? "\\" : "/";
+        const path = folder ? `${folder.replace(/[\\/]$/, "")}${sep}${fileName}` : fileName;
+        await this.exportTagBackup(path);
+        debugLog("Auto backup created:", path);
+      } catch (e) {
+        console.error("[Lumina] Auto backup failed:", e);
+      }
+    }, intervalMs);
+    debugLog("Auto backup timer started, interval:", this.settings.autoBackupIntervalHours, "hours");
+  }
+  /**
+   * Debounced tag map save - coalesces rapid changes into a single write.
+   * Also mirrors tags to .obsidian/lumina-tags.json for cross-plugin access.
+   */
+  saveTagMapDebounced() {
+    if (this._saveTimer) {
+      clearTimeout(this._saveTimer);
+    }
+    this._saveTimer = setTimeout(async () => {
+      this._saveTimer = null;
+      try {
+        const tagData = this.tagManager.getData();
+        if (!this._cachedData) {
+          this._cachedData = await this.loadData();
+        }
+        this._cachedData = { ...this._cachedData, tagMap: tagData };
+        await this.saveData(this._cachedData);
+        await this.writeSharedTagFile(tagData);
+        debugLog("Tag map saved (debounced)");
+      } catch (e) {
+        console.error("[Lumina] Failed to save tag map:", e);
+      }
+    }, 500);
+  }
+  /**
+   * Writes tag map to .obsidian/lumina-tags.json so other plugins can read it
+   */
+  async writeSharedTagFile(tagMap) {
+    try {
+      const adapter = this.app.vault.adapter;
+      const sharedPath = ".obsidian/lumina-tags.json";
+      const payload = JSON.stringify({
+        version: 1,
+        updatedAt: (/* @__PURE__ */ new Date()).toISOString(),
+        tags: tagMap
+      }, null, 2);
+      await adapter.write(sharedPath, payload);
+    } catch (e) {
+      debugLog("Failed to write shared tag file:", e);
+    }
+  }
+  /**
+   * Write to an absolute or vault-relative path.
+   * Absolute paths (C:\... or /...) use Node fs; relative paths use the vault adapter.
+   */
+  async writeFile(filePath, content) {
+    const isAbsolute = /^([a-zA-Z]:\\|\/)/.test(filePath);
+    if (isAbsolute) {
+      const fs = require("fs").promises;
+      const path = require("path");
+      await fs.mkdir(path.dirname(filePath), { recursive: true });
+      await fs.writeFile(filePath, content, "utf-8");
+    } else {
+      await this.app.vault.adapter.write(filePath, content);
+    }
+  }
+  /**
+   * Read from an absolute or vault-relative path.
+   */
+  async readFile(filePath) {
+    const isAbsolute = /^([a-zA-Z]:\\|\/)/.test(filePath);
+    if (isAbsolute) {
+      const fs = require("fs").promises;
+      return await fs.readFile(filePath, "utf-8");
+    } else {
+      return await this.app.vault.adapter.read(filePath);
+    }
+  }
+  /**
+   * Export tags to a user-chosen backup file
+   */
+  async exportTagBackup(backupPath) {
+    const tagData = this.tagManager.getData();
+    const backup = JSON.stringify({
+      version: 1,
+      exportedAt: (/* @__PURE__ */ new Date()).toISOString(),
+      pluginVersion: this.manifest.version,
+      tagCount: Object.keys(tagData).length,
+      tags: tagData
+    }, null, 2);
+    await this.writeFile(backupPath, backup);
+    debugLog("Tag backup exported to:", backupPath);
+  }
+  /**
+   * Import tags from a backup file (merges with existing)
+   */
+  async importTagBackup(backupPath) {
+    const raw = await this.readFile(backupPath);
+    const data = JSON.parse(raw);
+    const importedMap = data.tags;
+    if (!importedMap || typeof importedMap !== "object") {
+      throw new Error("Invalid backup format");
+    }
+    let importCount = 0;
+    for (const [path, tags] of Object.entries(importedMap)) {
+      if (!Array.isArray(tags)) continue;
+      const existing = this.tagManager.getTags(path);
+      const merged = [.../* @__PURE__ */ new Set([...existing, ...tags.filter((t2) => typeof t2 === "string" && t2.trim())])];
+      if (merged.length !== existing.length || merged.some((t2) => !existing.includes(t2))) {
+        this.tagManager.setTags(path, merged);
+        importCount++;
+      }
+    }
+    debugLog("Tag backup imported from:", backupPath, "files updated:", importCount);
+    return importCount;
+  }
+  /**
+   * Import tags from already-parsed data (used by file picker in settings)
+   */
+  async importTagBackupFromData(importedMap) {
+    let importCount = 0;
+    for (const [path, tags] of Object.entries(importedMap)) {
+      if (!Array.isArray(tags)) continue;
+      const existing = this.tagManager.getTags(path);
+      const merged = [.../* @__PURE__ */ new Set([...existing, ...tags.filter((t2) => typeof t2 === "string" && t2.trim())])];
+      if (merged.length !== existing.length || merged.some((t2) => !existing.includes(t2))) {
+        this.tagManager.setTags(path, merged);
+        importCount++;
+      }
+    }
+    this.saveTagMapDebounced();
+    debugLog("Tag backup imported from file picker, files updated:", importCount);
+    return importCount;
   }
   getLocale() {
     return this.settings.locale;
   }
+  /**
+   * Syncs tags from frontmatter of all .md files in the vault
+   * towards the TagManager (called at startup)
+   */
+  syncAllFromFrontmatter() {
+    if (!this.frontmatterService) return;
+    const files = this.app.vault.getMarkdownFiles();
+    let syncCount = 0;
+    for (const file of files) {
+      const frontmatterTags = this.frontmatterService.getAllTagsFromFrontmatter(file);
+      if (frontmatterTags.length > 0) {
+        const currentTags = this.tagManager.getTags(file.path);
+        const merged = [.../* @__PURE__ */ new Set([...currentTags, ...frontmatterTags])];
+        if (merged.length !== currentTags.length || merged.some((t2) => !currentTags.includes(t2))) {
+          this.tagManager.setTags(file.path, merged);
+          syncCount++;
+        }
+      }
+    }
+    debugLog("syncAllFromFrontmatter completed:", syncCount, "files updated out of", files.length);
+  }
+  /**
+   * Scans all markdown files for [[...]] links in frontmatter
+   * and creates missing backlinks in target files
+   */
+  async scanAndCreateBacklinks() {
+    var _a;
+    if (!this.frontmatterService) return 0;
+    let createdCount = 0;
+    const files = this.app.vault.getMarkdownFiles();
+    for (const file of files) {
+      const { links } = this.frontmatterService.readTagsFromFrontmatter(file);
+      if (links.length === 0) continue;
+      const sourceBacklink = `[[${file.basename}]]`;
+      for (const link of links) {
+        const targetName = link.replace(/^\[\[/, "").replace(/\]\]$/, "").trim();
+        if (!targetName) continue;
+        const targetFile = this.findFileByName(targetName);
+        if (!targetFile) continue;
+        const targetTags = this.tagManager.getTags(targetFile.path);
+        const backlinkExists = targetTags.some(
+          (t2) => t2.toLowerCase() === sourceBacklink.toLowerCase()
+        );
+        if (!backlinkExists) {
+          this.tagManager.addTag(targetFile.path, sourceBacklink);
+          createdCount++;
+        }
+      }
+    }
+    if (!this._cachedData) {
+      this._cachedData = await this.loadData();
+    }
+    this._cachedData = { ...this._cachedData, tagMap: this.tagManager.getData() };
+    await this.saveData(this._cachedData);
+    (_a = this.tagIndicatorService) == null ? void 0 : _a.scheduleRefresh();
+    return createdCount;
+  }
+  /**
+   * Finds a file by name (with or without extension)
+   */
+  findFileByName(name) {
+    const lowerName = name.toLowerCase();
+    const allFiles = this.app.vault.getFiles();
+    return allFiles.find(
+      (f) => f.basename.toLowerCase() === lowerName || f.name.toLowerCase() === lowerName
+    ) || null;
+  }
+  /**
+   * Syncs backlinks for non-.md files (images, PDFs, etc.)
+   */
+  async syncNonMdBacklinks(sourcePath, oldLinks, newLinks) {
+    var _a;
+    if (!this.frontmatterService) return;
+    const sourceFile = this.app.vault.getAbstractFileByPath(sourcePath);
+    if (!(sourceFile instanceof import_obsidian10.TFile)) return;
+    const sourceBacklink = `[[${sourceFile.name}]]`;
+    const removedLinks = oldLinks.filter((l) => !newLinks.includes(l));
+    for (const link of removedLinks) {
+      const targetName = link.replace(/^\[\[/, "").replace(/\]\]$/, "").trim();
+      const targetFile = this.findFileByName(targetName);
+      if (!targetFile) continue;
+      if (targetFile.extension.toLowerCase() === "md") {
+        const { hashtags, links: currentLinks } = this.frontmatterService.readTagsFromFrontmatter(targetFile);
+        const filteredLinks = currentLinks.filter(
+          (l) => l.toLowerCase() !== sourceBacklink.toLowerCase()
+        );
+        if (filteredLinks.length !== currentLinks.length) {
+          await this.frontmatterService.syncNoteProperties(targetFile.path, [...hashtags, ...filteredLinks]);
+        }
+      } else {
+        const currentTags = this.tagManager.getTags(targetFile.path);
+        const filteredTags = currentTags.filter(
+          (t2) => t2.toLowerCase() !== sourceBacklink.toLowerCase()
+        );
+        if (filteredTags.length !== currentTags.length) {
+          this.tagManager.setTags(targetFile.path, filteredTags);
+        }
+      }
+    }
+    const addedLinks = newLinks.filter((l) => !oldLinks.includes(l));
+    for (const link of addedLinks) {
+      const targetName = link.replace(/^\[\[/, "").replace(/\]\]$/, "").trim();
+      const targetFile = this.findFileByName(targetName);
+      if (!targetFile) continue;
+      if (targetFile.extension.toLowerCase() === "md") {
+        const { hashtags, links: currentLinks } = this.frontmatterService.readTagsFromFrontmatter(targetFile);
+        const alreadyExists = currentLinks.some(
+          (l) => l.toLowerCase() === sourceBacklink.toLowerCase()
+        );
+        if (!alreadyExists) {
+          await this.frontmatterService.syncNoteProperties(targetFile.path, [...hashtags, ...currentLinks, sourceBacklink]);
+        }
+      } else {
+        const currentTags = this.tagManager.getTags(targetFile.path);
+        const alreadyExists = currentTags.some(
+          (t2) => t2.toLowerCase() === sourceBacklink.toLowerCase()
+        );
+        if (!alreadyExists) {
+          this.tagManager.addTag(targetFile.path, sourceBacklink);
+        }
+      }
+    }
+    (_a = this.tagIndicatorService) == null ? void 0 : _a.scheduleRefresh();
+  }
   onunload() {
+    var _a, _b, _c;
+    delete window.LuminaAPI;
+    if (this._saveTimer) {
+      clearTimeout(this._saveTimer);
+      const tagData = this.tagManager.getData();
+      const data = { ...this._cachedData, tagMap: tagData };
+      this.saveData(data);
+      this.writeSharedTagFile(tagData);
+    }
+    if (this._backupTimer) {
+      clearInterval(this._backupTimer);
+      this._backupTimer = null;
+    }
+    (_a = this.tagIndicatorService) == null ? void 0 : _a.stop();
+    (_b = this.virtualSearchService) == null ? void 0 : _b.disable();
+    (_c = this.fileHeaderService) == null ? void 0 : _c.stop();
     this.app.workspace.getLeavesOfType(VIEW_TYPE_LUMINA).forEach((leaf) => leaf.detach());
   }
   async activateView() {

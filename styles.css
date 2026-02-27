@@ -80,3 +80,2466 @@
   width: 20px;
   height: 20px;
 }
+
+/* ========================================
+   SYSTÈME DE TAGS
+   ======================================== */
+
+/* Badges de tags */
+.lumina-tag-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+  cursor: default;
+  max-width: 100%;
+  word-break: break-word;
+  white-space: normal;
+  transition: all 0.2s ease;
+}
+
+/* Couleur différente pour les liens [[...]] */
+.lumina-tag-badge.lumina-tag-link {
+  background: #7c3aed;
+  color: white;
+}
+
+/* Couleur pour les hashtags # */
+.lumina-tag-badge.lumina-tag-hashtag {
+  background: #059669;
+  color: white;
+}
+
+/* Tags dans les modales de gestion - permettre les longs textes */
+.lumina-tag-section .lumina-tag-badge,
+.lumina-file-tag-item .lumina-tag-badge {
+  max-width: none;
+  flex-shrink: 0;
+}
+
+/* Tags dans la galerie - garder compact */
+.gal-item-tags .lumina-tag-badge,
+.lb-tags-container .lumina-tag-badge {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lumina-tag-badge.clickable {
+  cursor: pointer;
+}
+
+.lumina-tag-badge.clickable:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+}
+
+.lumina-tag-remove {
+  background: rgba(0, 0, 0, 0.2);
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  margin: 0 0 0 6px;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1;
+  opacity: 0.85;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+}
+
+.lumina-tag-remove:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.35);
+  transform: scale(1.15);
+}
+
+/* Liste de tags */
+.lumina-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+
+.lumina-tag-more,
+.lumina-tag-less {
+  background: var(--background-modifier-border);
+  border: none;
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+}
+
+.lumina-tag-more:hover,
+.lumina-tag-less:hover {
+  background: var(--background-modifier-border-hover);
+  color: var(--text-normal);
+}
+
+/* Input de tags avec autocomplétion */
+.lumina-tag-input-container {
+  position: relative;
+  width: 100%;
+}
+
+.lumina-tag-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  background: var(--background-primary);
+  color: var(--text-normal);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.lumina-tag-input:focus {
+  border-color: var(--interactive-accent);
+}
+
+.lumina-tag-suggestions {
+  position: fixed;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 100000;
+}
+
+.lumina-tag-suggestion {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.lumina-tag-suggestion:hover,
+.lumina-tag-suggestion.selected {
+  background: var(--background-modifier-hover);
+}
+
+/* ========================================
+   SEARCH BAR WITH TAGS
+   ======================================== */
+
+.lumina-search-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  min-width: 320px;
+}
+
+.lumina-search-row {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  width: 100%;
+}
+
+.lumina-search-tokens-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  padding: 6px 10px;
+  flex: 1;
+  min-width: 0;
+  cursor: text;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lumina-search-tokens-wrapper:focus-within {
+  border-color: var(--interactive-accent);
+  box-shadow: 0 0 0 2px rgba(var(--interactive-accent-rgb), 0.2);
+}
+
+.lumina-search-tokens {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-height: 28px;
+}
+
+.lumina-search-token {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  animation: tokenIn 0.15s ease-out;
+}
+
+@keyframes tokenIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.lumina-search-token-tag {
+  background: linear-gradient(135deg, var(--interactive-accent) 0%, color-mix(in srgb, var(--interactive-accent) 80%, #000) 100%);
+  color: white;
+}
+
+.lumina-search-token-link {
+  background: linear-gradient(135deg, #4a9eff 0%, #2563eb 100%);
+  color: white;
+}
+
+.lumina-search-token-keyword {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+  border: 1px solid var(--background-modifier-border);
+}
+
+.lumina-search-token-remove {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0 2px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.lumina-search-token-remove:hover {
+  opacity: 1;
+}
+
+.lumina-search-input {
+  flex: 1;
+  min-width: 120px;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: var(--text-normal);
+  outline: none;
+}
+
+.lumina-search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.lumina-search-clear {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  opacity: 0.7;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.lumina-search-clear:hover {
+  opacity: 1;
+  color: var(--text-error);
+}
+
+.lumina-search-mode-toggle {
+  display: flex;
+  gap: 4px;
+}
+
+.lumina-mode-btn {
+  padding: 4px 12px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  background: var(--background-primary);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lumina-mode-btn:hover {
+  background: var(--background-modifier-hover);
+}
+
+.lumina-mode-btn.active {
+  background: var(--interactive-accent);
+  border-color: var(--interactive-accent);
+  color: white;
+}
+
+/* Bouton toggle unique OR/AND */
+.lumina-mode-toggle-btn {
+  padding: 6px 14px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  background: var(--background-primary);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 50px;
+  text-align: center;
+}
+
+.lumina-mode-toggle-btn:hover {
+  background: var(--background-modifier-hover);
+}
+
+.lumina-mode-toggle-btn.or {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: white;
+}
+
+.lumina-mode-toggle-btn.and {
+  background: #f59e0b;
+  border-color: #f59e0b;
+  color: white;
+}
+
+/* Couleurs des tokens de recherche */
+.lumina-search-token-tag {
+  background: #059669 !important;
+  color: white !important;
+}
+
+.lumina-search-token-link {
+  background: #7c3aed !important;
+  color: white !important;
+}
+
+.lumina-search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  box-shadow: var(--shadow-s);
+  max-height: 280px;
+  overflow-y: auto;
+  z-index: 1000;
+  animation: dropdownIn 0.15s ease-out;
+}
+
+@keyframes dropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.lumina-search-suggestion {
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background-color 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lumina-search-suggestion::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  opacity: 0.5;
+}
+
+.lumina-search-suggestion:hover,
+.lumina-search-suggestion.selected {
+  background: var(--background-modifier-hover);
+}
+
+.lumina-search-suggestion.selected::before {
+  background: var(--interactive-accent);
+  opacity: 1;
+}
+
+/* Modales de gestion des tags */
+.lumina-modal-no-overflow {
+  overflow: hidden !important;
+  width: auto !important;
+}
+
+.lumina-modal-no-overflow > .modal-content {
+  overflow: hidden !important;
+}
+
+.lumina-tag-manager-modal,
+.lumina-batch-tag-modal {
+  min-width: 400px;
+  max-width: 600px;
+  width: 90vw;
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+
+.lumina-tag-manager-modal *,
+.lumina-batch-tag-modal * {
+  box-sizing: border-box;
+}
+
+.lumina-tag-manager-modal > .modal-close-button,
+.lumina-batch-tag-modal > .modal-close-button {
+  z-index: 10;
+}
+
+.lumina-tag-manager-container {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.lumina-tag-manager-header {
+  padding: 20px 24px 16px;
+  background: linear-gradient(135deg, var(--interactive-accent) 0%, color-mix(in srgb, var(--interactive-accent) 80%, #000) 100%);
+  color: white;
+  border-radius: 8px 8px 0 0;
+}
+
+.lumina-tag-manager-header h2 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lumina-tag-manager-header h2::before {
+  content: "🏷️";
+  font-size: 20px;
+}
+
+.lumina-tag-manager-filename {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 12px;
+  margin: 0;
+  word-break: break-all;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lumina-tag-manager-body {
+  padding: 20px 24px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
+  background: var(--background-primary);
+  position: relative;
+}
+
+.lumina-tag-section {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: var(--background-secondary);
+  border-radius: 10px;
+  border: 1px solid var(--background-modifier-border);
+  overflow: visible;
+  position: relative;
+}
+
+.lumina-tag-section:last-child {
+  margin-bottom: 0;
+}
+
+/* Section d'input - permettre le débordement des suggestions */
+.lumina-tag-section-input {
+  overflow: visible !important;
+  z-index: 100;
+}
+
+.lumina-tag-section-input .lumina-tag-input-container {
+  position: relative;
+  z-index: 101;
+}
+
+.lumina-tag-section h3 {
+  margin: 0 0 12px 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lumina-no-tags {
+  color: var(--text-muted);
+  font-style: italic;
+  font-size: 13px;
+  padding: 12px;
+  background: var(--background-primary);
+  border-radius: 6px;
+  text-align: center;
+}
+
+.lumina-tag-quick-add {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lumina-tag-quick-button {
+  padding: 6px 12px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 20px;
+  background: var(--background-primary);
+  color: var(--text-normal);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.lumina-tag-quick-button:hover {
+  background: var(--interactive-accent);
+  border-color: var(--interactive-accent);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(var(--interactive-accent-rgb), 0.3);
+}
+
+.lumina-file-tag-list {
+  max-height: 250px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.lumina-file-tag-item {
+  padding: 12px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  background: var(--background-primary);
+  transition: all 0.2s ease;
+}
+
+.lumina-file-tag-item:hover {
+  border-color: var(--interactive-accent);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.lumina-file-tag-item:last-child {
+  margin-bottom: 0;
+}
+
+.lumina-file-tag-name {
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: var(--text-normal);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lumina-file-tag-name::before {
+  content: "📄";
+  font-size: 12px;
+}
+
+.lumina-tag-manager-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+  box-sizing: border-box;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.lumina-tag-manager-footer button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.lumina-btn-close {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+
+.lumina-btn-close:hover {
+  background: var(--background-modifier-border);
+}
+
+.lumina-btn-primary {
+  background: var(--interactive-accent);
+  color: white;
+}
+
+.lumina-btn-primary:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(var(--interactive-accent-rgb), 0.3);
+}
+
+/* Indicateur de tags dans l'explorateur */
+.lumina-tag-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+.lumina-tag-indicator svg {
+  display: block;
+}
+
+.lumina-icon-preview {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-left: 8px;
+  color: var(--text-muted);
+}
+
+.lumina-icon-picker-modal {
+  min-width: 700px;
+}
+
+.lumina-icon-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 8px;
+  max-height: 420px;
+  overflow: auto;
+  margin-top: 12px;
+}
+
+.lumina-icon-picker-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 6px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  background: var(--background-secondary);
+  cursor: pointer;
+}
+
+.lumina-icon-picker-item:hover {
+  border-color: var(--interactive-accent);
+  background: var(--background-modifier-hover);
+}
+
+.lumina-icon-picker-item-icon {
+  color: var(--text-normal);
+}
+
+.lumina-icon-picker-item-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.lumina-icon-picker-empty {
+  margin-top: 12px;
+  color: var(--text-muted);
+}
+
+.lumina-tag-indicator-left {
+  margin-right: 6px;
+  order: -1;
+}
+
+.lumina-tag-indicator-left.lumina-tag-indicator-compensate-shift {
+  margin-left: calc(-1 * (var(--lumina-tag-indicator-size, 8px) + 6px));
+}
+
+.lumina-tag-indicator-right {
+  margin-left: 6px;
+  order: 999;
+}
+
+/* Ajustement pour l'explorateur */
+.nav-file-title {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.nav-file-title-content {
+  flex: 1;
+}
+
+/* Tags dans la galerie (visible en mode EDIT uniquement) */
+.gal-item-tags {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  right: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.gal-item-tags .lumina-tag-badge {
+  font-size: 10px;
+  padding: 1px 6px;
+  max-width: 80px;
+}
+
+.gal-edit-mode .gal-item-tags {
+  opacity: 1;
+}
+
+.gal-item-wrapper:hover .gal-item-tags {
+  opacity: 1;
+}
+
+/* Tags dans la lightbox */
+.lb-tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+  align-items: center;
+}
+
+.lb-tags-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-right: 4px;
+}
+
+.lb-tags-container .lumina-tag-badge {
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.lb-tags-container .lumina-tag-badge:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Bouton de gestion des tags dans la toolbar */
+.gal-btn-tags svg {
+  color: var(--interactive-accent);
+}
+
+/* Tags dans les noms de fichiers (tooltip) */
+.gal-filename-wrapper {
+  position: relative;
+}
+
+.gal-filename-tags-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 12px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  box-shadow: var(--shadow-s);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 1000;
+  margin-bottom: 4px;
+}
+
+.gal-filename-wrapper:hover .gal-filename-tags-tooltip {
+  opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .lumina-tag-manager-modal,
+  .lumina-batch-tag-modal {
+    min-width: auto;
+    width: 95vw;
+    max-width: 95vw;
+  }
+  
+  .lumina-tag-manager-container {
+    max-height: 85vh;
+  }
+  
+  .lumina-tag-manager-header {
+    padding: 16px 18px 12px;
+  }
+  
+  .lumina-tag-manager-header h2 {
+    font-size: 16px;
+  }
+  
+  .lumina-tag-manager-body {
+    padding: 16px;
+  }
+  
+  .lumina-tag-section {
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+  
+  .lumina-tag-manager-footer {
+    padding: 12px 16px;
+    flex-wrap: wrap;
+  }
+  
+  .lumina-tag-manager-footer button {
+    flex: 1;
+    min-width: 100px;
+  }
+  
+  .lumina-tag-badge {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+  
+  .lumina-tag-quick-button {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+}
+
+/* ========================================
+   MENU CONTEXTUEL GALERIE
+   ======================================== */
+
+.gal-context-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9998;
+  background: transparent;
+}
+
+.gal-context-menu {
+  position: fixed;
+  z-index: 9999;
+  min-width: 200px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  box-shadow: var(--shadow-s);
+  padding: 4px;
+  animation: contextMenuFadeIn 0.15s ease-out;
+}
+
+@keyframes contextMenuFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.gal-context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  font-size: 14px;
+  color: var(--text-normal);
+}
+
+.gal-context-menu-item:hover {
+  background: var(--background-modifier-hover);
+}
+
+.gal-context-menu-item.danger {
+  color: var(--text-error);
+}
+
+.gal-context-menu-item.danger:hover {
+  background: var(--background-modifier-error);
+}
+
+.gal-context-menu-item svg {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.gal-context-menu-separator {
+  height: 1px;
+  background: var(--background-modifier-border);
+  margin: 4px 0;
+}
+
+/* ========================================
+   BARRE DE RECHERCHE AVEC TAGS
+   ======================================== */
+
+.gal-search-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  max-width: 100%;
+  overflow: visible;
+}
+
+.gal-search-top-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.gal-search-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+}
+
+.gal-search-input-inner {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.gal-search-input {
+  width: 100%;
+  background: var(--background-primary);
+  border: 1px solid var(--gal-border);
+  border-radius: 4px;
+  padding: 6px 28px 6px 10px;
+  font-size: 13px;
+  color: var(--gal-text);
+  outline: none;
+  transition: border-color 0.2s;
+  min-width: 0;
+}
+
+.gal-search-input:focus {
+  border-color: var(--gal-accent);
+}
+
+.gal-search-clear {
+  position: absolute;
+  right: 6px;
+  background: none;
+  border: none;
+  color: var(--gal-muted);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+.gal-search-clear:hover {
+  background: var(--background-modifier-hover);
+  color: var(--text-error);
+}
+
+.gal-search-mode-toggle {
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 4px;
+  border: 1px solid var(--gal-border);
+  background: var(--background-primary-alt);
+  color: var(--gal-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 40px;
+  height: 28px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gal-search-mode-toggle.active {
+  background: var(--gal-accent);
+  color: white;
+  border-color: var(--gal-accent);
+}
+
+.gal-search-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-height: 80px;
+  overflow-y: auto;
+}
+
+.gal-search-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  background: rgba(var(--interactive-accent-rgb), 0.15);
+  color: var(--gal-accent);
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.gal-available-tags {
+  background: var(--background-primary);
+  border: 1px solid var(--gal-border);
+  border-radius: 4px;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  max-height: 180px;
+  overflow-y: auto;
+  margin-top: 2px;
+}
+
+.gal-available-tag {
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--gal-border);
+  font-size: 13px;
+  color: var(--gal-text);
+  transition: background-color 0.1s;
+}
+
+.gal-available-tag:last-child {
+  border-bottom: none;
+}
+
+.gal-available-tag:hover {
+  background: var(--background-modifier-hover);
+}
+
+/* ==========================================
+   Lumina Block - Galeries dans les notes
+   ========================================== */
+
+.lumina-block-gallery {
+  margin: 16px 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  border: none;
+}
+
+.lumina-block-empty {
+  padding: 24px;
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.lumina-block-container {
+  display: grid;
+  gap: 8px;
+  --lumina-columns: 4;
+  --lumina-size: 200px;
+}
+
+/* Layout Grid - colonnes fixes */
+.lumina-layout-grid {
+  grid-template-columns: repeat(var(--lumina-columns), 1fr);
+}
+
+/* Layout Square - carrés uniformes */
+.lumina-layout-square {
+  grid-template-columns: repeat(var(--lumina-columns), var(--lumina-size));
+}
+
+.lumina-layout-square .lumina-block-item {
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.lumina-layout-square .lumina-block-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Layout Justified - hauteur uniforme, largeur variable */
+.lumina-layout-justified {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lumina-layout-justified .lumina-block-item {
+  flex: 1 1 auto;
+  height: var(--lumina-size);
+  min-width: 120px;
+  max-width: 400px;
+}
+
+.lumina-layout-justified .lumina-block-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Layout Masonry - simulation avec colonnes CSS */
+.lumina-layout-masonry {
+  column-count: var(--lumina-columns);
+  column-gap: 8px;
+}
+
+.lumina-layout-masonry .lumina-block-item {
+  break-inside: avoid;
+  margin-bottom: 8px;
+}
+
+.lumina-layout-masonry .lumina-block-media {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Éléments de la galerie */
+.lumina-block-item {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--background-primary);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.lumina-block-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+.lumina-block-media {
+  display: block;
+  border-radius: 6px;
+}
+
+.lumina-block-media img {
+  cursor: pointer;
+}
+
+.lumina-block-name {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 6px 8px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  color: white;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.lumina-block-tags {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.lumina-block-tag {
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+/* Vidéos */
+.lumina-block-item video {
+  width: 100%;
+  max-height: 300px;
+  background: black;
+}
+
+/* Header button style */
+.lumina-header-tag-btn {
+  color: var(--icon-color);
+}
+
+.lumina-header-tag-btn:hover {
+  color: var(--icon-color-hover);
+  background: var(--background-modifier-hover);
+}
+
+/* Preview overlay pour bloc Lumina */
+.lumina-block-preview-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  cursor: pointer;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.lumina-block-preview-media {
+  max-width: 95vw;
+  max-height: 95vh;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.lumina-block-preview-overlay video {
+  max-width: 95vw;
+  max-height: 95vh;
+}
+
+/* ==========================================
+   Layout Inline - Un média par ligne
+   ========================================== */
+
+.lumina-block-inline {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lumina-block-inline-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.lumina-block-inline-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.lumina-block-inline-image:hover {
+  transform: scale(1.01);
+}
+
+.lumina-block-inline-video {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.lumina-block-inline-name {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.lumina-block-inline-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+/* ==========================================
+   Video Separate - Vidéos séparées
+   ========================================== */
+
+.lumina-block-videos-section {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--background-modifier-border);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lumina-block-video-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lumina-block-video-player {
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  border-radius: 6px;
+  background: black;
+}
+
+.lumina-block-video-name {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.lumina-block-video-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+/* ==========================================
+   Lumina Block Editor - Éditeur visuel
+   ========================================== */
+
+.lumina-block-editable {
+  position: relative;
+}
+
+.lumina-block-edit-btn {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  background: var(--interactive-accent);
+  color: white;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.lumina-block-editable:hover .lumina-block-edit-btn {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.lumina-block-edit-btn:hover {
+  filter: brightness(1.1);
+}
+
+.lumina-block-edit-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Container de l'éditeur */
+.lumina-block-editor-container {
+  margin-bottom: 16px;
+}
+
+.lumina-block-editor {
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  animation: editorSlideIn 0.2s ease-out;
+}
+
+@keyframes editorSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.lumina-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, var(--interactive-accent) 0%, color-mix(in srgb, var(--interactive-accent) 80%, #000) 100%);
+  color: white;
+}
+
+.lumina-editor-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.lumina-editor-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  line-height: 1;
+  opacity: 0.8;
+  transition: opacity 0.2s, background 0.2s;
+}
+
+.lumina-editor-close:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.lumina-editor-section {
+  padding: 16px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.lumina-editor-section:last-of-type {
+  border-bottom: none;
+}
+
+.lumina-editor-section-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+/* Query Input */
+.lumina-editor-operator-toggle {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.lumina-op-btn {
+  padding: 4px 12px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  background: var(--background-primary);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.lumina-op-btn:hover {
+  background: var(--background-modifier-hover);
+}
+
+.lumina-op-btn.active {
+  background: var(--interactive-accent);
+  border-color: var(--interactive-accent);
+  color: white;
+}
+
+.lumina-op-btn.not.active {
+  background: #dc2626;
+  border-color: #dc2626;
+}
+
+.lumina-editor-query-input {
+  position: relative;
+}
+
+.lumina-query-tokens {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  min-height: 42px;
+  cursor: text;
+}
+
+.lumina-query-token {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.lumina-query-token.tag {
+  background: #059669;
+  color: white;
+}
+
+.lumina-query-token.link {
+  background: #7c3aed;
+  color: white;
+}
+
+.lumina-query-token.not {
+  background: #dc2626 !important;
+}
+
+.lumina-query-token.or {
+  opacity: 0.85;
+}
+
+.lumina-token-operator {
+  font-size: 9px;
+  padding: 1px 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.lumina-token-value {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lumina-token-remove {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0 2px;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+  line-height: 1;
+}
+
+.lumina-token-remove:hover {
+  opacity: 1;
+}
+
+.lumina-query-input-field {
+  flex: 1;
+  min-width: 120px;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  color: var(--text-normal);
+  outline: none;
+}
+
+.lumina-query-input-field::placeholder {
+  color: var(--text-muted);
+}
+
+.lumina-query-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.lumina-suggestion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.1s;
+}
+
+.lumina-suggestion:hover,
+.lumina-suggestion.selected {
+  background: var(--background-modifier-hover);
+}
+
+.lumina-suggestion .tag-icon {
+  color: #059669;
+  font-weight: 600;
+}
+
+.lumina-suggestion .link-icon {
+  font-size: 12px;
+}
+
+/* Layout Options */
+.lumina-layout-options {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.lumina-layout-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 16px;
+  border: 2px solid var(--background-modifier-border);
+  border-radius: 8px;
+  background: var(--background-primary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  min-width: 70px;
+}
+
+.lumina-layout-btn:hover {
+  border-color: var(--interactive-accent);
+  background: var(--background-modifier-hover);
+}
+
+.lumina-layout-btn.active {
+  border-color: var(--interactive-accent);
+  background: rgba(var(--interactive-accent-rgb), 0.1);
+}
+
+.lumina-layout-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.lumina-layout-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.lumina-layout-btn.active .lumina-layout-label {
+  color: var(--interactive-accent);
+}
+
+/* Editor Row & Fields */
+.lumina-editor-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.lumina-editor-row + .lumina-editor-row {
+  margin-top: 12px;
+}
+
+.lumina-editor-row.checkboxes {
+  gap: 24px;
+}
+
+.lumina-editor-field {
+  flex: 1;
+  min-width: 0;
+}
+
+.lumina-editor-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+/* Sliders */
+.lumina-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--background-modifier-border);
+  appearance: none;
+  cursor: pointer;
+}
+
+.lumina-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--interactive-accent);
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.1s;
+}
+
+.lumina-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+/* Type Options */
+.lumina-type-options {
+  display: flex;
+  gap: 6px;
+}
+
+.lumina-type-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--background-modifier-border);
+  border-radius: 8px;
+  background: var(--background-primary);
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.lumina-type-btn:hover {
+  border-color: var(--interactive-accent);
+}
+
+.lumina-type-btn.active {
+  border-color: var(--interactive-accent);
+  background: rgba(var(--interactive-accent-rgb), 0.1);
+}
+
+/* Select */
+.lumina-select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  background: var(--background-primary);
+  color: var(--text-normal);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* Toggle Group */
+.lumina-toggle-group {
+  display: flex;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.lumina-toggle-btn {
+  flex: 1;
+  padding: 8px 16px;
+  border: none;
+  background: var(--background-primary);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.lumina-toggle-btn:not(:last-child) {
+  border-right: 1px solid var(--background-modifier-border);
+}
+
+.lumina-toggle-btn:hover {
+  background: var(--background-modifier-hover);
+}
+
+.lumina-toggle-btn.active {
+  background: var(--interactive-accent);
+  color: white;
+}
+
+/* Checkbox */
+.lumina-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-normal);
+}
+
+.lumina-checkbox input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--interactive-accent);
+  cursor: pointer;
+}
+
+/* Files Section */
+.lumina-files-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.lumina-file-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px 4px 10px;
+  background: var(--background-modifier-hover);
+  border-radius: 14px;
+  font-size: 12px;
+  color: var(--text-normal);
+  cursor: grab;
+  transition: all 0.15s ease;
+  border: 2px solid transparent;
+}
+
+.lumina-file-item:active {
+  cursor: grabbing;
+}
+
+.lumina-file-item.dragging {
+  opacity: 0.5;
+  transform: scale(0.95);
+}
+
+.lumina-file-item.drag-over {
+  border-color: var(--interactive-accent);
+  background: var(--background-primary);
+}
+
+.lumina-file-drag-handle {
+  color: var(--text-muted);
+  font-size: 10px;
+  letter-spacing: -2px;
+  cursor: grab;
+  opacity: 0.5;
+  margin-right: 2px;
+}
+
+.lumina-file-item:hover .lumina-file-drag-handle {
+  opacity: 1;
+}
+
+.lumina-file-name {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lumina-file-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border: none;
+  background: rgba(0, 0, 0, 0.2);
+  color: inherit;
+  border-radius: 50%;
+  font-size: 12px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: all 0.15s ease;
+}
+
+.lumina-file-remove:hover {
+  opacity: 1;
+  background: rgba(255, 0, 0, 0.3);
+}
+
+.lumina-file-input-container {
+  position: relative;
+}
+
+.lumina-file-input {
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--text-normal);
+}
+
+.lumina-file-input:focus {
+  outline: none;
+  border-color: var(--interactive-accent);
+}
+
+.lumina-file-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.lumina-file-suggestion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.1s;
+}
+
+.lumina-file-suggestion:hover {
+  background: var(--background-modifier-hover);
+}
+
+.lumina-file-icon {
+  font-size: 14px;
+}
+
+/* Actions */
+.lumina-editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--background-secondary);
+  border-top: 1px solid var(--background-modifier-border);
+}
+
+.lumina-btn-cancel {
+  padding: 8px 16px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  background: var(--background-primary);
+  color: var(--text-normal);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.lumina-btn-cancel:hover {
+  background: var(--background-modifier-hover);
+}
+
+.lumina-btn-save {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 6px;
+  background: var(--interactive-accent);
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.lumina-btn-save:hover {
+  filter: brightness(1.1);
+}
+
+/* ========================================
+   LUMINA BLOCKS
+   ======================================== */
+
+/* Conteneur principal des blocs */
+.lumina-block-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px 0;
+}
+
+/* Alignement */
+.lumina-align-left {
+  justify-content: flex-start;
+}
+
+.lumina-align-center {
+  justify-content: center;
+}
+
+.lumina-align-right {
+  justify-content: flex-end;
+}
+
+/* Tags cliquables dans les blocs */
+.lumina-block-tag-clickable {
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  background: var(--background-modifier-hover);
+  color: var(--text-muted);
+  margin-right: 4px;
+}
+
+.lumina-block-tag-clickable:hover {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+  transform: translateY(-1px);
+}
+
+.lumina-block-tag-clickable:active {
+  transform: translateY(0);
+}
+
+/* Bouton de suppression de tag dans les blocs */
+.lumina-block-tag-remove {
+  background: rgba(0, 0, 0, 0.2);
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 1;
+  opacity: 0.7;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  min-height: 14px;
+}
+
+.lumina-block-tag-remove:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.15);
+}
+
+/* Conteneur de tags dans les items inline */
+.lumina-block-inline-tags,
+.lumina-block-video-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+/* Layout inline */
+.lumina-layout-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lumina-layout-inline .lumina-block-item {
+  flex: 0 0 auto;
+}
+
+/* ========================================
+   YouTube Embed Responsive
+   ======================================== */
+
+.gal-lightbox-embed-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.gal-lightbox-embed-iframe {
+  /* Calculate max dimensions based on viewport while keeping 16:9 */
+  width: 100%;
+  height: 100%;
+  max-width: min(calc(100vw - 80px), calc((100vh - 80px) * 16 / 9));
+  max-height: min(calc(100vh - 80px), calc((100vw - 80px) * 9 / 16));
+  aspect-ratio: 16 / 9;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  background: #000;
+  object-fit: contain;
+}
+
+/* ========================================
+   Video Controls Overlay (PIP button)
+   ======================================== */
+
+.gal-video-controls {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 24px;
+  z-index: 104;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.gal-lightbox:hover .gal-video-controls,
+.gal-lightbox .gal-video-controls.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.gal-video-control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.gal-video-control-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.gal-video-control-btn:active {
+  transform: scale(0.95);
+}
+
+.gal-video-control-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.gal-video-control-btn.pip-active {
+  background: var(--interactive-accent);
+}
+
+/* Virtual Search Results */
+.lumina-virtual-result {
+  border-left: 3px solid var(--interactive-accent);
+  background: rgba(var(--interactive-accent-rgb), 0.05);
+}
+
+.lumina-virtual-result:hover {
+  background: rgba(var(--interactive-accent-rgb), 0.1);
+}
+
+.lumina-virtual-icon {
+  margin-right: 6px;
+  font-size: 14px;
+}
+
+.lumina-tag-preview {
+  font-size: 11px;
+  color: var(--text-muted);
+  padding: 4px 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.lumina-more-tags {
+  color: var(--text-faint);
+  font-style: italic;
+}
+
+.lumina-media-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 6px;
+  margin-left: 8px;
+  background: rgba(var(--interactive-accent-rgb), 0.15);
+  border-radius: 10px;
+  font-size: 10px;
+  color: var(--interactive-accent);
+}
+
+/* ── Lightbox action buttons ── */
+.gal-lightbox-action-btn {
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 13px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.gal-lightbox-action-btn:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+.gal-lightbox-btn-delete {
+  background: rgba(220, 38, 38, 0.5);
+}
+.gal-lightbox-btn-delete:hover {
+  background: rgba(220, 38, 38, 0.7);
+}
+
+/* ── Lightbox info panel ── */
+.gal-lightbox-info {
+  padding: 20px 0;
+  text-align: center;
+  color: #fff;
+}
+
+/* ── Zoom +/- buttons ── */
+.gal-zoom-btn {
+  color: var(--gal-text);
+  font-weight: bold;
+  font-size: 13px;
+  padding: 2px 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.gal-zoom-btn:hover {
+  color: var(--gal-accent);
+}
+
+/* ── Folder search input ── */
+.gal-folder-search-input {
+  width: 100%;
+  background: var(--background-primary);
+  border: 1px solid var(--gal-border);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 13px;
+  color: var(--gal-text);
+}
+
+/* ── Detail/List view ── */
+.lumina-detail-view {
+  overflow-y: auto;
+  font-size: 13px;
+}
+.lumina-detail-header {
+  display: flex;
+  align-items: center;
+  padding: 6px 8px;
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--gal-muted);
+  border-bottom: 1px solid var(--gal-border);
+  background: var(--gal-header);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.lumina-detail-row {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--gal-border);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.lumina-detail-row:hover {
+  background: var(--background-secondary);
+}
+.lumina-detail-row:nth-child(even) {
+  background: var(--background-primary-alt);
+}
+.lumina-detail-row:nth-child(even):hover {
+  background: var(--background-secondary);
+}
+.lumina-detail-row.selected {
+  background: rgba(var(--interactive-accent-rgb, 14, 165, 233), 0.15);
+}
+.lumina-detail-thumb {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.lumina-detail-tag {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 8px;
+  font-size: 11px;
+  background: rgba(var(--interactive-accent-rgb, 14, 165, 233), 0.15);
+  color: var(--interactive-accent, #0ea5e9);
+  margin-right: 3px;
+}
+
+/* ── Filter bubbles bar ── */
+.gal-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--background-primary-alt);
+  border-bottom: 1px solid var(--gal-border);
+  flex-shrink: 0;
+}
+.gal-filter-bubble {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px 2px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: default;
+}
+.gal-filter-tag {
+  background: rgba(var(--interactive-accent-rgb, 14, 165, 233), 0.18);
+  color: var(--interactive-accent, #0ea5e9);
+}
+.gal-filter-link {
+  background: rgba(168, 85, 247, 0.18);
+  color: #a855f7;
+}
+.gal-filter-bubble-x {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0 2px;
+  opacity: 0.6;
+  color: inherit;
+  transition: opacity 0.15s;
+}
+.gal-filter-bubble-x:hover {
+  opacity: 1;
+}
+
+/* ── Detail view tag bubbles (clickable) ── */
+.gal-detail-tag-bubble {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 8px;
+  font-size: 10px;
+  background: var(--background-modifier-hover);
+  color: var(--gal-muted);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.gal-detail-tag-bubble:hover {
+  background: rgba(var(--interactive-accent-rgb, 14, 165, 233), 0.25);
+  color: var(--interactive-accent, #0ea5e9);
+}
+
+/* ── Thumbnail tag bubbles (on image) ── */
+.gal-thumb-tag-bubble {
+  display: inline-block;
+  padding: 1px 5px;
+  border-radius: 6px;
+  font-size: 9px;
+  font-weight: 500;
+  background: rgba(0, 0, 0, 0.65);
+  color: rgba(255, 255, 255, 0.9);
+  white-space: nowrap;
+  cursor: pointer;
+  line-height: 1.4;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  transition: background 0.15s, color 0.15s;
+  max-width: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.gal-thumb-tag-bubble:hover {
+  background: rgba(14, 165, 233, 0.85);
+  color: #fff;
+}
+.gal-thumb-tag-more {
+  background: rgba(0, 0, 0, 0.45);
+  font-size: 8px;
+  cursor: default;
+}

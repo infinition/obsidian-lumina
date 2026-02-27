@@ -1,4 +1,4 @@
-import { normalizePath } from 'obsidian';
+import { normalizePath, TFile } from 'obsidian';
 import type { WebOSAPI } from '../types';
 import type LuminaPlugin from '../main';
 
@@ -15,7 +15,8 @@ export const createBridge = (plugin: LuminaPlugin): WebOSAPI => ({
 
   async loadWidgetState(id: string) {
     const stored = (await plugin.loadData()) as Record<string, unknown> | null;
-    return stored?.widgetState?.[id] ?? null;
+    const widgetState = stored?.widgetState as Record<string, unknown> | undefined;
+    return widgetState?.[id] ?? null;
   },
 
   async saveWidgetState(id: string, data: unknown) {
@@ -28,8 +29,8 @@ export const createBridge = (plugin: LuminaPlugin): WebOSAPI => ({
     if (!path) return path;
     if (isRemotePath(path)) return path;
     const file = plugin.app.vault.getAbstractFileByPath(normalizePath(path));
-    if (file && 'path' in file) {
-      return plugin.app.vault.getResourcePath(file as { path: string });
+    if (file && file instanceof TFile) {
+      return plugin.app.vault.getResourcePath(file);
     }
     return path;
   },
@@ -40,5 +41,17 @@ export const createBridge = (plugin: LuminaPlugin): WebOSAPI => ({
 
   getLocale() {
     return (plugin as { getLocale?: () => import('../i18n/locales').LocaleKey }).getLocale?.() ?? 'en';
+  },
+
+  getTagManager() {
+    return plugin.tagManager;
+  },
+
+  getFrontmatterService() {
+    return plugin.frontmatterService;
+  },
+
+  getPluginSettings() {
+    return plugin.settings;
   },
 });

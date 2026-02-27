@@ -17,6 +17,10 @@ import {
   type CachedImage,
 } from '../utils/imageLoader';
 import { t, type LocaleKey } from '../i18n/locales';
+import { GalleryContextMenu } from './GalleryContextMenu';
+import { BatchTagModal } from './TagModals';
+import { SearchBarWithTags } from './SearchBarWithTags';
+import { TagList } from './TagComponents';
 
 const IMG_EXT = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'tiff', 'tif', 'ico', 'avif', 'apng'];
 const VIDEO_EXT = ['mp4', 'webm', 'mov', 'avi', 'mkv', 'ogv', 'm4v'];
@@ -49,21 +53,29 @@ type SortKey = (typeof SORT_OPTIONS)[number]['val'];
 
 const SLIDESHOW_OPTIONS = [5, 10, 30, 60, 600, 0] as const; // 0 = OFF
 
+type DetailSortField = 'name' | 'type' | 'size' | 'mtime' | 'tags';
+
 interface GallerySettings {
   folders: string[];
   includeAll: boolean;
   sortBy: SortKey;
   zoom: number;
-  layout: 'square' | 'justified' | 'panorama-square' | 'panorama-justified';
+  layout: 'square' | 'justified' | 'detail' | 'panorama-square' | 'panorama-justified';
   height?: number;
   width?: number;
   search: string;
+  searchMode: 'AND' | 'OR';
   showNames: boolean;
+  showTags: boolean;
   showPhotos: boolean;
   showVideos: boolean;
+  showOther: boolean;
+  showAllFiles: boolean;
   slideshowIntervalSec: number;
   slideshowInactivitySec: number;
   toolbarPinned: boolean;
+  detailSortField: DetailSortField;
+  detailSortAsc: boolean;
 }
 
 const DEFAULT_SETTINGS: GallerySettings = {
@@ -73,15 +85,21 @@ const DEFAULT_SETTINGS: GallerySettings = {
   zoom: 200,
   layout: 'justified',
   search: '',
+  searchMode: 'OR',
   showNames: false,
+  showTags: false,
   showPhotos: true,
   showVideos: false,
+  showOther: false,
+  showAllFiles: false,
   slideshowIntervalSec: 0,
   slideshowInactivitySec: 10,
-  toolbarPinned: false
+  toolbarPinned: false,
+  detailSortField: 'name',
+  detailSortAsc: true,
 };
 
-type MediaType = 'image' | 'video';
+type MediaType = 'image' | 'video' | 'other';
 
 interface ImageData {
   name: string;
@@ -94,7 +112,10 @@ interface ImageData {
 }
 
 function getMediaType(ext: string): MediaType {
-  return VIDEO_EXT.includes(ext.toLowerCase()) ? 'video' : 'image';
+  const lowerExt = ext.toLowerCase();
+  if (IMG_EXT.includes(lowerExt)) return 'image';
+  if (VIDEO_EXT.includes(lowerExt)) return 'video';
+  return 'other';
 }
 
 function isGif(path: string): boolean {
@@ -174,6 +195,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
   const stateId = instanceId || 'photo-gallery';
   const app = api.getObsidianApp() as ObsidianApp | null;
   const locale = api.getLocale() as LocaleKey;
+  const tagManager = api.getTagManager();
 
   const [settings, setSettings] = useState<GallerySettings>(DEFAULT_SETTINGS);
   const [allImages, setAllImages] = useState<ImageData[]>([]);
@@ -209,6 +231,9 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
   const [isSlideshowActive, setIsSlideshowActive] = useState(false);
   const [slideshowIndex, setSlideshowIndex] = useState(0);
   const [slideshowCountdown, setSlideshowCountdown] = useState(0);
+  const [contextMenu, setContextMenu] = useState<{ x: number; y: number; paths: string[] } | null>(null);
+  const [availableHashTags, setAvailableHashTags] = useState<string[]>([]);
+  const [availableNoteLinks, setAvailableNoteLinks] = useState<string[]>([]);
 
   const lastActivityRef = useRef(Date.now());
   const lastSelectedIndexRef = useRef<number>(-1);
@@ -240,17 +265,39 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
   const lbStartYRef = useRef(0);
   const lbStartPanRef = useRef({ x: 0, y: 0 });
   const lightboxViewerRef = useRef<HTMLDivElement>(null);
+  const lightboxVideoRef = useRef<HTMLVideoElement>(null);
+  const [isPipActive, setIsPipActive] = useState(false);
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Double-tap detection for mobile zoom
+  const lastTapRef = useRef<{ time: number; x: number; y: number } | null>(null);
   const rafRef = useRef<number>(0);
   const overlayContentRef = useRef<HTMLDivElement>(null);
   const countdownIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const galMainRef = useRef<HTMLDivElement>(null);
+  const detailViewRef = useRef<HTMLDivElement>(null);
+  const [detailScrollInfo, setDetailScrollInfo] = useState({ scrollTop: 0, scrollHeight: 1, clientHeight: 1 });
   const videoHoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const nameTooltipTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [nameTooltip, setNameTooltip] = useState<{ imgData: ImageData; clientX: number; clientY: number } | null>(null);
   const [toolbarVisible, setToolbarVisible] = useState(true);
   const toolbarHideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lbUiHideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  
+  // Plugin settings (for tag system enable/disable) - refresh on each render to catch setting changes
+  const [pluginSettings, setPluginSettings] = useState(api.getPluginSettings());
+  
+  // Refresh plugin settings via CustomEvent (dispatched by main.ts on save)
+  useEffect(() => {
+    const refreshSettings = () => setPluginSettings(api.getPluginSettings());
+    const onSettingsChanged = () => refreshSettings();
+    window.addEventListener('lumina:settings-changed', onSettingsChanged);
+    document.addEventListener('visibilitychange', refreshSettings);
+    return () => {
+      window.removeEventListener('lumina:settings-changed', onSettingsChanged);
+      document.removeEventListener('visibilitychange', refreshSettings);
+    };
+  }, [api]);
+  
   const searchBtnRef = useRef<HTMLButtonElement>(null);
   const folderBtnRef = useRef<HTMLButtonElement>(null);
   const sortBtnRef = useRef<HTMLButtonElement>(null);
@@ -280,6 +327,82 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
 
   const popupZIndex = isFullscreen ? 2000000 : 10001;
 
+  useEffect(() => {
+    if (!app) return undefined;
+    const metadataCache = (app as any).metadataCache;
+    const vault = app.vault as unknown as {
+      on?: (name: string, callback: () => void) => void;
+      off?: (name: string, callback: () => void) => void;
+      getFiles(): ObsidianVaultFile[];
+    };
+
+    const normalizeHash = (tag: string) => {
+      const trimmed = tag.trim();
+      if (!trimmed) return '';
+      return trimmed.startsWith('#') ? trimmed.slice(1) : trimmed;
+    };
+
+    const updateHashTags = () => {
+      const tagSet = new Set<string>();
+      tagManager.getAllTags().forEach((tag) => tagSet.add(tag));
+      const metaTags = metadataCache?.getTags?.();
+      if (metaTags) {
+        Object.keys(metaTags).forEach((tag) => {
+          const normalized = normalizeHash(tag);
+          if (normalized) {
+            tagSet.add(normalized);
+          }
+        });
+      }
+      setAvailableHashTags(
+        Array.from(tagSet).sort((a, b) => a.localeCompare(b, locale, { sensitivity: 'base' }))
+      );
+    };
+
+    const updateNoteLinks = () => {
+      const files = app.vault.getMarkdownFiles?.() ?? app.vault.getFiles().filter((f) => f.path.toLowerCase().endsWith('.md'));
+      const noteSet = new Set<string>();
+      files.forEach((file) => {
+        const pathWithoutExt = file.path.replace(/\.md$/i, '');
+        const baseName = file.path.split('/').pop()?.replace(/\.md$/i, '');
+        if (pathWithoutExt) noteSet.add(pathWithoutExt);
+        if (baseName) noteSet.add(baseName);
+      });
+      setAvailableNoteLinks(
+        Array.from(noteSet).sort((a, b) => a.localeCompare(b, locale, { sensitivity: 'base' }))
+      );
+    };
+
+    updateHashTags();
+    updateNoteLinks();
+
+    const tagListener = () => updateHashTags();
+    tagManager.addListener(tagListener);
+
+    const onCacheUpdate = () => {
+      updateHashTags();
+      updateNoteLinks();
+    };
+    metadataCache?.on?.('changed', onCacheUpdate);
+    metadataCache?.on?.('resolve', onCacheUpdate);
+
+    const onCreate = () => updateNoteLinks();
+    const onDelete = () => updateNoteLinks();
+    const onRename = () => updateNoteLinks();
+    vault.on?.('create', onCreate);
+    vault.on?.('delete', onDelete);
+    vault.on?.('rename', onRename);
+
+    return () => {
+      tagManager.removeListener(tagListener);
+      metadataCache?.off?.('changed', onCacheUpdate);
+      metadataCache?.off?.('resolve', onCacheUpdate);
+      vault.off?.('create', onCreate);
+      vault.off?.('delete', onDelete);
+      vault.off?.('rename', onRename);
+    };
+  }, [app, locale, tagManager]);
+
   // Calcul des bornes visibles (intersection conteneur + viewport)
   const getVisibleBounds = useCallback(() => {
     if (!containerRef.current) return null;
@@ -302,7 +425,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
     if (!bounds || bounds.width < 50) { setSearchPopupStyle(null); return; }
     const rect = searchBtnRef.current.getBoundingClientRect();
     const pad = 8;
-    const w = Math.min(220, bounds.width - 2 * pad);
+    const w = Math.min(450, bounds.width - 2 * pad);
     let left = rect.left;
     if (left + w > bounds.right - pad) left = bounds.right - w - pad;
     if (left < bounds.left + pad) left = bounds.left + pad;
@@ -370,9 +493,19 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
     };
   }, [searchExpanded, folderPopup, sortPopup]);
 
-  // Load state
+  // Load state – apply plugin defaults for new widgets, then overlay saved state
   useEffect(() => {
     let active = true;
+    // Build defaults from plugin settings
+    const ps = api.getPluginSettings();
+    const pluginDefaults: Partial<GallerySettings> = {
+      layout: ps.defaultLayout ?? DEFAULT_SETTINGS.layout,
+      zoom: ps.defaultZoom ?? DEFAULT_SETTINGS.zoom,
+      showNames: ps.defaultShowNames ?? DEFAULT_SETTINGS.showNames,
+      showPhotos: ps.defaultMediaFilter === 'videos' ? false : true,
+      showVideos: ps.defaultMediaFilter === 'photos' ? false : true,
+    };
+
     api.loadWidgetState(stateId).then((saved: unknown) => {
       if (!active) return;
       const s = saved as { settings?: Partial<GallerySettings> } | null;
@@ -381,7 +514,11 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
         if ((loaded as { layout?: string }).layout === 'panorama') {
           (loaded as { layout: string }).layout = 'panorama-square';
         }
-        setSettings((prev) => ({ ...prev, ...loaded }));
+        // Saved state takes precedence over plugin defaults
+        setSettings((prev) => ({ ...prev, ...pluginDefaults, ...loaded }));
+      } else {
+        // No saved state – use plugin defaults
+        setSettings((prev) => ({ ...prev, ...pluginDefaults }));
       }
     });
     return () => {
@@ -411,10 +548,18 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
   const refreshGallery = useCallback(() => {
     if (!app?.vault) return;
     const files = app.vault.getFiles();
+    const taggedPaths = new Set(Object.keys(tagManager.getData()));
+    const wantAll = settingsRef.current.showAllFiles;
     const list: ImageData[] = files
       .filter((f) => {
+        // Skip hidden/system files
+        if (f.path.startsWith('.')) return false;
+        if (wantAll) return true;
         const ext = f.extension.toLowerCase();
-        return IMG_EXT.includes(ext) || VIDEO_EXT.includes(ext);
+        const isMedia = IMG_EXT.includes(ext) || VIDEO_EXT.includes(ext);
+        const isTagged = taggedPaths.has(f.path);
+        // Include media files OR tagged files (for "Other" category)
+        return isMedia || isTagged;
       })
       .map((f) => ({
         name: f.name,
@@ -426,58 +571,242 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
         mediaType: getMediaType(f.extension)
       }));
     setAllImages(list);
-  }, [app, api]);
+  }, [app, api, tagManager]);
+
+  // Open batch tag modal
+  const openBatchTagModal = useCallback((paths: string[]) => {
+    if (!app || paths.length === 0) return;
+    const modal = new BatchTagModal(app, paths, tagManager, locale);
+    modal.open();
+  }, [app, tagManager, locale]);
+
+  // Navigate to file when clicking on a tag link
+  const handleTagClick = useCallback((tag: string) => {
+    if (!app?.vault) return;
+    
+    // Check if it's a [[link]] - always navigate to the file (tagClickAction doesn't apply to links)
+    if (tag.startsWith('[[') && tag.endsWith(']]')) {
+      const linkName = tag.slice(2, -2).trim();
+      if (!linkName) return;
+      
+      // Find the file and navigate to it
+      const files = app.vault.getFiles();
+      const targetFile = files.find(f => 
+        f.name.toLowerCase() === linkName.toLowerCase() ||
+        f.name.toLowerCase() === `${linkName.toLowerCase()}.md` ||
+        f.path.replace(/\.[^/.]+$/, '').toLowerCase() === linkName.toLowerCase()
+      );
+      
+      if (targetFile) {
+        // Check if it's a media file - open in Lumina lightbox
+        const ext = targetFile.extension.toLowerCase();
+        if (IMG_EXT.includes(ext) || VIDEO_EXT.includes(ext)) {
+          // Find index in filtered images and open lightbox
+          const idx = filteredImages.findIndex(img => img.path === targetFile.path);
+          if (idx >= 0) {
+            setLightboxIndex(idx);
+            setLightboxOpen(true);
+            setLightboxEmbed(null);
+          }
+        } else {
+          // It's a markdown or other file - open in Obsidian
+          const obsidianApp = api.getObsidianApp() as { workspace?: { openLinkText?: (link: string, sourcePath: string) => void } } | null;
+          if (obsidianApp?.workspace?.openLinkText) {
+            obsidianApp.workspace.openLinkText(linkName, '');
+          }
+        }
+      }
+    } else if (tag.startsWith('#')) {
+      // It's a hashtag - check tagClickAction setting
+      const hashTag = tag.startsWith('#') ? tag : `#${tag}`;
+      
+      // Fermer la lightbox d'abord
+      setLightboxOpen(false);
+      setLightboxEmbed(null);
+      
+      // Check tagClickAction setting
+      if (pluginSettings.tagClickAction === 'obsidian') {
+        // Open in Obsidian global search
+        const obsidianApp = api.getObsidianApp() as { 
+          internalPlugins?: {
+            getPluginById?: (id: string) => { instance?: { openGlobalSearch?: (query: string) => void } } | null;
+          };
+          commands?: {
+            executeCommandById?: (id: string) => void;
+          };
+        } | null;
+        
+        // Try to open global search with the tag
+        if (obsidianApp?.internalPlugins?.getPluginById) {
+          const searchPlugin = obsidianApp.internalPlugins.getPluginById('global-search');
+          if (searchPlugin?.instance?.openGlobalSearch) {
+            searchPlugin.instance.openGlobalSearch(`tag:${hashTag}`);
+            return;
+          }
+        }
+        // Fallback: use command
+        if (obsidianApp?.commands?.executeCommandById) {
+          obsidianApp.commands.executeCommandById('global-search:open');
+          return;
+        }
+      }
+      
+      // Default: add to Lumina search
+      setSettings(s => ({
+        ...s,
+        search: s.search ? `${s.search} ${hashTag}` : hashTag
+      }));
+    }
+  }, [app, api, filteredImages]);
 
   useEffect(() => {
     refreshGallery();
-  }, [refreshGallery]);
+  }, [refreshGallery, settings.showAllFiles, settings.showOther]);
+
+  // Refresh gallery when tags change (for "Other" files)
+  useEffect(() => {
+    const tagListener = () => {
+      if (settings.showOther) {
+        refreshGallery();
+      }
+    };
+    tagManager.addListener(tagListener);
+    return () => tagManager.removeListener(tagListener);
+  }, [tagManager, refreshGallery, settings.showOther]);
 
   useEffect(() => {
     initWorker(api.getWorkerUrl());
   }, [api]);
 
   // Préchargement des images et miniatures vidéo en arrière-plan
+  // Prioritizes visible images first, then loads the rest progressively
   useEffect(() => {
     const cache = cacheRef.current;
     const timeouts: ReturnType<typeof setTimeout>[] = [];
-    const BATCH = 3;
-    const DELAY_MS = 50;
-    filteredImages.forEach((imgData, i) => {
+    const BATCH = 5;
+    const DELAY_MS = 150;
+
+    // Determine how many images are likely visible in the viewport
+    const viewportCount = (() => {
+      if (!containerRef.current) return 20;
+      const { clientWidth, clientHeight } = containerRef.current;
+      const cols = Math.max(1, Math.floor(clientWidth / (settings.zoom + GAP)));
+      const rows = Math.max(1, Math.ceil(clientHeight / (settings.zoom + GAP)));
+      return cols * rows;
+    })();
+
+    // Split into visible (immediate) and offscreen (deferred)
+    const visible = filteredImages.slice(0, viewportCount);
+    const offscreen = filteredImages.slice(viewportCount);
+
+    const loadOne = (imgData: ImageData) => {
+      if (cache.get(imgData.path)) return;
+      cache.set(imgData.path, 'loading');
+      if (imgData.mediaType === 'video') {
+        loadVideoThumbnail(imgData.url, imgData.path, (img) => {
+          cache.set(imgData.path, img);
+          setLayoutVersion((v) => v + 1);
+        }, () => { cache.delete(imgData.path); });
+      } else {
+        loadImage(imgData.url, imgData.path, (img) => {
+          cache.set(imgData.path, img);
+          setLayoutVersion((v) => v + 1);
+        }, () => { cache.delete(imgData.path); }, api.getWorkerUrl());
+      }
+    };
+
+    // Visible images: load immediately in one batch
+    visible.forEach((imgData) => {
+      if (!cache.get(imgData.path)) loadOne(imgData);
+    });
+
+    // Offscreen images: stagger in batches with delay
+    offscreen.forEach((imgData, i) => {
       if (cache.get(imgData.path)) return;
       const t = setTimeout(() => {
         if (cache.get(imgData.path)) return;
-        cache.set(imgData.path, 'loading');
-        if (imgData.mediaType === 'video') {
-          loadVideoThumbnail(imgData.url, imgData.path, (img) => {
-            cache.set(imgData.path, img);
-            setLayoutVersion((v) => v + 1);
-          }, () => {
-            cache.delete(imgData.path);
-          });
-        } else {
-          loadImage(imgData.url, imgData.path, (img) => {
-            cache.set(imgData.path, img);
-            setLayoutVersion((v) => v + 1);
-          }, () => {
-            cache.delete(imgData.path);
-          }, api.getWorkerUrl());
-        }
+        loadOne(imgData);
       }, Math.floor(i / BATCH) * DELAY_MS);
       timeouts.push(t);
     });
+
     return () => timeouts.forEach(clearTimeout);
-  }, [filteredImages, api]);
+  }, [filteredImages, api, settings.zoom]);
 
   // Sort and filter
   const sortedAndFiltered = useMemo(() => {
-    const query = (settings.search || '').toLowerCase();
+    const rawQuery = settings.search || '';
+    const tagQueries = rawQuery.match(/#[\w\-/]+|\[\[[^\]]+\]\]/g) || [];
+    const textPart = rawQuery
+      .replace(/#[\w\-/]+/g, '')
+      .replace(/\[\[[^\]]+\]\]/g, '')
+      .trim()
+      .toLowerCase();
+    
+    // Split text into individual search terms
+    const textTerms = textPart.split(/\s+/).filter(t => t.length > 0);
+
     const inFolder = (img: ImageData) =>
       settings.includeAll || settings.folders.some((f) => img.path.startsWith(f));
-    const matchesSearch = (img: ImageData) =>
-      !query || img.name.toLowerCase().includes(query);
+    
+    const matchesSearch = (img: ImageData) => {
+      const imgNameLower = img.name.toLowerCase();
+      const fileTags = tagManager.getTags(img.path);
+      const fileTagsLower = fileTags.map(t => t.toLowerCase());
+      
+      // Check text terms against filename
+      const textMatches = textTerms.map(term => imgNameLower.includes(term));
+      
+      // Check tag queries against file tags
+      // Compare with original format (#tag or [[link]])
+      const tagMatches = tagQueries.map(query => {
+        const queryLower = query.toLowerCase();
+        
+        // Direct match with the query as-is
+        if (fileTagsLower.includes(queryLower)) return true;
+        
+        // For hashtags: also check without #
+        if (query.startsWith('#')) {
+          const tagWithout = query.slice(1).toLowerCase();
+          return fileTagsLower.some(ft => 
+            ft === `#${tagWithout}` || 
+            ft === tagWithout ||
+            ft.replace(/^#/, '') === tagWithout
+          );
+        }
+        
+        // For links: also check the inner name
+        if (query.startsWith('[[') && query.endsWith(']]')) {
+          const linkName = query.slice(2, -2).toLowerCase();
+          return fileTagsLower.some(ft => 
+            ft === queryLower || 
+            ft === `[[${linkName}]]` ||
+            ft.replace(/^\[\[/, '').replace(/\]\]$/, '') === linkName
+          );
+        }
+        
+        return false;
+      });
+      
+      // Combine all matches
+      const allMatches = [...textMatches, ...tagMatches];
+      
+      // If no search criteria, match everything
+      if (allMatches.length === 0) return true;
+      
+      // Apply AND/OR logic
+      if (settings.searchMode === 'AND') {
+        return allMatches.every(m => m);
+      } else {
+        return allMatches.some(m => m);
+      }
+    };
+
     const matchesMediaType = (img: ImageData) =>
+      settings.showAllFiles ||
       (img.mediaType === 'image' && settings.showPhotos) ||
-      (img.mediaType === 'video' && settings.showVideos);
+      (img.mediaType === 'video' && settings.showVideos) ||
+      (img.mediaType === 'other' && settings.showOther);
     let list = allImages.filter(
       (img) => inFolder(img) && matchesSearch(img) && matchesMediaType(img)
     );
@@ -497,7 +826,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
       return 0;
     });
     return list;
-  }, [allImages, settings.includeAll, settings.folders, settings.search, settings.sortBy, settings.showPhotos, settings.showVideos]);
+  }, [allImages, settings.includeAll, settings.folders, settings.search, settings.sortBy, settings.showPhotos, settings.showVideos, settings.showOther, settings.showAllFiles, settings.searchMode, tagManager]);
 
   useEffect(() => {
     setFilteredImages(sortedAndFiltered);
@@ -505,10 +834,10 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
 
   const isPanoramaLayout = settings.layout === 'panorama-square' || settings.layout === 'panorama-justified';
   // En panorama: hauteur de base = remplir l'écran à zoom 200; settings.zoom contrôle le zoom (comme square/justified)
-  const panoramaBaseHeight = Math.max(100, (containerHeight || 400) - 2 * GAP - (settings.showNames ? 25 : 0));
+  const textH = settings.showNames ? 25 : 0;
+  const panoramaBaseHeight = Math.max(100, (containerHeight || 400) - 2 * GAP - textH);
   const panoramaRowHeight = Math.max(80, panoramaBaseHeight * (settings.zoom / 200));
   const rowHeight = isPanoramaLayout ? panoramaRowHeight : settings.zoom;
-  const textH = settings.showNames ? 25 : 0;
 
   useLayoutEffect(() => {
     if (containerWidth <= 0 || filteredImages.length === 0) {
@@ -768,7 +1097,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
               ctx.fillStyle = '#333';
               ctx.font = '14px sans-serif';
               ctx.textAlign = 'center';
-              ctx.fillText('Chargement…', rect.width / 2, rect.height / 2);
+              ctx.fillText(t(locale, 'loading'), rect.width / 2, rect.height / 2);
             } else if (cached && cached !== 'loading') {
               const { w: iw, h: ih } = getImageDimensions(cached as CachedImage);
               const r = Math.min(rect.width / iw, rect.height / ih);
@@ -841,10 +1170,21 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
         } else if (imgData.mediaType === 'video') {
           ctx.fillStyle = '#111';
           ctx.fillRect(x, y, w, h);
+        } else if (imgData.mediaType === 'other') {
+          // Draw a placeholder for "other" file types
+          ctx.fillStyle = '#1a1a2e';
+          ctx.fillRect(x, y, w, h);
+          // Draw file extension as text
+          const ext = imgData.name.split('.').pop()?.toUpperCase() || 'FILE';
+          ctx.fillStyle = '#6366f1';
+          ctx.font = `bold ${Math.min(w / 4, 24)}px sans-serif`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(ext.substring(0, 4), x + w / 2, y + h / 2);
         }
         ctx.restore();
         if (isSelected) {
-          ctx.strokeStyle = isEditMode ? '#ff4444' : 'var(--gal-accent, #0ea5e9)';
+          ctx.strokeStyle = isEditMode ? '#ff4444' : (getComputedStyle(canvasRef.current!).getPropertyValue('--gal-accent').trim() || '#0ea5e9');
           ctx.lineWidth = 4;
           ctx.strokeRect(x + 2, y + 2, w - 4, h - 4);
           ctx.fillStyle = 'rgba(0, 210, 255, 0.2)';
@@ -874,7 +1214,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [targetScroll, targetScrollX, layoutData, filteredImages, selection, isEditMode, settings.showNames, settings.layout, isSlideshowActive, slideshowIndex]);
+  }, [targetScroll, targetScrollX, layoutData, filteredImages, selection, isEditMode, settings.showNames, settings.showTags, settings.layout, isSlideshowActive, slideshowIndex, tagManager]);
 
   // Clamp scroll (vertical ou horizontal en panorama)
   const clampScroll = useCallback(() => {
@@ -901,13 +1241,17 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
     ['mtime-desc', 'mtime-asc', 'dateTaken-desc', 'ctime-desc', 'type-asc', 'name-asc', 'size-desc'].includes(settings.sortBy);
 
   const { maxScroll, totalContentHeight } = useMemo(() => {
+    if (settings.layout === 'detail') {
+      const max = Math.max(0, detailScrollInfo.scrollHeight - detailScrollInfo.clientHeight);
+      return { maxScroll: max, totalContentHeight: Math.max(1, detailScrollInfo.scrollHeight) };
+    }
     if (isPanoramaLayout || layoutData.length === 0) return { maxScroll: 0, totalContentHeight: 1 };
     const last = layoutData[layoutData.length - 1];
     if (!last) return { maxScroll: 0, totalContentHeight: 1 };
     const total = last.y + last.h + GAP + textH;
     const max = Math.max(0, total - (containerHeight || 400));
     return { maxScroll: max, totalContentHeight: total };
-  }, [layoutData, textH, containerHeight, isPanoramaLayout]);
+  }, [layoutData, textH, containerHeight, isPanoramaLayout, settings.layout, detailScrollInfo]);
 
   const handleTimelineZonePointerMove = useCallback(
     (e: React.PointerEvent) => {
@@ -969,9 +1313,13 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
       const relY = (clientY - rect.top) / rect.height;
       const t = Math.max(0, Math.min(1, relY));
       const newScroll = t * maxScroll;
-      setTargetScroll(newScroll);
-      scrollRef.current = newScroll;
-      clampScroll();
+      if (settingsRef.current.layout === 'detail' && detailViewRef.current) {
+        detailViewRef.current.scrollTop = newScroll;
+      } else {
+        setTargetScroll(newScroll);
+        scrollRef.current = newScroll;
+        clampScroll();
+      }
       updateTimelineLabelFromY(clientY);
     },
     [maxScroll, clampScroll, updateTimelineLabelFromY]
@@ -1104,7 +1452,18 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
           const img = filteredImages[idx];
           if (!img) return;
           if (e.button === 2) {
-            if (!isEditMode) {
+            console.log('[PhotoGallery] Right-click detected, isEditMode:', isEditMode);
+            if (isEditMode) {
+              // En mode édition, afficher le menu contextuel
+              const paths = selection.size > 0 && selection.has(img.path) 
+                ? Array.from(selection)
+                : [img.path];
+              console.log('[PhotoGallery] Showing context menu for paths:', paths);
+              setContextMenu({ x: e.clientX, y: e.clientY, paths });
+              return;
+            } else {
+              // Hors mode édition, ouvrir le lightbox
+              console.log('[PhotoGallery] Opening lightbox');
               setLightboxIndex(idx);
               setLightboxOpen(true);
             }
@@ -1152,6 +1511,19 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
     const el = galMainRef.current;
     if (!el) return;
     const onWheel = (e: WheelEvent) => {
+      // In detail mode, let native scrolling work (except ctrl+wheel for zoom)
+      if (settingsRef.current.layout === 'detail') {
+        if (e.ctrlKey) {
+          e.preventDefault();
+          const factor = e.deltaY > 0 ? -1 : 1;
+          setSettings((s) => ({
+            ...s,
+            zoom: Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, zoomMultiply(s.zoom, factor)))
+          }));
+          saveState(false);
+        }
+        return;
+      }
       e.preventDefault();
       lastActivityRef.current = Date.now();
       if (e.ctrlKey) {
@@ -1578,7 +1950,61 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
         }
       }
     };
-    const onTouchEnd = () => { lbPinchRef.current = null; };
+    const onTouchEnd = (e: TouchEvent) => { 
+      lbPinchRef.current = null;
+      
+      // Double-tap detection for zoom toggle
+      if (e.changedTouches.length === 1 && !lbPinchRef.current) {
+        const touch = e.changedTouches[0];
+        const now = Date.now();
+        const lastTap = lastTapRef.current;
+        
+        if (lastTap && now - lastTap.time < 300) {
+          // Check if the taps are close together (within 50px)
+          const dist = Math.hypot(touch.clientX - lastTap.x, touch.clientY - lastTap.y);
+          if (dist < 50) {
+            // Double-tap detected! Toggle zoom
+            e.preventDefault();
+            
+            if (lbZoomRef.current > 1) {
+              // If zoomed, reset to 1
+              setLbZoom(1);
+              setLbPan({ x: 0, y: 0 });
+            } else {
+              // If not zoomed, zoom to 2.5x centered on tap position
+              const newZoom = 2.5;
+              setLbZoom(newZoom);
+              
+              // Calculate pan to center on tap point
+              if (currentImage && el) {
+                const viewRect = el.getBoundingClientRect();
+                const centerX = viewRect.width / 2;
+                const centerY = viewRect.height / 2;
+                const tapX = touch.clientX - viewRect.left;
+                const tapY = touch.clientY - viewRect.top;
+                
+                // Pan to make tap point stay under finger
+                const panX = (centerX - tapX) * (newZoom - 1) / newZoom;
+                const panY = (centerY - tapY) * (newZoom - 1) / newZoom;
+                
+                const cached = cacheRef.current.get(currentImage.path);
+                if (cached && cached !== 'loading') {
+                  const { w: imgW, h: imgH } = getImageDimensions(cached as CachedImage);
+                  const clamped = clampLbPan({ x: panX, y: panY }, newZoom, imgW, imgH, viewRect.width, viewRect.height);
+                  setLbPan(clamped);
+                }
+              }
+            }
+            
+            lastTapRef.current = null;
+            return;
+          }
+        }
+        
+        // Store this tap for potential double-tap
+        lastTapRef.current = { time: now, x: touch.clientX, y: touch.clientY };
+      }
+    };
     el.addEventListener('wheel', onWheel, { passive: false });
     el.addEventListener('touchstart', onTouchStart, { passive: false });
     el.addEventListener('touchmove', onTouchMove, { passive: false });
@@ -1592,6 +2018,23 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
       el.removeEventListener('touchcancel', onTouchEnd);
     };
   }, [lightboxOpen, currentImage, lbPan, clampLbPan]);
+
+  // PIP event listeners
+  useEffect(() => {
+    const video = lightboxVideoRef.current;
+    if (!video) return;
+    
+    const onEnterPip = () => setIsPipActive(true);
+    const onLeavePip = () => setIsPipActive(false);
+    
+    video.addEventListener('enterpictureinpicture', onEnterPip);
+    video.addEventListener('leavepictureinpicture', onLeavePip);
+    
+    return () => {
+      video.removeEventListener('enterpictureinpicture', onEnterPip);
+      video.removeEventListener('leavepictureinpicture', onLeavePip);
+    };
+  }, [lightboxOpen, currentImage]);
 
   // Folders list for popup
   const foldersList = useMemo(() => {
@@ -1621,7 +2064,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
   }
 
   const cycleLayout = useCallback(() => {
-    const order: Array<'square' | 'justified' | 'panorama-square' | 'panorama-justified'> = ['justified', 'square', 'panorama-square', 'panorama-justified'];
+    const order: Array<'square' | 'justified' | 'detail' | 'panorama-square' | 'panorama-justified'> = ['justified', 'square', 'detail', 'panorama-square', 'panorama-justified'];
     const idx = order.indexOf(settings.layout);
     const next = order[(idx + 1) % order.length];
     setSettings((s) => ({ ...s, layout: next }));
@@ -1812,6 +2255,13 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                   <rect x={15} y={14} width={6} height={7} />
                 </svg>
               )}
+              {settings.layout === 'detail' && (
+                <svg viewBox="0 0 24 24" width={18} height={18} fill="none" stroke="currentColor" strokeWidth={2.5}>
+                  <line x1={3} y1={6} x2={21} y2={6} />
+                  <line x1={3} y1={12} x2={21} y2={12} />
+                  <line x1={3} y1={18} x2={21} y2={18} />
+                </svg>
+              )}
               {isPanoramaLayout && (
                 <svg viewBox="0 0 24 24" width={18} height={18} fill="none" stroke="currentColor" strokeWidth={2.5}>
                   <rect x={1} y={5} width={6} height={14} rx={1} />
@@ -1851,6 +2301,21 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                   <rect x={14} y={3} width={7} height={7} />
                   <rect x={3} y={14} width={7} height={7} />
                   <rect x={14} y={14} width={7} height={7} />
+                </svg>
+              </button>
+              <button
+                type="button"
+                className={`gal-btn ${settings.layout === 'detail' ? 'active' : ''}`}
+                title={t(locale, 'detailViewHint')}
+                onClick={() => {
+                  setSettings((s) => ({ ...s, layout: 'detail' }));
+                  saveState(true);
+                }}
+              >
+                <svg viewBox="0 0 24 24" width={18} height={18} fill="none" stroke="currentColor" strokeWidth={2.5}>
+                  <line x1={3} y1={6} x2={21} y2={6} />
+                  <line x1={3} y1={12} x2={21} y2={12} />
+                  <line x1={3} y1={18} x2={21} y2={18} />
                 </svg>
               </button>
               <button
@@ -1896,40 +2361,32 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
               createPortal(
                 <div className="gal-portal-root">
                   <div
-                    className="fixed inset-0"
-                    style={{ zIndex: popupZIndex - 1, cursor: 'default' }}
+                    style={{ position: 'fixed', inset: 0, zIndex: popupZIndex - 1, cursor: 'default' }}
                     onClick={() => setSearchExpanded(false)}
-                    onPointerDown={() => setSearchExpanded(false)}
+                    onPointerDown={(e) => {
+                      const target = e.target as Element;
+                      if (target.closest('.lumina-search-suggestions-portal') || target.closest('.lumina-search-container')) return;
+                      setSearchExpanded(false);
+                    }}
                     aria-hidden
                   />
                   <div className="gal-popup gal-search-dropdown" style={searchPopupStyle}>
-                    <div className="gal-flex-row" style={{ padding: 8, background: 'var(--gal-header)', borderBottom: '1px solid var(--gal-border)' }}>
-                      <input
-                        type="text"
-                        style={{ flex: 1, minWidth: 120, background: 'var(--background-primary)', border: '1px solid var(--gal-border)', borderRadius: 4, padding: '6px 8px', fontSize: 14, color: 'var(--gal-text)', outline: 'none' }}
-                        placeholder={t(locale, 'searchPlaceholder')}
+                    <div style={{ padding: 8 }}>
+                      <SearchBarWithTags
                         value={settings.search}
-                        onChange={(e) => {
-                          setSettings((s) => ({ ...s, search: e.target.value }));
+                        onChange={(val) => {
+                          setSettings((s) => ({ ...s, search: val }));
                           saveState(false);
                         }}
-                        autoFocus
-                      />
-                      <button
-                        type="button"
-                        className="gal-btn p-1"
-                        title={t(locale, 'clearSearch')}
-                        aria-label={t(locale, 'clearSearch')}
-                        onClick={() => {
-                          setSettings((s) => ({ ...s, search: '' }));
+                        searchMode={settings.searchMode}
+                        onSearchModeChange={(mode) => {
+                          setSettings((s) => ({ ...s, searchMode: mode }));
                           saveState(true);
                         }}
-                      >
-                        <svg viewBox="0 0 24 24" width={18} height={18} fill="none" stroke="currentColor" strokeWidth={2.5}>
-                          <line x1={18} y1={6} x2={6} y2={18} />
-                          <line x1={6} y1={6} x2={18} y2={18} />
-                        </svg>
-                      </button>
+                        allHashTags={availableHashTags}
+                        allNoteLinks={availableNoteLinks}
+                        locale={locale}
+                      />
                     </div>
                   </div>
                 </div>,
@@ -1988,7 +2445,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
             <button
               ref={folderBtnRef}
               type="button"
-              className={`gal-btn gal-btn-folder ${folderPopup ? 'active' : ''} ${(settings.folders.length > 0 || !settings.includeAll || !settings.showPhotos || !settings.showVideos || (settings.search ?? '').trim() !== '') ? 'gal-filter-active' : ''}`}
+              className={`gal-btn gal-btn-folder ${folderPopup ? 'active' : ''} ${(settings.folders.length > 0 || !settings.includeAll || !settings.showPhotos || !settings.showVideos || settings.showOther || (settings.search ?? '').trim() !== '') ? 'gal-filter-active' : ''}`}
               title={t(locale, 'filter')}
               onClick={() => setFolderPopup((p) => !p)}
             >
@@ -2032,9 +2489,33 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                         />
                         {t(locale, 'videos')}
                       </label>
+                      <label className="gal-flex-row" style={{ fontSize: 14, marginBottom: 8 }}>
+                        <input
+                          type="checkbox"
+                          checked={settings.showOther}
+                          onChange={(e) => {
+                            setSettings((s) => ({ ...s, showOther: e.target.checked }));
+                            saveState(true);
+                            refreshGallery();
+                          }}
+                        />
+                        {t(locale, 'other')}
+                      </label>
+                      <label className="gal-flex-row" style={{ fontSize: 14, marginBottom: 8 }}>
+                        <input
+                          type="checkbox"
+                          checked={settings.showAllFiles}
+                          onChange={(e) => {
+                            setSettings((s) => ({ ...s, showAllFiles: e.target.checked }));
+                            saveState(true);
+                            refreshGallery();
+                          }}
+                        />
+                        {t(locale, 'allFiles')}
+                      </label>
                       <input
                         type="text"
-                        className="w-full bg-[var(--background-primary)] border border-[var(--gal-border)] rounded px-2 py-1 text-sm"
+                        className="gal-folder-search-input"
                         placeholder={t(locale, 'filterFolders')}
                         value={folderSearch}
                         onChange={(e) => setFolderSearch(e.target.value.toLowerCase())}
@@ -2087,14 +2568,19 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
           <button
             type="button"
             className={`gal-btn ${settings.showNames ? 'active' : ''}`}
-            title={t(locale, 'toggleFilenames')}
+            title={settings.showNames && settings.showTags ? t(locale, 'toggleFilenames') : settings.showNames ? t(locale, 'toggleFilenamesAndTags') : t(locale, 'toggleFilenames')}
             onClick={() => {
-              setSettings((s) => ({ ...s, showNames: !s.showNames }));
+              setSettings((s) => {
+                if (!s.showNames) return { ...s, showNames: true, showTags: false };
+                if (!s.showTags) return { ...s, showTags: true };
+                return { ...s, showNames: false, showTags: false };
+              });
               saveState(true);
             }}
           >
             <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="currentColor" strokeWidth={2}>
               <path d="M4 7V4h16v3M9 20h6M12 4v16" />
+              {settings.showTags && <circle cx={19} cy={19} r={4} fill="currentColor" stroke="none" />}
             </svg>
           </button>
           <button
@@ -2114,7 +2600,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
           <div className="gal-flex-row" style={{ background: 'var(--background-primary-alt)', padding: '2px 8px', borderRadius: 20, border: '1px solid var(--gal-border)' }}>
             <button
               type="button"
-              className="text-[var(--gal-text)] font-bold text-sm px-1.5 hover:text-[var(--gal-accent)]"
+              className="gal-zoom-btn"
               onClick={() => {
                 setSettings((s) => ({ ...s, zoom: Math.max(ZOOM_MIN, zoomMultiply(s.zoom, -1)) }));
                 saveState(false);
@@ -2141,7 +2627,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
             )}
             <button
               type="button"
-              className="text-[var(--gal-text)] font-bold text-sm px-1.5 hover:text-[var(--gal-accent)]"
+              className="gal-zoom-btn"
               onClick={() => {
                 setSettings((s) => ({ ...s, zoom: Math.min(ZOOM_MAX, zoomMultiply(s.zoom, 1)) }));
                 saveState(false);
@@ -2211,6 +2697,33 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
       </div>
       )}
 
+      {/* Active filter bubbles bar */}
+      {(() => {
+        const filterTokens = (settings.search || '').match(/#[\w\-/]+|\[\[[^\]]+\]\]/g);
+        if (!filterTokens || filterTokens.length === 0) return null;
+        return (
+          <div className="gal-filter-bar">
+            {filterTokens.map((token, i) => (
+              <span key={i} className={`gal-filter-bubble ${token.startsWith('#') ? 'gal-filter-tag' : 'gal-filter-link'}`}>
+                {token}
+                <button
+                  type="button"
+                  className="gal-filter-bubble-x"
+                  title={t(locale, 'removeFilter')}
+                  onClick={() => {
+                    const newSearch = settings.search.replace(token, '').replace(/\s{2,}/g, ' ').trim();
+                    setSettings((s) => ({ ...s, search: newSearch }));
+                    saveState(true);
+                  }}
+                >
+                  ×
+                </button>
+              </span>
+            ))}
+          </div>
+        );
+      })()}
+
       {/* Drag handle flottant : visible uniquement en mode édition avec sélection */}
       {!isSlideshowActive && isEditMode && selection.size > 0 && (
         <div
@@ -2265,6 +2778,17 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
             }}
           >
             {t(locale, 'copyLinks')}
+          </button>
+          <button
+            type="button"
+            className="gal-edit-toolbar-btn"
+            onClick={() => openBatchTagModal(Array.from(selection))}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginRight: 4 }}>
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z" />
+              <line x1="7" y1="7" x2="7.01" y2="7" />
+            </svg>
+            {t(locale, 'manageTags')} ({selection.size})
           </button>
           <button
             type="button"
@@ -2364,16 +2888,201 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
             </div>
           );
         })()}
-        <canvas
-          ref={canvasRef}
-          className="gal-canvas"
-          onPointerDown={onCanvasPointerDown}
-          onPointerMove={onCanvasPointerMove}
-          onPointerUp={onCanvasPointerUp}
-          onPointerCancel={onCanvasPointerUp}
-          onDoubleClick={onCanvasDoubleClick}
-          onContextMenu={onCanvasContextMenu}
-        />
+        {settings.layout === 'detail' ? (
+          <div
+            ref={detailViewRef}
+            className="gal-detail-view"
+            style={{ flex: 1, width: '100%', height: '100%', overflowY: 'auto', overflowX: 'hidden', overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch' as any, background: 'var(--gal-bg)' }}
+            onScroll={(e) => {
+              const el = e.currentTarget;
+              setDetailScrollInfo({ scrollTop: el.scrollTop, scrollHeight: el.scrollHeight, clientHeight: el.clientHeight });
+            }}
+          >
+            {/* Detail view header - sortable columns */}
+            <div style={{ display: 'flex', alignItems: 'center', padding: '8px 12px', borderBottom: '1px solid var(--gal-border)', background: 'var(--gal-header)', fontSize: 12, fontWeight: 600, color: 'var(--gal-muted)', gap: 4, position: 'sticky', top: 0, zIndex: 2 }}>
+              {isEditMode && <div style={{ width: 32 }} />}
+              <div style={{ width: 40, textAlign: 'center' }}></div>
+              {([
+                { field: 'name' as DetailSortField, label: t(locale, 'fileName'), style: { flex: 2, minWidth: 0 } },
+                { field: 'type' as DetailSortField, label: t(locale, 'fileType'), style: { width: 60, textAlign: 'center' as const } },
+                { field: 'size' as DetailSortField, label: t(locale, 'fileSize'), style: { width: 80, textAlign: 'right' as const } },
+                { field: 'mtime' as DetailSortField, label: t(locale, 'dateModified'), style: { width: 120, textAlign: 'right' as const } },
+              ]).map(col => (
+                <div
+                  key={col.field}
+                  style={{ ...col.style, cursor: 'pointer', userSelect: 'none', display: 'flex', alignItems: 'center', gap: 2 }}
+                  onClick={() => {
+                    setSettings(s => s.detailSortField === col.field
+                      ? { ...s, detailSortAsc: !s.detailSortAsc }
+                      : { ...s, detailSortField: col.field, detailSortAsc: true });
+                    saveState(true);
+                  }}
+                  title={settings.detailSortField === col.field ? (settings.detailSortAsc ? t(locale, 'sortDescending') : t(locale, 'sortAscending')) : t(locale, 'sortAscending')}
+                >
+                  <span>{col.label}</span>
+                  {settings.detailSortField === col.field && (
+                    <span style={{ fontSize: 10, opacity: 0.8 }}>{settings.detailSortAsc ? '▲' : '▼'}</span>
+                  )}
+                </div>
+              ))}
+              {pluginSettings.enableTagSystem && (
+                <div
+                  style={{ flex: 1, minWidth: 0, cursor: 'pointer', userSelect: 'none', display: 'flex', alignItems: 'center', gap: 2 }}
+                  onClick={() => {
+                    setSettings(s => s.detailSortField === 'tags'
+                      ? { ...s, detailSortAsc: !s.detailSortAsc }
+                      : { ...s, detailSortField: 'tags', detailSortAsc: true });
+                    saveState(true);
+                  }}
+                  title={settings.detailSortField === 'tags' ? (settings.detailSortAsc ? t(locale, 'sortDescending') : t(locale, 'sortAscending')) : t(locale, 'sortAscending')}
+                >
+                  <span>{t(locale, 'tags')}</span>
+                  {settings.detailSortField === 'tags' && (
+                    <span style={{ fontSize: 10, opacity: 0.8 }}>{settings.detailSortAsc ? '▲' : '▼'}</span>
+                  )}
+                </div>
+              )}
+            </div>
+            {filteredImages.length === 0 ? (
+              <div style={{ padding: 40, textAlign: 'center', color: 'var(--gal-muted)', fontSize: 14 }}>{t(locale, 'noResults')}</div>
+            ) : (
+              (() => {
+                // Sort for detail view
+                const sorted = [...filteredImages].sort((a, b) => {
+                  const dir = settings.detailSortAsc ? 1 : -1;
+                  switch (settings.detailSortField) {
+                    case 'name': return dir * a.name.localeCompare(b.name);
+                    case 'type': {
+                      const ea = (a.name.split('.').pop() || '').toLowerCase();
+                      const eb = (b.name.split('.').pop() || '').toLowerCase();
+                      return dir * ea.localeCompare(eb);
+                    }
+                    case 'size': return dir * (a.size - b.size);
+                    case 'mtime': return dir * (a.mtime - b.mtime);
+                    case 'tags': {
+                      const ta = tagManager.getTags(a.path).length;
+                      const tb = tagManager.getTags(b.path).length;
+                      return dir * (ta - tb);
+                    }
+                    default: return 0;
+                  }
+                });
+                return sorted.map((img, idx) => {
+                  const isSelected = selection.has(img.path);
+                  const globalIdx = filteredImages.indexOf(img);
+                  const ext = img.name.split('.').pop()?.toLowerCase() || '';
+                  const sizeStr = img.size < 1024 ? `${img.size} B`
+                    : img.size < 1048576 ? `${(img.size / 1024).toFixed(1)} KB`
+                    : `${(img.size / 1048576).toFixed(1)} MB`;
+                  const dateStr = new Date(img.mtime).toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' });
+                  const fileTags = tagManager.getTags(img.path);
+                  return (
+                    <div
+                      key={img.path}
+                      style={{
+                        display: 'flex', alignItems: 'center', padding: '6px 12px', gap: 4,
+                        borderBottom: '1px solid var(--gal-border)',
+                        background: isSelected ? 'rgba(14, 165, 233, 0.15)' : (idx % 2 === 0 ? 'var(--gal-bg)' : 'var(--background-primary-alt)'),
+                        cursor: 'pointer', fontSize: 13, color: 'var(--gal-text)',
+                        transition: 'background 0.15s',
+                      }}
+                      onClick={(e) => {
+                        if (isEditMode) {
+                          if (e.shiftKey && lastSelectedIndexRef.current >= 0) {
+                            const start = Math.min(lastSelectedIndexRef.current, globalIdx);
+                            const end = Math.max(lastSelectedIndexRef.current, globalIdx);
+                            const newSel = new Set(selection);
+                            for (let i = start; i <= end; i++) newSel.add(filteredImages[i].path);
+                            setSelection(newSel);
+                          } else if (e.ctrlKey || e.metaKey) {
+                            const newSel = new Set(selection);
+                            if (newSel.has(img.path)) newSel.delete(img.path); else newSel.add(img.path);
+                            setSelection(newSel);
+                          } else {
+                            // Toggle selection on simple click in edit mode
+                            const newSel = new Set(selection);
+                            if (newSel.has(img.path)) newSel.delete(img.path); else newSel.add(img.path);
+                            setSelection(newSel);
+                          }
+                          lastSelectedIndexRef.current = globalIdx;
+                        }
+                        // Non-edit: single click does nothing (double-click to open)
+                      }}
+                      onDoubleClick={() => {
+                        if (!isEditMode) {
+                          setLightboxIndex(globalIdx);
+                          setLightboxOpen(true);
+                          setLbZoom(1);
+                          setLbPan({ x: 0, y: 0 });
+                        }
+                      }}
+                      onContextMenu={(e) => {
+                        e.preventDefault();
+                        const paths = selection.size > 0 && selection.has(img.path) ? Array.from(selection) : [img.path];
+                        setContextMenu({ x: e.clientX, y: e.clientY, paths });
+                      }}
+                    >
+                      {isEditMode && (
+                        <div style={{ width: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <input
+                            type="checkbox"
+                            checked={isSelected}
+                            aria-label={img.name}
+                            style={{ accentColor: 'var(--gal-accent)' }}
+                            onChange={(e) => {
+                              e.stopPropagation();
+                              const newSel = new Set(selection);
+                              if (e.target.checked) newSel.add(img.path); else newSel.delete(img.path);
+                              setSelection(newSel);
+                              lastSelectedIndexRef.current = globalIdx;
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                          />
+                        </div>
+                      )}
+                      <div style={{ width: 40, height: 32, borderRadius: 4, overflow: 'hidden', flexShrink: 0, background: '#111', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {img.mediaType === 'video' ? (
+                          <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="var(--gal-muted)" strokeWidth={2}><polygon points="5,3 19,12 5,21" /></svg>
+                        ) : img.mediaType === 'image' ? (
+                          <img src={img.url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} loading="lazy" />
+                        ) : (
+                          <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="var(--gal-muted)" strokeWidth={2}><path d="M14,2H6A2,2,0,0,0,4,4V20a2,2,0,0,0,2,2H18a2,2,0,0,0,2-2V8Z"/><polyline points="14,2 14,8 20,8"/></svg>
+                        )}
+                      </div>
+                      <div style={{ flex: 2, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: 500 }}>{img.name}</div>
+                      <div style={{ width: 60, textAlign: 'center', color: 'var(--gal-muted)', textTransform: 'uppercase', fontSize: 11, fontWeight: 600 }}>{ext}</div>
+                      <div style={{ width: 80, textAlign: 'right', color: 'var(--gal-muted)' }}>{sizeStr}</div>
+                      <div style={{ width: 120, textAlign: 'right', color: 'var(--gal-muted)' }}>{dateStr}</div>
+                      {pluginSettings.enableTagSystem && (
+                        <div style={{ flex: 1, minWidth: 0, display: 'flex', flexWrap: 'wrap', gap: 3, overflow: 'hidden' }}>
+                          {fileTags.slice(0, 3).map(tag => (
+                            <span
+                              key={tag}
+                              className="gal-detail-tag-bubble"
+                              onClick={(e) => { e.stopPropagation(); handleTagClick('#' + tag); }}
+                            >{tag}</span>
+                          ))}
+                          {fileTags.length > 3 && <span style={{ fontSize: 10, color: 'var(--text-faint)' }}>+{fileTags.length - 3}</span>}
+                        </div>
+                      )}
+                    </div>
+                  );
+                });
+              })()
+            )}
+          </div>
+        ) : (
+          <canvas
+            ref={canvasRef}
+            className="gal-canvas"
+            onPointerDown={onCanvasPointerDown}
+            onPointerMove={onCanvasPointerMove}
+            onPointerUp={onCanvasPointerUp}
+            onPointerCancel={onCanvasPointerUp}
+            onDoubleClick={onCanvasDoubleClick}
+            onContextMenu={onCanvasContextMenu}
+          />
+        )}
         {canShowTimeline && (
           <>
           <div
@@ -2389,7 +3098,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
               <div
                 className="gal-timeline-thumb"
                 style={{
-                  top: maxScroll > 0 ? `${(targetScroll / maxScroll) * 100}%` : '0%',
+                  top: maxScroll > 0 ? `${((settings.layout === 'detail' ? detailScrollInfo.scrollTop : targetScroll) / maxScroll) * 100}%` : '0%',
                   transform: 'translate(-50%, -50%)'
                 }}
               />
@@ -2417,7 +3126,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
           )}
           </>
         )}
-        {!isSlideshowActive && layoutData.length > 0 && (
+        {!isSlideshowActive && settings.layout !== 'detail' && layoutData.length > 0 && (
           <div className="gal-media-overlay">
             <div
               ref={overlayContentRef}
@@ -2499,8 +3208,15 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                     }}
                     onContextMenu={(e) => {
                       e.preventDefault();
-                      setLightboxIndex(i);
-                      setLightboxOpen(true);
+                      if (isEditMode) {
+                        const paths = selection.has(imgData.path) 
+                          ? Array.from(selection)
+                          : [imgData.path];
+                        setContextMenu({ x: e.clientX, y: e.clientY, paths });
+                      } else {
+                        setLightboxIndex(i);
+                        setLightboxOpen(true);
+                      }
                     }}
                     {...(imgData.mediaType === 'video'
                       ? {
@@ -2574,6 +3290,43 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                   </div>
                 );
               })}
+              {settings.showTags && layoutData.map((layout, i) => {
+                const imgData = filteredImages[i];
+                if (!imgData) return null;
+                const fileTags = tagManager.getTags(imgData.path);
+                if (fileTags.length === 0) return null;
+                return (
+                  <div
+                    key={`tags-${imgData.path}`}
+                    style={{
+                      position: 'absolute',
+                      left: layout.x,
+                      top: layout.y + layout.h - 28,
+                      width: layout.w,
+                      height: 28,
+                      pointerEvents: 'auto',
+                      display: 'flex',
+                      flexWrap: 'nowrap',
+                      alignItems: 'flex-end',
+                      gap: 2,
+                      padding: '0 3px 3px',
+                      boxSizing: 'border-box',
+                      overflow: 'hidden'
+                    }}
+                  >
+                    {fileTags.slice(0, 4).map((tag) => (
+                      <span
+                        key={tag}
+                        className="gal-thumb-tag-bubble"
+                        onClick={(e) => { e.stopPropagation(); handleTagClick('#' + tag); }}
+                      >{tag}</span>
+                    ))}
+                    {fileTags.length > 4 && (
+                      <span className="gal-thumb-tag-bubble gal-thumb-tag-more">+{fileTags.length - 4}</span>
+                    )}
+                  </div>
+                );
+              })}
               {settings.showNames && textH > 0 && layoutData.map((layout, i) => {
                 const imgData = filteredImages[i];
                 if (!imgData) return null;
@@ -2643,7 +3396,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
           >
             <div style={{ fontWeight: 600, marginBottom: 6, wordBreak: 'break-all' }}>{nameTooltip.imgData.name}</div>
             <div style={{ fontSize: 11, opacity: 0.85, marginBottom: 3 }}>{nameTooltip.imgData.path}</div>
-            <div style={{ fontSize: 11, opacity: 0.9, display: 'flex', flexWrap: 'wrap', gap: '4px 8px' }}>
+            <div style={{ fontSize: 11, opacity: 0.9, display: 'flex', flexWrap: 'wrap', gap: '4px 8px', marginBottom: 6 }}>
               <span>{new Date(nameTooltip.imgData.mtime).toLocaleDateString(locale.startsWith('zh') ? 'zh-CN' : locale, { dateStyle: 'medium' })}</span>
               <span>•</span>
               <span>{(nameTooltip.imgData.size / 1024) < 1024 ? `${(nameTooltip.imgData.size / 1024).toFixed(1)} KB` : `${(nameTooltip.imgData.size / 1024 / 1024).toFixed(2)} MB`}</span>
@@ -2658,6 +3411,16 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                 return null;
               })()}
             </div>
+            {pluginSettings.enableTagSystem && tagManager.getTags(nameTooltip.imgData.path).length > 0 && (
+              <div style={{ marginTop: 4, display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                <TagList 
+                  tags={tagManager.getTags(nameTooltip.imgData.path)} 
+                  maxVisible={10} 
+                  showCount={false}
+                  onTagClick={handleTagClick}
+                />
+              </div>
+            )}
           </div>,
           (isFullscreen && containerRef.current) ? containerRef.current : document.body
         )}
@@ -2687,17 +3450,15 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
             }}
           >
             {lightboxEmbed ? (
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', padding: 24 }}>
+              <div className="gal-lightbox-embed-container">
                 <iframe
-                  width="560"
-                  height="315"
                   src={lightboxEmbed.embedSrc}
                   title="YouTube video player"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"
                   allowFullScreen
-                  style={{ maxWidth: '100%', maxHeight: '100%', aspectRatio: '16/9' }}
+                  className="gal-lightbox-embed-iframe"
                 />
               </div>
             ) : currentImage ? (
@@ -2714,14 +3475,15 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
               >
                 {currentImage.mediaType === 'video' ? (
                   <video
+                    ref={lightboxVideoRef}
                     src={currentImage.url}
                     controls
                     autoPlay
                     loop
                     playsInline
                     draggable={false}
-                    className="max-w-full max-h-full object-contain select-none"
                     style={{
+                      maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', userSelect: 'none',
                       transform: `translate(${lbPan.x}px, ${lbPan.y}px) scale(${lbZoom})`,
                       pointerEvents: 'auto'
                     }}
@@ -2731,8 +3493,8 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                     src={currentImage.url}
                     alt={currentImage.name}
                     draggable={false}
-                    className="max-w-full max-h-full object-contain select-none pointer-events-none"
                     style={{
+                      maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', userSelect: 'none', pointerEvents: 'none',
                       transform: `translate(${lbPan.x}px, ${lbPan.y}px) scale(${lbZoom})`
                     }}
                   />
@@ -2740,6 +3502,59 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
               </div>
             ) : null}
           </div>
+          
+          {/* Video controls with PIP button */}
+          {(currentImage?.mediaType === 'video' || lightboxEmbed) && (
+            <div className={`gal-video-controls ${lbUiVisible ? 'visible' : ''}`}>
+              <button
+                type="button"
+                className={`gal-video-control-btn ${isPipActive ? 'pip-active' : ''}`}
+                title={t(locale, 'pip')}
+                onClick={async () => {
+                  try {
+                    if (document.pictureInPictureElement) {
+                      await document.exitPictureInPicture();
+                      return;
+                    }
+                    if (!document.pictureInPictureEnabled) return;
+                    // Try local video ref first
+                    const localVideo = lightboxVideoRef.current;
+                    if (localVideo) {
+                      await localVideo.requestPictureInPicture();
+                      return;
+                    }
+                    // For embeds: try to find video inside iframe, then fallback to page videos
+                    const iframe = document.querySelector('.gal-lightbox-embed-iframe') as HTMLIFrameElement | null;
+                    if (iframe) {
+                      try {
+                        const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+                        if (iframeDoc) {
+                          const videos = iframeDoc.querySelectorAll('video');
+                          if (videos.length > 0) {
+                            await videos[0].requestPictureInPicture();
+                            return;
+                          }
+                        }
+                      } catch { /* cross-origin - expected */ }
+                    }
+                    // Final fallback: scan all videos on the page (like the bookmarklet)
+                    const allVideos = document.querySelectorAll('video');
+                    if (allVideos.length > 0) {
+                      await allVideos[allVideos.length - 1].requestPictureInPicture();
+                    }
+                  } catch (err) {
+                    console.error('PIP error:', err);
+                  }
+                }}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <rect x="2" y="3" width="20" height="14" rx="2" />
+                  <rect x="12" y="9" width="8" height="6" rx="1" fill="currentColor" stroke="none" />
+                </svg>
+              </button>
+            </div>
+          )}
+          
           <div
             className={`gal-lightbox-ui ${!lbUiVisible ? 'gal-lightbox-ui-hidden' : ''}`}
             style={{
@@ -2793,7 +3608,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
               </div>
             )}
             <div
-              className="py-5 text-center text-white"
+              className="gal-lightbox-info"
               style={{
                 pointerEvents: lbUiVisible ? 'auto' : 'none',
                 background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)'
@@ -2801,11 +3616,11 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
             >
               {lightboxEmbed ? (
                 <>
-                  <div className="text-sm truncate px-4" title={lightboxEmbed.url}>{lightboxEmbed.url}</div>
+                  <div style={{ fontSize: 13, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', padding: '0 16px' }} title={lightboxEmbed.url}>{lightboxEmbed.url}</div>
                   <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginTop: 8 }}>
                     <button
                       type="button"
-                      className="px-3 py-1 rounded bg-white/20 hover:bg-white/30 text-sm"
+                      className="gal-lightbox-action-btn"
                       onClick={async () => {
                         await navigator.clipboard.writeText(lightboxEmbed.embedHtml);
                         alert(t(locale, 'copied'));
@@ -2818,14 +3633,24 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
               ) : currentImage ? (
                 <>
                   <div>{currentImage.name}</div>
-                  <div className="text-sm opacity-80">
+                  <div style={{ fontSize: 13, opacity: 0.8 }}>
                     {(currentImage.size / 1024 / 1024).toFixed(2)} MB •{' '}
                     {new Date(currentImage.mtime).toLocaleString()}
                   </div>
+                  {pluginSettings.enableTagSystem && tagManager.getTags(currentImage.path).length > 0 && (
+                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>
+                      <TagList 
+                        tags={tagManager.getTags(currentImage.path)} 
+                        maxVisible={15} 
+                        showCount={false}
+                        onTagClick={handleTagClick}
+                      />
+                    </div>
+                  )}
                   <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginTop: 8 }}>
                     <button
                       type="button"
-                      className="px-3 py-1 rounded bg-white/20 hover:bg-white/30 text-sm"
+                      className="gal-lightbox-action-btn"
                       onClick={async () => {
                         await navigator.clipboard.writeText(`![[${currentImage.name}]]`);
                         alert(t(locale, 'copied'));
@@ -2835,7 +3660,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                     </button>
                     <button
                       type="button"
-                      className="px-3 py-1 rounded bg-white/20 hover:bg-white/30 text-sm"
+                      className="gal-lightbox-action-btn"
                       onClick={() => {
                         setSelection(new Set([currentImage.path]));
                         setNoteModal(true);
@@ -2843,9 +3668,32 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                     >
                       {t(locale, 'addToNote')}
                     </button>
+                    {pluginSettings.enableTagSystem && (
+                      <button
+                        type="button"
+                        className="gal-lightbox-action-btn"
+                        onClick={() => {
+                          openBatchTagModal([currentImage.path]);
+                        }}
+                      >
+                        {t(locale, 'manageTags')}
+                      </button>
+                    )}
                     <button
                       type="button"
-                      className="gal-lightbox-btn-delete px-3 py-1 rounded text-sm"
+                      className="gal-lightbox-action-btn"
+                      onClick={() => {
+                        const obsidianApp = api.getObsidianApp() as { workspace?: { openLinkText?: (link: string, sourcePath: string) => void } } | null;
+                        if (obsidianApp?.workspace?.openLinkText) {
+                          obsidianApp.workspace.openLinkText(currentImage.path, '');
+                        }
+                      }}
+                    >
+                      {t(locale, 'openFile')}
+                    </button>
+                    <button
+                      type="button"
+                      className="gal-lightbox-action-btn gal-lightbox-btn-delete"
                       onClick={async () => {
                         if (!confirm(t(locale, 'deleteConfirmSingle', { name: currentImage.name }))) return;
                         const file = app.vault.getAbstractFileByPath(currentImage.path);
@@ -2876,16 +3724,16 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
             className="gal-note-modal-box"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="px-4 py-3 bg-[var(--gal-header)] border-b border-[var(--gal-border)] flex justify-between items-center font-bold">
+            <div style={{ padding: '12px 16px', background: 'var(--gal-header)', borderBottom: '1px solid var(--gal-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: 'bold' }}>
               <span>{t(locale, 'addToNoteTitle')}</span>
-              <button type="button" className="text-[var(--gal-muted)] text-xl" onClick={() => setNoteModal(false)}>
+              <button type="button" style={{ color: 'var(--gal-muted)', fontSize: 20, background: 'none', border: 'none', cursor: 'pointer' }} onClick={() => setNoteModal(false)}>
                 ✕
               </button>
             </div>
-            <div className="p-4 flex flex-col gap-3">
+            <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
               <input
                 type="text"
-                className="w-full px-2 py-2 border border-[var(--gal-border)] rounded-md bg-[var(--background-primary)] text-[var(--gal-text)]"
+                style={{ width: '100%', padding: '8px', border: '1px solid var(--gal-border)', borderRadius: 6, background: 'var(--background-primary)', color: 'var(--gal-text)' }}
                 placeholder={t(locale, 'searchNotes')}
                 value={noteSearch}
                 onChange={(e) => setNoteSearch(e.target.value)}
@@ -2935,19 +3783,19 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
       {helpModal && (
         <div className="gal-modal-overlay" onClick={() => setHelpModal(false)}>
           <div
-            className="bg-[var(--gal-bg)] w-[450px] max-w-[90%] rounded-xl border border-[var(--gal-border)] shadow-xl overflow-hidden flex flex-col"
+            style={{ background: 'var(--gal-bg)', width: 450, maxWidth: '90%', borderRadius: 12, border: '1px solid var(--gal-border)', boxShadow: '0 10px 30px rgba(0,0,0,0.3)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="px-4 py-3 bg-[var(--gal-header)] border-b border-[var(--gal-border)] flex justify-between items-center font-bold">
+            <div style={{ padding: '12px 16px', background: 'var(--gal-header)', borderBottom: '1px solid var(--gal-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: 700 }}>
               <span>{t(locale, 'galleryGuide')}</span>
-              <button type="button" className="text-[var(--gal-muted)] text-xl" onClick={() => setHelpModal(false)}>
+              <button type="button" style={{ background: 'none', border: 'none', color: 'var(--gal-muted)', fontSize: 20, cursor: 'pointer' }} onClick={() => setHelpModal(false)}>
                 ✕
               </button>
             </div>
-            <div className="p-4 text-sm leading-relaxed text-[var(--gal-text)]">
-              <div className="mb-3">
-                <h4 className="text-[var(--gal-accent)] border-b border-[var(--gal-border)] pb-1 mb-1">{t(locale, 'interactions')}</h4>
-                <ul className="list-disc pl-5 space-y-1">
+            <div style={{ padding: 16, fontSize: 13, lineHeight: 1.6, color: 'var(--gal-text)' }}>
+              <div style={{ marginBottom: 12 }}>
+                <h4 style={{ color: 'var(--gal-accent)', borderBottom: '1px solid var(--gal-border)', paddingBottom: 4, marginBottom: 4 }}>{t(locale, 'interactions')}</h4>
+                <ul style={{ listStyle: 'disc', paddingLeft: 20 }}>
                   <li>{t(locale, 'helpDoubleClick')}</li>
                   <li>{t(locale, 'helpLeftClick')}</li>
                   <li>{t(locale, 'helpDrag')}</li>
@@ -2955,21 +3803,54 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                   <li>{t(locale, 'helpPinch')}</li>
                 </ul>
               </div>
-              <div className="mb-3">
-                <h4 className="text-[var(--gal-accent)] border-b border-[var(--gal-border)] pb-1 mb-1">{t(locale, 'lightbox')}</h4>
-                <ul className="list-disc pl-5 space-y-1">
+              <div style={{ marginBottom: 12 }}>
+                <h4 style={{ color: 'var(--gal-accent)', borderBottom: '1px solid var(--gal-border)', paddingBottom: 4, marginBottom: 4 }}>{t(locale, 'lightbox')}</h4>
+                <ul style={{ listStyle: 'disc', paddingLeft: 20 }}>
                   <li>{t(locale, 'helpArrows')}</li>
                 </ul>
               </div>
               <div>
-                <h4 className="text-[var(--gal-accent)] border-b border-[var(--gal-border)] pb-1 mb-1">{t(locale, 'features')}</h4>
-                <ul className="list-disc pl-5 space-y-1">
-                  <li>Folders, Sort, Layout (Square/Justified), Edit Mode, Fullscreen.</li>
+                <h4 style={{ color: 'var(--gal-accent)', borderBottom: '1px solid var(--gal-border)', paddingBottom: 4, marginBottom: 4 }}>{t(locale, 'features')}</h4>
+                <ul style={{ listStyle: 'disc', paddingLeft: 20 }}>
+                  <li>{t(locale, 'featuresListDetail')}</li>
                 </ul>
               </div>
             </div>
           </div>
         </div>
+      )}
+
+      {/* Context menu */}
+      {contextMenu && (
+        <GalleryContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          selectedPaths={contextMenu.paths}
+          enableTagSystem={pluginSettings.enableTagSystem}
+          onManageTags={() => {
+            if (!selection.has(contextMenu.paths[0]) || selection.size === 0) {
+              setSelection(new Set(contextMenu.paths));
+            }
+            openBatchTagModal(contextMenu.paths);
+            setContextMenu(null);
+          }}
+          onDelete={async () => {
+            const pathsToDelete = contextMenu.paths;
+            if (!confirm(t(locale, 'deleteConfirm', { n: pathsToDelete.length }))) {
+              setContextMenu(null);
+              return;
+            }
+            for (const path of pathsToDelete) {
+              const file = app.vault.getAbstractFileByPath(path);
+              if (file) await app.vault.trash(file, true);
+            }
+            setSelection(new Set());
+            setContextMenu(null);
+            refreshGallery();
+          }}
+          onClose={() => setContextMenu(null)}
+          locale={locale}
+        />
       )}
     </div>
   );
