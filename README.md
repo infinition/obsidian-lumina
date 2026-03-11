@@ -1,5 +1,6 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/infinition/obsidian-lumina/main/logo.png" alt="Lumina" width="128">
+<img width="128" height="128" alt="logo" src="https://github.com/user-attachments/assets/4ebde614-0166-4ca5-868e-60eb9a13ff95" />
+
 </p>
 
 <h1 align="center">✨ Lumina</h1>
