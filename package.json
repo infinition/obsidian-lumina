@@ -1,6 +1,6 @@
 {
   "name": "obsidian-lumina",
-  "version": "1.0.0",
+  "version": "4.0.1",
   "description": "Obsidian photo gallery view plugin",
   "main": "main.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "build": "node esbuild.config.mjs production"
   },
   "keywords": ["obsidian", "plugin", "gallery", "photos"],
-  "author": "Infinition",
+  "author": "Fabien Polly (Infinition)",
   "license": "MIT",
   "dependencies": {
     "react": "^18.3.1",
