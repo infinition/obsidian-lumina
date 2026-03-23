@@ -1,1 +1,10 @@
-{"id":"obsidian-lumina","name":"Lumina","version":"4.0.1","minAppVersion":"0.15.0","description":"High-performance photo & video gallery for Obsidian. Justified, square, panorama layouts. Lightbox, slideshow, drag-to-note, persistent cache.","author":"Fabien Polly (Infinition)","authorUrl":"https://github.com/infinition/obsidian-lumina","isDesktopOnly":false}
+{
+    "id": "lumina",
+    "name": "Lumina",
+    "version": "4.0.2",
+    "minAppVersion": "0.15.0",
+    "description": "High-performance photo and video gallery. Justified, square, panorama layouts. Lightbox, slideshow, drag-to-note, persistent cache.",
+    "author": "Fabien Polly (Infinition)",
+    "authorUrl": "https://github.com/infinition",
+    "isDesktopOnly": false
+}
