@@ -12,7 +12,10 @@ var STORE_NAME = "images";
 function openDB() {
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(DB_NAME, DB_VERSION);
-    req.onerror = () => reject(req.error);
+    req.onerror = () => {
+      var _a, _b;
+      return reject(new Error((_b = (_a = req.error) == null ? void 0 : _a.message) != null ? _b : "Failed to open IndexedDB"));
+    };
     req.onsuccess = () => resolve(req.result);
     req.onupgradeneeded = () => {
       req.result.createObjectStore(STORE_NAME, { keyPath: "path" });
@@ -29,7 +32,10 @@ function getCachedBlob(path) {
         const row = req.result;
         resolve((_a = row == null ? void 0 : row.blob) != null ? _a : null);
       };
-      req.onerror = () => reject(req.error);
+      req.onerror = () => {
+        var _a, _b;
+        return reject(new Error((_b = (_a = req.error) == null ? void 0 : _a.message) != null ? _b : "Failed to read from cache"));
+      };
     }).finally(() => db.close());
   });
 }
@@ -39,7 +45,10 @@ function setCachedBlob(path, blob) {
       const tx = db.transaction(STORE_NAME, "readwrite");
       const req = tx.objectStore(STORE_NAME).put({ path, blob });
       req.onsuccess = () => resolve();
-      req.onerror = () => reject(req.error);
+      req.onerror = () => {
+        var _a, _b;
+        return reject(new Error((_b = (_a = req.error) == null ? void 0 : _a.message) != null ? _b : "Failed to write to cache"));
+      };
     }).finally(() => db.close());
   });
 }

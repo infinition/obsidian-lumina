@@ -128,7 +128,7 @@ export class FrontmatterService {
 
     // Nom de fichier sécurisé basé sur le chemin
     const safeName = mediaPath
-      .replace(/[^a-zA-Z0-9_\-\.]/g, '_')
+      .replace(/[^a-zA-Z0-9_\-.]/g, '_')
       .replace(/_+/g, '_')
       .slice(0, 100);
     const notePath = `${metadataFolderPath}/${safeName}.md`;
@@ -164,7 +164,7 @@ export class FrontmatterService {
     // Vérifier si la note existe
     const existingFile = this.vault.getAbstractFileByPath(notePath);
     if (existingFile && existingFile instanceof TFile) {
-      await this.vault.modify(existingFile as TFile, content);
+      await this.vault.modify(existingFile, content);
     } else {
       await this.vault.create(notePath, content);
     }

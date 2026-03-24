@@ -6,7 +6,7 @@ export type { LocaleKey };
 
 export interface WebOSAPI {
   getObsidianApp(): unknown;
-  loadWidgetState(id: string): Promise<unknown | null>;
+  loadWidgetState(id: string): Promise<unknown>;
   saveWidgetState(id: string, data: unknown): Promise<void>;
   resolveResourcePath(path: string): string;
   getWorkerUrl(): string;

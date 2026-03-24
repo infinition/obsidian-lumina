@@ -10,7 +10,7 @@ const STORE_NAME = 'images';
 function openDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(DB_NAME, DB_VERSION);
-    req.onerror = () => reject(req.error);
+    req.onerror = () => reject(new Error(req.error?.message ?? 'Failed to open IndexedDB'));
     req.onsuccess = () => resolve(req.result);
     req.onupgradeneeded = () => {
       req.result.createObjectStore(STORE_NAME, { keyPath: 'path' });
@@ -27,7 +27,7 @@ function getCachedBlob(path: string): Promise<Blob | null> {
         const row = req.result as { path: string; blob: Blob } | undefined;
         resolve(row?.blob ?? null);
       };
-      req.onerror = () => reject(req.error);
+      req.onerror = () => reject(new Error(req.error?.message ?? 'Failed to read from cache'));
     }).finally(() => db.close());
   });
 }
@@ -38,7 +38,7 @@ function setCachedBlob(path: string, blob: Blob): Promise<void> {
       const tx = db.transaction(STORE_NAME, 'readwrite');
       const req = tx.objectStore(STORE_NAME).put({ path, blob });
       req.onsuccess = () => resolve();
-      req.onerror = () => reject(req.error);
+      req.onerror = () => reject(new Error(req.error?.message ?? 'Failed to write to cache'));
     }).finally(() => db.close());
   });
 }

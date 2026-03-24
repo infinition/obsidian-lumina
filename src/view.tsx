@@ -24,7 +24,7 @@ export class LuminaView extends ItemView {
     return 'Lumina';
   }
 
-  async onOpen() {
+  onOpen(): void {
     this.containerEl.addClass('lumina-leaf');
     const container = this.containerEl.children[1] as HTMLElement;
     container.empty();
@@ -35,7 +35,7 @@ export class LuminaView extends ItemView {
     this.root.render(React.createElement(PhotoGalleryWidget, { api }));
   }
 
-  async onClose() {
+  onClose(): void {
     this.containerEl.removeClass('lumina-leaf');
     this.root?.unmount();
     this.root = null;

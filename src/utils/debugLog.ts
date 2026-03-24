@@ -11,6 +11,6 @@ export function initDebugLog(getEnabled: () => boolean): void {
 
 export function debugLog(...args: unknown[]): void {
   if (_getEnabled && _getEnabled()) {
-    console.log('[Lumina]', ...args);
+    console.debug('[Lumina]', ...args);
   }
 }

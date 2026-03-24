@@ -75,13 +75,23 @@ export class LuminaBlockProcessor {
     
     // Ajouter le bouton d'édition (visible au survol)
     const editButton = el.createDiv({ cls: 'lumina-block-edit-btn' });
-    editButton.innerHTML = `
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M12 20h9"/>
-        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-      </svg>
-      <span>Edit</span>
-    `;
+    const editSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    editSvg.setAttribute('width', '16');
+    editSvg.setAttribute('height', '16');
+    editSvg.setAttribute('viewBox', '0 0 24 24');
+    editSvg.setAttribute('fill', 'none');
+    editSvg.setAttribute('stroke', 'currentColor');
+    editSvg.setAttribute('stroke-width', '2');
+    const editPath1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    editPath1.setAttribute('d', 'M12 20h9');
+    const editPath2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    editPath2.setAttribute('d', 'M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z');
+    editSvg.appendChild(editPath1);
+    editSvg.appendChild(editPath2);
+    editButton.appendChild(editSvg);
+    const editLabel = document.createElement('span');
+    editLabel.textContent = 'Edit';
+    editButton.appendChild(editLabel);
     editButton.title = 'Edit Lumina block settings';
     
     // Container pour l'éditeur
@@ -292,7 +302,8 @@ export class LuminaBlockProcessor {
         
         if (action === 'obsidian') {
           // Ouvrir la recherche globale Obsidian
-          (this.app as any).internalPlugins?.plugins?.['global-search']?.instance?.openGlobalSearch?.(searchTag);
+          const internalPlugins = (this.app as unknown as { internalPlugins?: { plugins?: Record<string, { instance?: { openGlobalSearch?: (q: string) => void } }> } }).internalPlugins;
+          internalPlugins?.plugins?.['global-search']?.instance?.openGlobalSearch?.(searchTag);
         } else {
           // Ouvrir Lumina avec le tag en recherche
           this.openLuminaWithSearch(searchTag);
@@ -304,7 +315,7 @@ export class LuminaBlockProcessor {
     if (filePath) {
       const removeBtn = document.createElement('button');
       removeBtn.className = 'lumina-block-tag-remove';
-      removeBtn.innerHTML = '×';
+      removeBtn.textContent = '\u00D7';
       removeBtn.title = 'Remove tag';
       removeBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -329,17 +340,17 @@ export class LuminaBlockProcessor {
     if (leaves.length > 0) {
       // Utiliser une vue existante
       this.app.workspace.revealLeaf(leaves[0]);
-      const view = leaves[0].view as any;
+      const view = leaves[0].view as unknown as { setSearchQuery?: (q: string) => void };
       if (view?.setSearchQuery) {
         view.setSearchQuery(searchTerm);
       }
     } else {
       // Créer une nouvelle vue
       const leaf = this.app.workspace.getLeaf(false);
-      leaf.setViewState({ type: 'lumina-view', active: true }).then(() => {
+      void leaf.setViewState({ type: 'lumina-view', active: true }).then(() => {
         this.app.workspace.revealLeaf(leaf);
         setTimeout(() => {
-          const view = leaf.view as any;
+          const view = leaf.view as unknown as { setSearchQuery?: (q: string) => void };
           if (view?.setSearchQuery) {
             view.setSearchQuery(searchTerm);
           }
@@ -492,29 +503,32 @@ export class LuminaBlockProcessor {
               options.layout = value as LuminaBlockOptions['layout'];
             }
             break;
-          case 'columns':
+          case 'columns': {
             const cols = parseInt(value, 10);
             if (cols >= 1 && cols <= 10) options.columns = cols;
             break;
+          }
           case 'shownames':
             options.showNames = value === 'true';
             break;
           case 'showtags':
             options.showTags = value === 'true';
             break;
-          case 'maxitems':
+          case 'maxitems': {
             const max = parseInt(value, 10);
             if (max > 0) options.maxItems = max;
             break;
+          }
           case 'sortby':
             if (['date-desc', 'date-asc', 'name', 'random'].includes(value)) {
               options.sortBy = value as LuminaBlockOptions['sortBy'];
             }
             break;
-          case 'size':
+          case 'size': {
             const size = parseInt(value, 10);
             if (size >= 50 && size <= 1000) options.size = size;
             break;
+          }
           case 'date':
             // Parse date: after:YYYY-MM-DD, before:YYYY-MM-DD
             if (value.startsWith('after:')) {

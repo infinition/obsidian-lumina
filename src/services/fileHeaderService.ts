@@ -64,7 +64,7 @@ export class FileHeaderService {
   }
 
   private addTagButtonToActiveLeaf(): void {
-    const activeLeaf = this.app.workspace.activeLeaf;
+    const activeLeaf = this.app.workspace.getMostRecentLeaf();
     if (!activeLeaf) return;
 
     const file = this.getFileFromLeaf(activeLeaf);
@@ -88,7 +88,25 @@ export class FileHeaderService {
     const btn = document.createElement('a');
     btn.className = 'clickable-icon view-action lumina-header-tag-btn';
     btn.setAttribute('aria-label', 'Manage tags (Lumina)');
-    btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>`;
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('width', '18');
+    svg.setAttribute('height', '18');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('fill', 'none');
+    svg.setAttribute('stroke', 'currentColor');
+    svg.setAttribute('stroke-width', '2');
+    svg.setAttribute('stroke-linecap', 'round');
+    svg.setAttribute('stroke-linejoin', 'round');
+    const path1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path1.setAttribute('d', 'M12 2L2 7l10 5 10-5-10-5z');
+    const path2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path2.setAttribute('d', 'M2 17l10 5 10-5');
+    const path3 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path3.setAttribute('d', 'M2 12l10 5 10-5');
+    svg.appendChild(path1);
+    svg.appendChild(path2);
+    svg.appendChild(path3);
+    btn.appendChild(svg);
 
     // Au clic, afficher un dropdown avec les tags
     btn.addEventListener('click', (e) => {

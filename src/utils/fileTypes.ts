@@ -67,7 +67,7 @@ export const ALL_SUPPORTED_EXTENSIONS = [
  */
 export function isSupportedFile(filename: string): boolean {
   const ext = filename.split('.').pop()?.toLowerCase();
-  return ext ? ALL_SUPPORTED_EXTENSIONS.includes(ext as any) : false;
+  return ext ? (ALL_SUPPORTED_EXTENSIONS as readonly string[]).includes(ext) : false;
 }
 
 /**

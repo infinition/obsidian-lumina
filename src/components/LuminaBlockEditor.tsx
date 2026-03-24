@@ -252,7 +252,7 @@ export const LuminaBlockEditor: React.FC<LuminaBlockEditorProps> = ({
     if (!query.trim()) return tokens;
 
     // Expression régulière pour matcher les tags, liens et opérateurs
-    const regex = /(!?)(\[\[[^\]]+\]\]|#[\w\-\/]+)/g;
+    const regex = /(!?)(\[\[[^\]]+\]\]|#[\w\-/]+)/g;
     let match;
     let lastOperator: 'AND' | 'OR' = 'AND';
 
@@ -275,7 +275,7 @@ export const LuminaBlockEditor: React.FC<LuminaBlockEditorProps> = ({
           value: value,
           operator: isNot ? 'NOT' : (isOrMode ? 'OR' : 'AND'),
         });
-      } else if (value.startsWith('#') || /^[\w\-\/]+$/.test(value)) {
+      } else if (value.startsWith('#') || /^[\w\-/]+$/.test(value)) {
         tokens.push({
           id: `${Date.now()}-${index}`,
           type: 'tag',
@@ -404,7 +404,7 @@ export const LuminaBlockEditor: React.FC<LuminaBlockEditorProps> = ({
             <circle cx="8.5" cy="8.5" r="1.5"/>
             <polyline points="21 15 16 10 5 21"/>
           </svg>
-          <span>Lumina Block Editor</span>
+          <span>Lumina block editor</span>
         </div>
         <button className="lumina-editor-close" onClick={onClose}>×</button>
       </div>
@@ -412,7 +412,7 @@ export const LuminaBlockEditor: React.FC<LuminaBlockEditorProps> = ({
       {/* Section Query */}
       <div className="lumina-editor-section">
         <div className="lumina-editor-section-title">
-          <span>🔍</span> Filter by Tags & Links
+          <span>🔍</span> Filter by tags & links
         </div>
         
         <div className="lumina-editor-operator-toggle">
@@ -499,7 +499,7 @@ export const LuminaBlockEditor: React.FC<LuminaBlockEditorProps> = ({
             <button
               key={opt.value}
               className={`lumina-layout-btn ${options.layout === opt.value ? 'active' : ''}`}
-              onClick={() => setOptions({ ...options, layout: opt.value as any })}
+              onClick={() => setOptions({ ...options, layout: opt.value as LuminaBlockOptions['layout'] })}
               title={opt.label}
             >
               <span className="lumina-layout-icon">{opt.icon}</span>
@@ -564,7 +564,7 @@ export const LuminaBlockEditor: React.FC<LuminaBlockEditorProps> = ({
                 <button
                   key={opt.value}
                   className={`lumina-type-btn ${options.type === opt.value ? 'active' : ''}`}
-                  onClick={() => setOptions({ ...options, type: opt.value as any })}
+                  onClick={() => setOptions({ ...options, type: opt.value as LuminaBlockOptions['type'] })}
                   title={opt.label}
                 >
                   {opt.icon}
@@ -576,7 +576,7 @@ export const LuminaBlockEditor: React.FC<LuminaBlockEditorProps> = ({
             <label>Sort</label>
             <select
               value={options.sortBy}
-              onChange={(e) => setOptions({ ...options, sortBy: e.target.value as any })}
+              onChange={(e) => setOptions({ ...options, sortBy: e.target.value as LuminaBlockOptions['sortBy'] })}
               className="lumina-select"
               title="Sort order"
             >
@@ -615,7 +615,7 @@ export const LuminaBlockEditor: React.FC<LuminaBlockEditorProps> = ({
                 <button
                   key={opt.value}
                   className={`lumina-align-btn ${options.align === opt.value ? 'active' : ''}`}
-                  onClick={() => setOptions({ ...options, align: opt.value as any })}
+                  onClick={() => setOptions({ ...options, align: opt.value as LuminaBlockOptions['align'] })}
                   title={opt.label}
                 >
                   {opt.icon}
@@ -631,7 +631,7 @@ export const LuminaBlockEditor: React.FC<LuminaBlockEditorProps> = ({
               checked={options.showNames}
               onChange={(e) => setOptions({ ...options, showNames: e.target.checked })}
             />
-            <span>Show filenames</span>
+            <span>Show file names</span>
           </label>
           <label className="lumina-checkbox">
             <input
@@ -647,7 +647,7 @@ export const LuminaBlockEditor: React.FC<LuminaBlockEditorProps> = ({
       {/* Section Files (Standalone) */}
       <div className="lumina-editor-section">
         <div className="lumina-editor-section-title">
-          <span>📁</span> Specific Files (no tags)
+          <span>📁</span> Specific files (no tags)
         </div>
         
         {/* Liste des fichiers ajoutés */}

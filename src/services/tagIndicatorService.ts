@@ -268,21 +268,19 @@ export class TagIndicatorService {
     const iconName = this.getValidIcon(appearance.icon);
 
     badge.setAttribute('data-lumina-appearance', appearanceSignature);
-    badge.style.color = color;
-    badge.style.width = `${size}px`;
-    badge.style.height = `${size}px`;
-    badge.style.minWidth = `${size}px`;
-    badge.style.minHeight = `${size}px`;
-    badge.style.setProperty('--lumina-tag-indicator-size', `${size}px`);
+    badge.setCssProps({
+      '--lumina-indicator-color': color,
+      '--lumina-indicator-size': `${size}px`,
+      '--lumina-tag-indicator-size': `${size}px`,
+    });
     badge.classList.toggle(
       'lumina-tag-indicator-compensate-shift',
       appearance.position === 'left' && appearance.compensateShift
     );
+    badge.classList.toggle('lumina-tag-indicator-icon', appearance.style === 'icon');
+    badge.classList.toggle('lumina-tag-indicator-dot', appearance.style === 'dot');
 
     if (appearance.style === 'icon') {
-      badge.style.backgroundColor = 'transparent';
-      badge.style.borderRadius = '0';
-      badge.style.boxShadow = 'none';
       try {
         setIcon(badge, iconName);
       } catch {
@@ -292,7 +290,6 @@ export class TagIndicatorService {
       if (iconSvg) {
         iconSvg.setAttribute('width', String(size));
         iconSvg.setAttribute('height', String(size));
-        (iconSvg as SVGElement).style.stroke = color;
       }
       return;
     }
@@ -300,9 +297,6 @@ export class TagIndicatorService {
     if (badge.firstChild) {
       badge.replaceChildren();
     }
-    badge.style.backgroundColor = color;
-    badge.style.borderRadius = '50%';
-    badge.style.boxShadow = `0 0 4px ${color}`;
   }
 
   private getAppearanceSignature(appearance: TagIndicatorAppearance): string {

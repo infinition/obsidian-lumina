@@ -1,5 +1,3 @@
-declare function require(id: string): any;
-
 import { Plugin, TFile, Menu, Editor, MarkdownView } from 'obsidian';
 import { LuminaView, VIEW_TYPE_LUMINA } from './view';
 import { LuminaSettingTab } from './settings';
@@ -17,8 +15,9 @@ import { initDebugLog, debugLog } from './utils/debugLog';
 
 function getWorkerUrl(): string {
   try {
-    const path = require('path');
-    return 'file:///' + path.join(__dirname, 'worker.js').replace(/\\/g, '/');
+    // Use string manipulation instead of Node.js path module
+    const dir = (typeof __dirname === 'string') ? __dirname : '.';
+    return 'file:///' + (dir + '/worker.js').replace(/\\/g, '/');
   } catch {
     return './worker.js';
   }
@@ -207,7 +206,7 @@ export default class LuminaPlugin extends Plugin {
       // Sync from frontmatter only if enabled
       if (this.settings.enableStartupSync) {
         // Use setTimeout to not block the layout
-        setTimeout(() => this.syncAllFromFrontmatter(), 100);
+        setTimeout(() => { this.syncAllFromFrontmatter(); }, 100);
       }
 
       // Initialize VirtualSearchService (deferred - needs DOM)
@@ -244,11 +243,11 @@ export default class LuminaPlugin extends Plugin {
 
     this.registerView(VIEW_TYPE_LUMINA, (leaf) => new LuminaView(leaf, this));
     const openLabel = t(this.settings.locale, 'openLumina');
-    this.addRibbonIcon('image', openLabel, () => this.activateView());
+    this.addRibbonIcon('image', openLabel, () => { void this.activateView(); });
     this.addCommand({
-      id: 'open-lumina',
+      id: 'open-gallery',
       name: openLabel,
-      callback: () => this.activateView(),
+      callback: () => { void this.activateView(); },
     });
 
     // Command to manage tags on active file
@@ -275,7 +274,7 @@ export default class LuminaPlugin extends Plugin {
 
     // Command to insert a Lumina block
     this.addCommand({
-      id: 'insert-lumina-block',
+      id: 'insert-block',
       name: t(this.settings.locale, 'insertLuminaBlock'),
       editorCallback: (editor: Editor) => {
         const cursor = editor.getCursor();
@@ -439,7 +438,7 @@ export default class LuminaPlugin extends Plugin {
       ready: true,
     };
 
-    (window as any).LuminaAPI = api;
+    (window as unknown as Record<string, unknown>).LuminaAPI = api;
     // Dispatch event so other plugins know the API is ready
     window.dispatchEvent(new CustomEvent('lumina:api-ready', { detail: api }));
     debugLog('Public API exposed via window.LuminaAPI');
@@ -470,7 +469,20 @@ export default class LuminaPlugin extends Plugin {
     // Method 1: Access explorer via leaves
     const fileExplorerLeaf = this.app.workspace.getLeavesOfType('file-explorer')[0];
     if (fileExplorerLeaf?.view) {
-      const view = fileExplorerLeaf.view as any;
+      // Obsidian file explorer view has undocumented internal properties
+      interface FileExplorerItem { file?: TFile; el?: HTMLElement; selfEl?: HTMLElement }
+      interface FileExplorerTree {
+        selectedDoms?: Map<string, unknown>;
+        selectedItems?: unknown[] | Set<unknown> | Map<string, unknown>;
+        focusedItem?: FileExplorerItem;
+      }
+      interface FileExplorerView {
+        tree?: FileExplorerTree;
+        selectedItems?: unknown[] | Set<unknown> | Map<string, unknown>;
+        fileItems?: Record<string, FileExplorerItem>;
+        file?: TFile;
+      }
+      const view = fileExplorerLeaf.view as unknown as FileExplorerView;
 
       // Priority: selection via view.tree.selectedDoms (Map of selected elements)
       if (view.tree?.selectedDoms) {
@@ -494,7 +506,8 @@ export default class LuminaPlugin extends Plugin {
                       view.selectedItems instanceof Set ? Array.from(view.selectedItems) :
                       view.selectedItems instanceof Map ? Array.from(view.selectedItems.values()) : [];
         for (const item of items) {
-          const file = item?.file || item;
+          const typedItem = item as FileExplorerItem;
+          const file = typedItem?.file ?? item;
           if (file instanceof TFile && !addedPaths.has(file.path)) {
             selectedFiles.push(file);
             addedPaths.add(file.path);
@@ -508,7 +521,8 @@ export default class LuminaPlugin extends Plugin {
                       view.tree.selectedItems instanceof Set ? Array.from(view.tree.selectedItems) :
                       view.tree.selectedItems instanceof Map ? Array.from(view.tree.selectedItems.values()) : [];
         for (const item of items) {
-          const file = item?.file || item;
+          const typedItem = item as FileExplorerItem;
+          const file = typedItem?.file ?? item;
           if (file instanceof TFile && !addedPaths.has(file.path)) {
             selectedFiles.push(file);
             addedPaths.add(file.path);
@@ -519,15 +533,14 @@ export default class LuminaPlugin extends Plugin {
       // Method 4: fileItems with DOM class check
       if (selectedFiles.length === 0 && view.fileItems) {
         for (const [path, item] of Object.entries(view.fileItems)) {
-          const typedItem = item as { file?: TFile; el?: HTMLElement; selfEl?: HTMLElement };
-          const el = typedItem.el || typedItem.selfEl;
+          const el = item.el ?? item.selfEl;
           const isSelected = el?.classList.contains('is-selected') ||
                             el?.classList.contains('is-active') ||
                             el?.hasAttribute('data-selected') ||
                             el?.closest('.is-selected') !== null;
-          if (isSelected && typedItem.file instanceof TFile) {
+          if (isSelected && item.file instanceof TFile) {
             if (!addedPaths.has(path)) {
-              selectedFiles.push(typedItem.file);
+              selectedFiles.push(item.file);
               addedPaths.add(path);
             }
           }
@@ -687,7 +700,7 @@ export default class LuminaPlugin extends Plugin {
   private async writeSharedTagFile(tagMap: Record<string, string[]>): Promise<void> {
     try {
       const adapter = this.app.vault.adapter;
-      const sharedPath = '.obsidian/lumina-tags.json';
+      const sharedPath = `${this.app.vault.configDir}/lumina-tags.json`;
       const payload = JSON.stringify({
         version: 1,
         updatedAt: new Date().toISOString(),
@@ -700,32 +713,27 @@ export default class LuminaPlugin extends Plugin {
   }
 
   /**
-   * Write to an absolute or vault-relative path.
-   * Absolute paths (C:\... or /...) use Node fs; relative paths use the vault adapter.
+   * Write to a vault-relative path using Obsidian's Vault API.
+   * Creates parent directories as needed.
    */
   private async writeFile(filePath: string, content: string): Promise<void> {
-    const isAbsolute = /^([a-zA-Z]:\\|\/)/.test(filePath);
-    if (isAbsolute) {
-      const fs = require('fs').promises;
-      const path = require('path');
-      await fs.mkdir(path.dirname(filePath), { recursive: true });
-      await fs.writeFile(filePath, content, 'utf-8');
-    } else {
-      await this.app.vault.adapter.write(filePath, content);
+    // Ensure parent directory exists
+    const lastSlash = filePath.lastIndexOf('/');
+    if (lastSlash > 0) {
+      const dir = filePath.substring(0, lastSlash);
+      const existing = this.app.vault.getAbstractFileByPath(dir);
+      if (!existing) {
+        await this.app.vault.createFolder(dir).catch(() => { /* already exists */ });
+      }
     }
+    await this.app.vault.adapter.write(filePath, content);
   }
 
   /**
-   * Read from an absolute or vault-relative path.
+   * Read from a vault-relative path using Obsidian's Vault API.
    */
   private async readFile(filePath: string): Promise<string> {
-    const isAbsolute = /^([a-zA-Z]:\\|\/)/.test(filePath);
-    if (isAbsolute) {
-      const fs = require('fs').promises;
-      return await fs.readFile(filePath, 'utf-8');
-    } else {
-      return await this.app.vault.adapter.read(filePath);
-    }
+    return await this.app.vault.adapter.read(filePath);
   }
 
   /**
@@ -771,7 +779,7 @@ export default class LuminaPlugin extends Plugin {
   /**
    * Import tags from already-parsed data (used by file picker in settings)
    */
-  async importTagBackupFromData(importedMap: Record<string, string[]>): Promise<number> {
+  importTagBackupFromData(importedMap: Record<string, string[]>): number {
     let importCount = 0;
     for (const [path, tags] of Object.entries(importedMap)) {
       if (!Array.isArray(tags)) continue;
@@ -958,15 +966,15 @@ export default class LuminaPlugin extends Plugin {
 
   onunload() {
     // Clean up public API
-    delete (window as any).LuminaAPI;
+    delete (window as unknown as Record<string, unknown>).LuminaAPI;
 
     // Flush any pending save
     if (this._saveTimer) {
       clearTimeout(this._saveTimer);
       const tagData = this.tagManager.getData();
       const data = { ...this._cachedData, tagMap: tagData };
-      this.saveData(data);
-      this.writeSharedTagFile(tagData);
+      void this.saveData(data);
+      void this.writeSharedTagFile(tagData);
     }
 
     if (this._backupTimer) {

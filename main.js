@@ -24502,16 +24502,19 @@ __export(main_exports, {
   default: () => LuminaPlugin
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian10 = require("obsidian");
+var import_obsidian12 = require("obsidian");
 
 // src/view.tsx
-var import_obsidian3 = require("obsidian");
+var import_obsidian5 = require("obsidian");
 var import_react6 = __toESM(require_react());
 var import_client2 = __toESM(require_client());
 
 // src/components/PhotoGallery.tsx
 var import_react5 = __toESM(require_react());
 var import_react_dom3 = __toESM(require_react_dom());
+
+// src/utils/imageLoader.ts
+var import_obsidian = require("obsidian");
 
 // src/utils/imageCache.ts
 var DB_NAME = "lumina-image-cache";
@@ -24520,7 +24523,10 @@ var STORE_NAME = "images";
 function openDB() {
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(DB_NAME, DB_VERSION);
-    req.onerror = () => reject(req.error);
+    req.onerror = () => {
+      var _a, _b;
+      return reject(new Error((_b = (_a = req.error) == null ? void 0 : _a.message) != null ? _b : "Failed to open IndexedDB"));
+    };
     req.onsuccess = () => resolve(req.result);
     req.onupgradeneeded = () => {
       req.result.createObjectStore(STORE_NAME, { keyPath: "path" });
@@ -24537,7 +24543,10 @@ function getCachedBlob(path) {
         const row = req.result;
         resolve((_a = row == null ? void 0 : row.blob) != null ? _a : null);
       };
-      req.onerror = () => reject(req.error);
+      req.onerror = () => {
+        var _a, _b;
+        return reject(new Error((_b = (_a = req.error) == null ? void 0 : _a.message) != null ? _b : "Failed to read from cache"));
+      };
     }).finally(() => db.close());
   });
 }
@@ -24547,7 +24556,10 @@ function setCachedBlob(path, blob) {
       const tx = db.transaction(STORE_NAME, "readwrite");
       const req = tx.objectStore(STORE_NAME).put({ path, blob });
       req.onsuccess = () => resolve();
-      req.onerror = () => reject(req.error);
+      req.onerror = () => {
+        var _a, _b;
+        return reject(new Error((_b = (_a = req.error) == null ? void 0 : _a.message) != null ? _b : "Failed to write to cache"));
+      };
     }).finally(() => db.close());
   });
 }
@@ -24635,7 +24647,7 @@ function loadImage(url, path, onLoad, onError, workerUrl) {
         loadFromBlobMain(blob, onLoad, onError);
         return;
       }
-      fetch(url).then((r) => r.ok ? r.blob() : Promise.reject(new Error("fetch failed"))).then((blob2) => {
+      (0, import_obsidian.requestUrl)({ url }).then((response) => new Blob([response.arrayBuffer])).then((blob2) => {
         setCachedBlob(path, blob2).catch(() => {
         });
         loadFromBlobMain(blob2, onLoad, onError);
@@ -25648,6 +25660,9 @@ function t(locale, key, params) {
   return str;
 }
 
+// src/components/PhotoGallery.tsx
+var import_obsidian3 = require("obsidian");
+
 // src/components/GalleryContextMenu.tsx
 var import_react = __toESM(require_react());
 var import_jsx_runtime = __toESM(require_jsx_runtime());
@@ -25764,7 +25779,7 @@ var GalleryContextMenu = ({
 
 // src/components/TagModals.tsx
 var import_react3 = __toESM(require_react());
-var import_obsidian = require("obsidian");
+var import_obsidian2 = require("obsidian");
 var import_client = __toESM(require_client());
 
 // src/components/TagComponents.tsx
@@ -26138,7 +26153,7 @@ var TagManagerContent = ({
     /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "lumina-tag-manager-footer", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { className: "lumina-btn-close", onClick: onClose, children: t(locale, "cancel") }) })
   ] });
 };
-var TagManagerModal = class extends import_obsidian.Modal {
+var TagManagerModal = class extends import_obsidian2.Modal {
   constructor(app, filePath, fileName, tagManager, locale, fromLightbox = false) {
     super(app);
     this.root = null;
@@ -26302,7 +26317,7 @@ var BatchTagContent = ({
     /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "lumina-tag-manager-footer", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { className: "lumina-btn-close", onClick: onClose, children: t(locale, "cancel") }) })
   ] });
 };
-var BatchTagModal = class extends import_obsidian.Modal {
+var BatchTagModal = class extends import_obsidian2.Modal {
   constructor(app, filePaths, tagManager, locale) {
     super(app);
     this.root = null;
@@ -26432,7 +26447,7 @@ var SearchBarWithTags = ({
       const search = lower.slice(1);
       filtered = allHashTags.filter((tag) => tag.toLowerCase().includes(search)).filter((tag) => !existing.has(tag.toLowerCase()));
     } else if (input.startsWith("[")) {
-      const search = lower.replace(/[\[\]]/g, "");
+      const search = lower.replace(/[[\]]/g, "");
       filtered = allNoteLinks.filter((link) => link.toLowerCase().includes(search)).filter((link) => !existing.has(link.toLowerCase()));
     } else {
       filtered = allItems.filter((item) => item.toLowerCase().includes(lower)).filter((item) => !existing.has(item.toLowerCase()));
@@ -26608,8 +26623,62 @@ var SearchBarWithTags = ({
   ] });
 };
 
+// src/utils/debugLog.ts
+var _getEnabled = null;
+function initDebugLog(getEnabled) {
+  _getEnabled = getEnabled;
+}
+function debugLog(...args) {
+  if (_getEnabled && _getEnabled()) {
+    console.debug("[Lumina]", ...args);
+  }
+}
+
 // src/components/PhotoGallery.tsx
 var import_jsx_runtime5 = __toESM(require_jsx_runtime());
+function showConfirmDialog(message) {
+  return new Promise((resolve) => {
+    const overlay = document.createElement("div");
+    overlay.className = "modal-container mod-confirmation";
+    const bg = document.createElement("div");
+    bg.className = "modal-bg";
+    bg.style.opacity = "0.85";
+    bg.addEventListener("click", () => {
+      overlay.remove();
+      resolve(false);
+    });
+    const modal = document.createElement("div");
+    modal.className = "modal mod-confirmation";
+    const content = document.createElement("div");
+    content.className = "modal-content";
+    const msgEl = document.createElement("p");
+    msgEl.textContent = message;
+    content.appendChild(msgEl);
+    const btnRow = document.createElement("div");
+    btnRow.className = "modal-button-container";
+    const cancelBtn = document.createElement("button");
+    cancelBtn.className = "mod-cancel";
+    cancelBtn.textContent = "Cancel";
+    cancelBtn.addEventListener("click", () => {
+      overlay.remove();
+      resolve(false);
+    });
+    const confirmBtn = document.createElement("button");
+    confirmBtn.className = "mod-warning";
+    confirmBtn.textContent = "Confirm";
+    confirmBtn.addEventListener("click", () => {
+      overlay.remove();
+      resolve(true);
+    });
+    btnRow.appendChild(cancelBtn);
+    btnRow.appendChild(confirmBtn);
+    content.appendChild(btnRow);
+    modal.appendChild(content);
+    overlay.appendChild(bg);
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+  });
+}
 var IMG_EXT = ["jpg", "jpeg", "png", "gif", "webp", "svg", "bmp", "tiff", "tif", "ico", "avif", "apng"];
 var VIDEO_EXT = ["mp4", "webm", "mov", "avi", "mkv", "ogv", "m4v"];
 var GAP = 10;
@@ -26675,13 +26744,13 @@ function urlToEmbed(input) {
     if (host === "youtube.com" && u.pathname === "/watch" && u.searchParams.get("v")) {
       const id = u.searchParams.get("v");
       const embedSrc = `https://www.youtube.com/embed/${id}`;
-      const embedHtml = `<iframe width="560" height="315" src="${embedSrc}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+      const embedHtml = `<iframe width="560" height="315" src="${embedSrc}" title="YouTube video player"allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
       return { url, embedSrc, embedHtml };
     }
     if (host === "youtu.be" && u.pathname.length > 1) {
       const id = u.pathname.slice(1).split("?")[0];
       const embedSrc = `https://www.youtube.com/embed/${id}`;
-      const embedHtml = `<iframe width="560" height="315" src="${embedSrc}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+      const embedHtml = `<iframe width="560" height="315" src="${embedSrc}" title="YouTube video player"allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
       return { url, embedSrc, embedHtml };
     }
     return null;
@@ -27782,14 +27851,14 @@ var PhotoGalleryWidget = ({
           const img = filteredImages[idx];
           if (!img) return;
           if (e.button === 2) {
-            console.log("[PhotoGallery] Right-click detected, isEditMode:", isEditMode);
+            debugLog("[PhotoGallery] Right-click detected, isEditMode:", isEditMode);
             if (isEditMode) {
               const paths = selection.size > 0 && selection.has(img.path) ? Array.from(selection) : [img.path];
-              console.log("[PhotoGallery] Showing context menu for paths:", paths);
+              debugLog("[PhotoGallery] Showing context menu for paths:", paths);
               setContextMenu({ x: e.clientX, y: e.clientY, paths });
               return;
             } else {
-              console.log("[PhotoGallery] Opening lightbox");
+              debugLog("[PhotoGallery] Opening lightbox");
               setLightboxIndex(idx);
               setLightboxOpen(true);
             }
@@ -29068,7 +29137,7 @@ var PhotoGalleryWidget = ({
                   return img ? `![[${img.name}]]` : "";
                 }).filter(Boolean).join("\n");
                 await navigator.clipboard.writeText(links);
-                alert(t(locale, "copied"));
+                new import_obsidian3.Notice(t(locale, "copied"));
               },
               children: t(locale, "copyLinks")
             }
@@ -29097,7 +29166,7 @@ var PhotoGalleryWidget = ({
               type: "button",
               className: "gal-edit-toolbar-btn gal-edit-toolbar-btn-danger",
               onClick: async () => {
-                if (!confirm(t(locale, "deleteConfirm", { n: selection.size }))) return;
+                if (!await showConfirmDialog(t(locale, "deleteConfirm", { n: selection.size }))) return;
                 for (const path of selection) {
                   const file = app.vault.getAbstractFileByPath(path);
                   if (file) await app.vault.trash(file, true);
@@ -29799,7 +29868,6 @@ var PhotoGalleryWidget = ({
                     {
                       src: lightboxEmbed.embedSrc,
                       title: "YouTube video player",
-                      frameBorder: "0",
                       allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
                       referrerPolicy: "strict-origin-when-cross-origin",
                       allowFullScreen: true,
@@ -29986,7 +30054,7 @@ var PhotoGalleryWidget = ({
                               className: "gal-lightbox-action-btn",
                               onClick: async () => {
                                 await navigator.clipboard.writeText(lightboxEmbed.embedHtml);
-                                alert(t(locale, "copied"));
+                                new import_obsidian3.Notice(t(locale, "copied"));
                               },
                               children: t(locale, "copyEmbedHtml")
                             }
@@ -30016,7 +30084,7 @@ var PhotoGalleryWidget = ({
                                 className: "gal-lightbox-action-btn",
                                 onClick: async () => {
                                   await navigator.clipboard.writeText(`![[${currentImage.name}]]`);
-                                  alert(t(locale, "copied"));
+                                  new import_obsidian3.Notice(t(locale, "copied"));
                                 },
                                 children: t(locale, "copyLink")
                               }
@@ -30065,7 +30133,7 @@ var PhotoGalleryWidget = ({
                                 type: "button",
                                 className: "gal-lightbox-action-btn gal-lightbox-btn-delete",
                                 onClick: async () => {
-                                  if (!confirm(t(locale, "deleteConfirmSingle", { name: currentImage.name }))) return;
+                                  if (!await showConfirmDialog(t(locale, "deleteConfirmSingle", { name: currentImage.name }))) return;
                                   const file = app.vault.getAbstractFileByPath(currentImage.path);
                                   if (file) {
                                     await app.vault.trash(file, true);
@@ -30129,7 +30197,7 @@ var PhotoGalleryWidget = ({
                                 return img ? `![[${img.name}]]` : "";
                               }).filter(Boolean).join("\n");
                               await app.vault.modify(file, content + "\n" + links);
-                              alert(t(locale, "addedToNote"));
+                              new import_obsidian3.Notice(t(locale, "addedToNote"));
                             }
                             setNoteModal(false);
                             setIsEditMode(false);
@@ -30198,7 +30266,7 @@ var PhotoGalleryWidget = ({
             },
             onDelete: async () => {
               const pathsToDelete = contextMenu.paths;
-              if (!confirm(t(locale, "deleteConfirm", { n: pathsToDelete.length }))) {
+              if (!await showConfirmDialog(t(locale, "deleteConfirm", { n: pathsToDelete.length }))) {
                 setContextMenu(null);
                 return;
               }
@@ -30220,7 +30288,7 @@ var PhotoGalleryWidget = ({
 };
 
 // src/services/bridge.ts
-var import_obsidian2 = require("obsidian");
+var import_obsidian4 = require("obsidian");
 var isRemotePath = (value) => /^https?:\/\//i.test(value) || /^data:/i.test(value) || /^app:\/\//i.test(value) || /^file:\/\//i.test(value);
 var createBridge = (plugin) => ({
   getObsidianApp() {
@@ -30241,8 +30309,8 @@ var createBridge = (plugin) => ({
   resolveResourcePath(path) {
     if (!path) return path;
     if (isRemotePath(path)) return path;
-    const file = plugin.app.vault.getAbstractFileByPath((0, import_obsidian2.normalizePath)(path));
-    if (file && file instanceof import_obsidian2.TFile) {
+    const file = plugin.app.vault.getAbstractFileByPath((0, import_obsidian4.normalizePath)(path));
+    if (file && file instanceof import_obsidian4.TFile) {
       return plugin.app.vault.getResourcePath(file);
     }
     return path;
@@ -30251,8 +30319,7 @@ var createBridge = (plugin) => ({
     return plugin.workerUrl || "./worker.js";
   },
   getLocale() {
-    var _a, _b;
-    return (_b = (_a = plugin.getLocale) == null ? void 0 : _a.call(plugin)) != null ? _b : "en";
+    return plugin.getLocale();
   },
   getTagManager() {
     return plugin.tagManager;
@@ -30267,7 +30334,7 @@ var createBridge = (plugin) => ({
 
 // src/view.tsx
 var VIEW_TYPE_LUMINA = "lumina-view";
-var LuminaView = class extends import_obsidian3.ItemView {
+var LuminaView = class extends import_obsidian5.ItemView {
   constructor(leaf, plugin) {
     super(leaf);
     this.root = null;
@@ -30279,7 +30346,7 @@ var LuminaView = class extends import_obsidian3.ItemView {
   getDisplayText() {
     return "Lumina";
   }
-  async onOpen() {
+  onOpen() {
     this.containerEl.addClass("lumina-leaf");
     const container = this.containerEl.children[1];
     container.empty();
@@ -30289,7 +30356,7 @@ var LuminaView = class extends import_obsidian3.ItemView {
     const api = createBridge(this.plugin);
     this.root.render(import_react6.default.createElement(PhotoGalleryWidget, { api }));
   }
-  async onClose() {
+  onClose() {
     var _a;
     this.containerEl.removeClass("lumina-leaf");
     (_a = this.root) == null ? void 0 : _a.unmount();
@@ -30298,7 +30365,7 @@ var LuminaView = class extends import_obsidian3.ItemView {
 };
 
 // src/settings.ts
-var import_obsidian4 = require("obsidian");
+var import_obsidian6 = require("obsidian");
 var DEFAULT_SETTINGS2 = {
   locale: "en",
   enableTagSystem: true,
@@ -30328,10 +30395,10 @@ var DEFAULT_SETTINGS2 = {
   autoBackupIntervalHours: 24,
   autoBackupPath: ""
 };
-var IconPickerModal = class extends import_obsidian4.Modal {
+var IconPickerModal = class extends import_obsidian6.Modal {
   constructor(app, locale, initialIcon, onPick) {
     super(app);
-    this.iconIds = (0, import_obsidian4.getIconIds)();
+    this.iconIds = (0, import_obsidian6.getIconIds)();
     this.locale = locale;
     this.initialIcon = initialIcon;
     this.onPick = onPick;
@@ -30340,8 +30407,8 @@ var IconPickerModal = class extends import_obsidian4.Modal {
     const { contentEl } = this;
     contentEl.empty();
     contentEl.addClass("lumina-icon-picker-modal");
-    contentEl.createEl("h3", { text: t(this.locale, "iconPickerTitle") });
-    const search = new import_obsidian4.SearchComponent(contentEl);
+    new import_obsidian6.Setting(contentEl).setName(t(this.locale, "iconPickerTitle")).setHeading();
+    const search = new import_obsidian6.SearchComponent(contentEl);
     search.setPlaceholder(t(this.locale, "iconPickerSearchPlaceholder"));
     search.setValue("");
     const grid = contentEl.createDiv({ cls: "lumina-icon-picker-grid" });
@@ -30365,9 +30432,9 @@ var IconPickerModal = class extends import_obsidian4.Modal {
         const iconEl = document.createElement("span");
         iconEl.className = "lumina-icon-picker-item-icon";
         try {
-          (0, import_obsidian4.setIcon)(iconEl, iconId);
+          (0, import_obsidian6.setIcon)(iconEl, iconId);
         } catch (e) {
-          (0, import_obsidian4.setIcon)(iconEl, "tag");
+          (0, import_obsidian6.setIcon)(iconEl, "tag");
         }
         const labelEl = document.createElement("span");
         labelEl.className = "lumina-icon-picker-item-label";
@@ -30386,7 +30453,7 @@ var IconPickerModal = class extends import_obsidian4.Modal {
     render("");
   }
 };
-var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
+var LuminaSettingTab = class extends import_obsidian6.PluginSettingTab {
   constructor(app, plugin) {
     super(app, plugin);
     this.plugin = plugin;
@@ -30420,9 +30487,9 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
   }
   resolveColorToRgba(value) {
     const probe = document.createElement("span");
-    probe.style.color = "";
-    probe.style.color = value;
-    if (!probe.style.color) return null;
+    probe.style.setProperty("color", "");
+    probe.style.setProperty("color", value);
+    if (!probe.style.getPropertyValue("color")) return null;
     document.body.appendChild(probe);
     const computed = getComputedStyle(probe).color;
     probe.remove();
@@ -30468,18 +30535,18 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
   updateIndicatorIconPreview(previewEl, iconName) {
     previewEl.empty();
     try {
-      (0, import_obsidian4.setIcon)(previewEl, iconName);
+      (0, import_obsidian6.setIcon)(previewEl, iconName);
     } catch (e) {
-      (0, import_obsidian4.setIcon)(previewEl, "tag");
+      (0, import_obsidian6.setIcon)(previewEl, "tag");
     }
   }
   display() {
     const { containerEl } = this;
     const { locale } = this.plugin.settings;
     containerEl.empty();
-    containerEl.createEl("h2", { text: "Lumina" });
-    containerEl.createEl("h3", { text: t(locale, "generalSettings") });
-    new import_obsidian4.Setting(containerEl).setName("Language / Langue / Sprache / Idioma / \u8BED\u8A00").addDropdown((dropdown) => {
+    new import_obsidian6.Setting(containerEl).setName("Lumina").setHeading();
+    new import_obsidian6.Setting(containerEl).setName(t(locale, "generalSettings")).setHeading();
+    new import_obsidian6.Setting(containerEl).setName("Language / Langue / Sprache / Idioma / \u8BED\u8A00").addDropdown((dropdown) => {
       ["en", "fr", "de", "es", "zh"].forEach((code) => {
         dropdown.addOption(code, LOCALE_NAMES[code]);
       });
@@ -30490,7 +30557,7 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
         this.display();
       });
     });
-    new import_obsidian4.Setting(containerEl).setName(t(locale, "enableTagSystem")).setDesc(t(locale, "enableTagSystemDesc")).addToggle((toggle) => {
+    new import_obsidian6.Setting(containerEl).setName(t(locale, "enableTagSystem")).setDesc(t(locale, "enableTagSystemDesc")).addToggle((toggle) => {
       toggle.setValue(this.plugin.settings.enableTagSystem);
       toggle.onChange(async (value) => {
         var _a, _b, _c, _d;
@@ -30509,8 +30576,8 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
       });
     });
     if (this.plugin.settings.enableTagSystem) {
-      containerEl.createEl("h3", { text: t(locale, "tagSettings") });
-      new import_obsidian4.Setting(containerEl).setName(t(locale, "showTagsIndicator")).setDesc(t(locale, "showTagsIndicatorDesc")).addToggle((toggle) => {
+      new import_obsidian6.Setting(containerEl).setName(t(locale, "tagSettings")).setHeading();
+      new import_obsidian6.Setting(containerEl).setName(t(locale, "showTagsIndicator")).setDesc(t(locale, "showTagsIndicatorDesc")).addToggle((toggle) => {
         toggle.setValue(this.plugin.settings.showFileExplorerTagsIndicator);
         toggle.onChange(async (value) => {
           var _a, _b;
@@ -30523,7 +30590,7 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
           }
         });
       });
-      new import_obsidian4.Setting(containerEl).setName(t(locale, "tagIndicatorPosition")).setDesc(t(locale, "tagIndicatorPositionDesc")).addDropdown((dropdown) => {
+      new import_obsidian6.Setting(containerEl).setName(t(locale, "tagIndicatorPosition")).setDesc(t(locale, "tagIndicatorPositionDesc")).addDropdown((dropdown) => {
         dropdown.addOption("left", t(locale, "left"));
         dropdown.addOption("right", t(locale, "right"));
         dropdown.setValue(this.plugin.settings.tagIndicatorPosition);
@@ -30533,7 +30600,7 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
           this.saveIndicatorSettingsDebounced();
         });
       });
-      new import_obsidian4.Setting(containerEl).setName(t(locale, "tagIndicatorCompensateShift")).setDesc(t(locale, "tagIndicatorCompensateShiftDesc")).addToggle((toggle) => {
+      new import_obsidian6.Setting(containerEl).setName(t(locale, "tagIndicatorCompensateShift")).setDesc(t(locale, "tagIndicatorCompensateShiftDesc")).addToggle((toggle) => {
         toggle.setValue(this.plugin.settings.tagIndicatorCompensateShift);
         toggle.onChange((value) => {
           this.plugin.settings.tagIndicatorCompensateShift = value;
@@ -30541,7 +30608,7 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
           this.saveIndicatorSettingsDebounced();
         });
       });
-      new import_obsidian4.Setting(containerEl).setName(t(locale, "tagIndicatorStyle")).setDesc(t(locale, "tagIndicatorStyleDesc")).addDropdown((dropdown) => {
+      new import_obsidian6.Setting(containerEl).setName(t(locale, "tagIndicatorStyle")).setDesc(t(locale, "tagIndicatorStyleDesc")).addDropdown((dropdown) => {
         dropdown.addOption("dot", t(locale, "tagIndicatorStyleDot"));
         dropdown.addOption("icon", t(locale, "tagIndicatorStyleIcon"));
         dropdown.setValue(this.plugin.settings.tagIndicatorStyle);
@@ -30555,7 +30622,7 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
       const colorPreset = this.parseColorToHexAndAlpha(this.plugin.settings.tagIndicatorColor);
       let selectedHex = colorPreset.hex;
       let selectedAlpha = colorPreset.alpha;
-      new import_obsidian4.Setting(containerEl).setName(t(locale, "tagIndicatorColor")).setDesc(t(locale, "tagIndicatorColorDesc")).addColorPicker((picker) => {
+      new import_obsidian6.Setting(containerEl).setName(t(locale, "tagIndicatorColor")).setDesc(t(locale, "tagIndicatorColorDesc")).addColorPicker((picker) => {
         picker.setValue(selectedHex);
         picker.onChange((value) => {
           selectedHex = value;
@@ -30570,7 +30637,7 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
           this.updateIndicatorColor(selectedHex, selectedAlpha);
         });
       });
-      new import_obsidian4.Setting(containerEl).setName(t(locale, "tagIndicatorSize")).setDesc(t(locale, "tagIndicatorSizeDesc")).addSlider((slider) => {
+      new import_obsidian6.Setting(containerEl).setName(t(locale, "tagIndicatorSize")).setDesc(t(locale, "tagIndicatorSizeDesc")).addSlider((slider) => {
         slider.setLimits(6, 24, 1);
         slider.setValue(this.plugin.settings.tagIndicatorSize);
         slider.setDynamicTooltip();
@@ -30583,7 +30650,7 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
       if (this.plugin.settings.tagIndicatorStyle === "icon") {
         let iconTextInput = null;
         let iconPreview = null;
-        const iconSetting = new import_obsidian4.Setting(containerEl).setName(t(locale, "tagIndicatorIcon")).setDesc(t(locale, "tagIndicatorIconDesc")).addText((text) => {
+        const iconSetting = new import_obsidian6.Setting(containerEl).setName(t(locale, "tagIndicatorIcon")).setDesc(t(locale, "tagIndicatorIconDesc")).addText((text) => {
           text.setPlaceholder("tag");
           text.setValue(this.plugin.settings.tagIndicatorLucideIcon);
           iconTextInput = text.inputEl;
@@ -30616,7 +30683,7 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
         iconPreview = iconSetting.controlEl.createSpan({ cls: "lumina-icon-preview" });
         this.updateIndicatorIconPreview(iconPreview, this.plugin.settings.tagIndicatorLucideIcon);
       }
-      new import_obsidian4.Setting(containerEl).setName(t(locale, "tagClickAction")).setDesc(t(locale, "tagClickActionDesc")).addDropdown((dropdown) => {
+      new import_obsidian6.Setting(containerEl).setName(t(locale, "tagClickAction")).setDesc(t(locale, "tagClickActionDesc")).addDropdown((dropdown) => {
         dropdown.addOption("lumina", t(locale, "searchInLumina"));
         dropdown.addOption("obsidian", t(locale, "searchInObsidian"));
         dropdown.setValue(this.plugin.settings.tagClickAction);
@@ -30625,8 +30692,8 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
           await this.plugin.saveSettings();
         });
       });
-      containerEl.createEl("h3", { text: t(locale, "searchIntegration") });
-      new import_obsidian4.Setting(containerEl).setName(t(locale, "enableVirtualSearch")).setDesc(t(locale, "enableVirtualSearchDesc")).addToggle((toggle) => {
+      new import_obsidian6.Setting(containerEl).setName(t(locale, "searchIntegration")).setHeading();
+      new import_obsidian6.Setting(containerEl).setName(t(locale, "enableVirtualSearch")).setDesc(t(locale, "enableVirtualSearchDesc")).addToggle((toggle) => {
         toggle.setValue(this.plugin.settings.enableVirtualSearch);
         toggle.onChange(async (value) => {
           var _a, _b;
@@ -30641,7 +30708,7 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
         });
       });
       if (this.plugin.settings.enableVirtualSearch) {
-        new import_obsidian4.Setting(containerEl).setName(t(locale, "virtualSearchClickAction")).setDesc(t(locale, "virtualSearchClickActionDesc")).addDropdown((dropdown) => {
+        new import_obsidian6.Setting(containerEl).setName(t(locale, "virtualSearchClickAction")).setDesc(t(locale, "virtualSearchClickActionDesc")).addDropdown((dropdown) => {
           dropdown.addOption("obsidian", t(locale, "openInObsidian"));
           dropdown.addOption("lumina", t(locale, "openInLumina"));
           dropdown.setValue(this.plugin.settings.virtualSearchClickAction);
@@ -30651,8 +30718,8 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
           });
         });
       }
-      containerEl.createEl("h3", { text: t(locale, "backlinksSection") });
-      new import_obsidian4.Setting(containerEl).setName(t(locale, "scanBacklinks")).setDesc(t(locale, "scanBacklinksDesc")).addButton((button) => {
+      new import_obsidian6.Setting(containerEl).setName(t(locale, "backlinksSection")).setHeading();
+      new import_obsidian6.Setting(containerEl).setName(t(locale, "scanBacklinks")).setDesc(t(locale, "scanBacklinksDesc")).addButton((button) => {
         button.setButtonText(t(locale, "scanNow"));
         button.onClick(async () => {
           var _a;
@@ -30660,9 +30727,9 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
           button.setButtonText(t(locale, "scanning"));
           try {
             const count = await this.plugin.scanAndCreateBacklinks();
-            new import_obsidian4.Notice(((_a = t(locale, "scanComplete")) == null ? void 0 : _a.replace("{count}", String(count))) || `Scan complete! Created ${count} backlinks.`);
+            new import_obsidian6.Notice(((_a = t(locale, "scanComplete")) == null ? void 0 : _a.replace("{count}", String(count))) || `Scan complete! Created ${count} backlinks.`);
           } catch (e) {
-            new import_obsidian4.Notice("Error during scan: " + e.message);
+            new import_obsidian6.Notice("Error during scan: " + e.message);
           } finally {
             button.setDisabled(false);
             button.setButtonText(t(locale, "scanNow"));
@@ -30670,8 +30737,8 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
         });
       });
     }
-    containerEl.createEl("h3", { text: t(locale, "gallerySettings") });
-    new import_obsidian4.Setting(containerEl).setName(t(locale, "blockImageClickAction")).setDesc(t(locale, "blockImageClickActionDesc")).addDropdown((dropdown) => {
+    new import_obsidian6.Setting(containerEl).setName(t(locale, "gallerySettings")).setHeading();
+    new import_obsidian6.Setting(containerEl).setName(t(locale, "blockImageClickAction")).setDesc(t(locale, "blockImageClickActionDesc")).addDropdown((dropdown) => {
       dropdown.addOption("preview", t(locale, "previewFullscreen"));
       dropdown.addOption("open", t(locale, "openFile"));
       dropdown.setValue(this.plugin.settings.blockImageClickAction);
@@ -30680,8 +30747,8 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
         await this.plugin.saveSettings();
       });
     });
-    containerEl.createEl("h3", { text: t(locale, "galleryDefaults") });
-    new import_obsidian4.Setting(containerEl).setName(t(locale, "defaultLayout")).setDesc(t(locale, "defaultLayoutDesc")).addDropdown((dropdown) => {
+    new import_obsidian6.Setting(containerEl).setName(t(locale, "galleryDefaults")).setHeading();
+    new import_obsidian6.Setting(containerEl).setName(t(locale, "defaultLayout")).setDesc(t(locale, "defaultLayoutDesc")).addDropdown((dropdown) => {
       dropdown.addOption("justified", t(locale, "justifiedLayout"));
       dropdown.addOption("square", t(locale, "squareGrid"));
       dropdown.addOption("detail", t(locale, "detailView"));
@@ -30693,7 +30760,7 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
         await this.plugin.saveSettings();
       });
     });
-    new import_obsidian4.Setting(containerEl).setName(t(locale, "defaultZoom")).setDesc(t(locale, "defaultZoomDesc")).addSlider((slider) => {
+    new import_obsidian6.Setting(containerEl).setName(t(locale, "defaultZoom")).setDesc(t(locale, "defaultZoomDesc")).addSlider((slider) => {
       slider.setLimits(50, 500, 10);
       slider.setValue(this.plugin.settings.defaultZoom);
       slider.setDynamicTooltip();
@@ -30702,14 +30769,14 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
         await this.plugin.saveSettings();
       });
     });
-    new import_obsidian4.Setting(containerEl).setName(t(locale, "defaultShowNames")).setDesc(t(locale, "defaultShowNamesDesc")).addToggle((toggle) => {
+    new import_obsidian6.Setting(containerEl).setName(t(locale, "defaultShowNames")).setDesc(t(locale, "defaultShowNamesDesc")).addToggle((toggle) => {
       toggle.setValue(this.plugin.settings.defaultShowNames);
       toggle.onChange(async (value) => {
         this.plugin.settings.defaultShowNames = value;
         await this.plugin.saveSettings();
       });
     });
-    new import_obsidian4.Setting(containerEl).setName(t(locale, "defaultMediaFilter")).setDesc(t(locale, "defaultMediaFilterDesc")).addDropdown((dropdown) => {
+    new import_obsidian6.Setting(containerEl).setName(t(locale, "defaultMediaFilter")).setDesc(t(locale, "defaultMediaFilterDesc")).addDropdown((dropdown) => {
       dropdown.addOption("all", t(locale, "photos") + " + " + t(locale, "videos"));
       dropdown.addOption("photos", t(locale, "photos"));
       dropdown.addOption("videos", t(locale, "videos"));
@@ -30719,8 +30786,8 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
         await this.plugin.saveSettings();
       });
     });
-    containerEl.createEl("h3", { text: t(locale, "performanceSettings") });
-    new import_obsidian4.Setting(containerEl).setName(t(locale, "thumbnailQuality")).setDesc(t(locale, "thumbnailQualityDesc")).addDropdown((dropdown) => {
+    new import_obsidian6.Setting(containerEl).setName(t(locale, "performanceSettings")).setHeading();
+    new import_obsidian6.Setting(containerEl).setName(t(locale, "thumbnailQuality")).setDesc(t(locale, "thumbnailQualityDesc")).addDropdown((dropdown) => {
       dropdown.addOption("low", t(locale, "qualityLow"));
       dropdown.addOption("medium", t(locale, "qualityMedium"));
       dropdown.addOption("high", t(locale, "qualityHigh"));
@@ -30730,7 +30797,7 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
         await this.plugin.saveSettings();
       });
     });
-    new import_obsidian4.Setting(containerEl).setName(t(locale, "maxCacheSize")).setDesc(t(locale, "maxCacheSizeDesc")).addSlider((slider) => {
+    new import_obsidian6.Setting(containerEl).setName(t(locale, "maxCacheSize")).setDesc(t(locale, "maxCacheSizeDesc")).addSlider((slider) => {
       slider.setLimits(100, 2e3, 100);
       slider.setValue(this.plugin.settings.maxCacheSizeMB);
       slider.setDynamicTooltip();
@@ -30739,22 +30806,22 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
         await this.plugin.saveSettings();
       });
     });
-    new import_obsidian4.Setting(containerEl).setName(t(locale, "enableStartupSync")).setDesc(t(locale, "enableStartupSyncDesc")).addToggle((toggle) => {
+    new import_obsidian6.Setting(containerEl).setName(t(locale, "enableStartupSync")).setDesc(t(locale, "enableStartupSyncDesc")).addToggle((toggle) => {
       toggle.setValue(this.plugin.settings.enableStartupSync);
       toggle.onChange(async (value) => {
         this.plugin.settings.enableStartupSync = value;
         await this.plugin.saveSettings();
       });
     });
-    new import_obsidian4.Setting(containerEl).setName(t(locale, "debugLogs")).setDesc(t(locale, "debugLogsDesc")).addToggle((toggle) => {
+    new import_obsidian6.Setting(containerEl).setName(t(locale, "debugLogs")).setDesc(t(locale, "debugLogsDesc")).addToggle((toggle) => {
       toggle.setValue(this.plugin.settings.showDebugLogs);
       toggle.onChange(async (value) => {
         this.plugin.settings.showDebugLogs = value;
         await this.plugin.saveSettings();
       });
     });
-    containerEl.createEl("h3", { text: t(locale, "backupRestore") });
-    new import_obsidian4.Setting(containerEl).setName(t(locale, "autoBackup")).setDesc(t(locale, "autoBackupDesc")).addToggle((toggle) => {
+    new import_obsidian6.Setting(containerEl).setName(t(locale, "backupRestore")).setHeading();
+    new import_obsidian6.Setting(containerEl).setName(t(locale, "autoBackup")).setDesc(t(locale, "autoBackupDesc")).addToggle((toggle) => {
       toggle.setValue(this.plugin.settings.autoBackupEnabled);
       toggle.onChange(async (value) => {
         this.plugin.settings.autoBackupEnabled = value;
@@ -30763,7 +30830,7 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
       });
     });
     if (this.plugin.settings.autoBackupEnabled) {
-      new import_obsidian4.Setting(containerEl).setName(t(locale, "backupInterval")).setDesc(t(locale, "backupIntervalDesc")).addSlider((slider) => {
+      new import_obsidian6.Setting(containerEl).setName(t(locale, "backupInterval")).setDesc(t(locale, "backupIntervalDesc")).addSlider((slider) => {
         slider.setLimits(1, 168, 1);
         slider.setValue(this.plugin.settings.autoBackupIntervalHours);
         slider.setDynamicTooltip();
@@ -30772,7 +30839,7 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
           await this.plugin.saveSettings();
         });
       });
-      new import_obsidian4.Setting(containerEl).setName(t(locale, "backupPath")).setDesc(t(locale, "backupPathDesc")).addText((text) => {
+      new import_obsidian6.Setting(containerEl).setName(t(locale, "backupPath")).setDesc(t(locale, "backupPathDesc")).addText((text) => {
         text.setPlaceholder("backups/lumina");
         text.setValue(this.plugin.settings.autoBackupPath);
         text.onChange(async (value) => {
@@ -30781,7 +30848,7 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
         });
       });
     }
-    new import_obsidian4.Setting(containerEl).setName(t(locale, "exportBackup")).addButton((btn) => {
+    new import_obsidian6.Setting(containerEl).setName(t(locale, "exportBackup")).addButton((btn) => {
       btn.setButtonText(t(locale, "exportBackup"));
       btn.onClick(async () => {
         const folder = this.plugin.settings.autoBackupPath || "";
@@ -30791,13 +30858,13 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
         const fullPath = folder ? `${folder.replace(/[\\/]$/, "")}${sep}${fileName}` : fileName;
         try {
           await this.plugin.exportTagBackup(fullPath);
-          new import_obsidian4.Notice(t(locale, "backupExported"));
+          new import_obsidian6.Notice(t(locale, "backupExported"));
         } catch (e) {
-          new import_obsidian4.Notice("Error: " + e.message);
+          new import_obsidian6.Notice("Error: " + e.message);
         }
       });
     });
-    new import_obsidian4.Setting(containerEl).setName(t(locale, "importBackup")).addButton((btn) => {
+    new import_obsidian6.Setting(containerEl).setName(t(locale, "importBackup")).addButton((btn) => {
       btn.setButtonText(t(locale, "importBackup"));
       btn.onClick(() => {
         const input = document.createElement("input");
@@ -30814,10 +30881,10 @@ var LuminaSettingTab = class extends import_obsidian4.PluginSettingTab {
             if (!importedMap || typeof importedMap !== "object") {
               throw new Error("Invalid backup format");
             }
-            const count = await this.plugin.importTagBackupFromData(importedMap);
-            new import_obsidian4.Notice(t(locale, "backupImported", { n: count }));
+            const count = this.plugin.importTagBackupFromData(importedMap);
+            new import_obsidian6.Notice(t(locale, "backupImported", { n: count }));
           } catch (e) {
-            new import_obsidian4.Notice("Error: " + e.message);
+            new import_obsidian6.Notice("Error: " + e.message);
           }
         });
         input.click();
@@ -31110,7 +31177,7 @@ var TagManager = class {
 };
 
 // src/services/tagIndicatorService.ts
-var import_obsidian5 = require("obsidian");
+var import_obsidian7 = require("obsidian");
 var TagIndicatorService = class {
   constructor(tagManager, app, getAppearance) {
     this.observer = null;
@@ -31310,39 +31377,33 @@ var TagIndicatorService = class {
     const size = this.getValidSize(appearance.size);
     const iconName = this.getValidIcon(appearance.icon);
     badge.setAttribute("data-lumina-appearance", appearanceSignature);
-    badge.style.color = color;
-    badge.style.width = `${size}px`;
-    badge.style.height = `${size}px`;
-    badge.style.minWidth = `${size}px`;
-    badge.style.minHeight = `${size}px`;
-    badge.style.setProperty("--lumina-tag-indicator-size", `${size}px`);
+    badge.setCssProps({
+      "--lumina-indicator-color": color,
+      "--lumina-indicator-size": `${size}px`,
+      "--lumina-tag-indicator-size": `${size}px`
+    });
     badge.classList.toggle(
       "lumina-tag-indicator-compensate-shift",
       appearance.position === "left" && appearance.compensateShift
     );
+    badge.classList.toggle("lumina-tag-indicator-icon", appearance.style === "icon");
+    badge.classList.toggle("lumina-tag-indicator-dot", appearance.style === "dot");
     if (appearance.style === "icon") {
-      badge.style.backgroundColor = "transparent";
-      badge.style.borderRadius = "0";
-      badge.style.boxShadow = "none";
       try {
-        (0, import_obsidian5.setIcon)(badge, iconName);
+        (0, import_obsidian7.setIcon)(badge, iconName);
       } catch (e) {
-        (0, import_obsidian5.setIcon)(badge, "tag");
+        (0, import_obsidian7.setIcon)(badge, "tag");
       }
       const iconSvg = badge.querySelector("svg");
       if (iconSvg) {
         iconSvg.setAttribute("width", String(size));
         iconSvg.setAttribute("height", String(size));
-        iconSvg.style.stroke = color;
       }
       return;
     }
     if (badge.firstChild) {
       badge.replaceChildren();
     }
-    badge.style.backgroundColor = color;
-    badge.style.borderRadius = "50%";
-    badge.style.boxShadow = `0 0 4px ${color}`;
   }
   getAppearanceSignature(appearance) {
     return [
@@ -31375,7 +31436,7 @@ var TagIndicatorService = class {
   getVaultTags(path) {
     var _a, _b;
     const file = this.app.vault.getAbstractFileByPath(path);
-    if (!(file instanceof import_obsidian5.TFile)) return [];
+    if (!(file instanceof import_obsidian7.TFile)) return [];
     const cache = this.app.metadataCache.getFileCache(file);
     if (!cache) return [];
     const inlineTags = ((_a = cache.tags) != null ? _a : []).map((tag) => {
@@ -31441,20 +31502,7 @@ var TagIndicatorService = class {
 };
 
 // src/services/frontmatterService.ts
-var import_obsidian6 = require("obsidian");
-
-// src/utils/debugLog.ts
-var _getEnabled = null;
-function initDebugLog(getEnabled) {
-  _getEnabled = getEnabled;
-}
-function debugLog(...args) {
-  if (_getEnabled && _getEnabled()) {
-    console.log("[Lumina]", ...args);
-  }
-}
-
-// src/services/frontmatterService.ts
+var import_obsidian8 = require("obsidian");
 var FrontmatterService = class {
   constructor(vault, app) {
     this.vault = vault;
@@ -31543,7 +31591,7 @@ var FrontmatterService = class {
       await this.vault.createFolder(metadataFolderPath).catch(() => {
       });
     }
-    const safeName = mediaPath.replace(/[^a-zA-Z0-9_\-\.]/g, "_").replace(/_+/g, "_").slice(0, 100);
+    const safeName = mediaPath.replace(/[^a-zA-Z0-9_\-.]/g, "_").replace(/_+/g, "_").slice(0, 100);
     const notePath = `${metadataFolderPath}/${safeName}.md`;
     const frontmatter = [
       "---",
@@ -31569,7 +31617,7 @@ var FrontmatterService = class {
     }
     const content = [...frontmatter, ...body].join("\n");
     const existingFile = this.vault.getAbstractFileByPath(notePath);
-    if (existingFile && existingFile instanceof import_obsidian6.TFile) {
+    if (existingFile && existingFile instanceof import_obsidian8.TFile) {
       await this.vault.modify(existingFile, content);
     } else {
       await this.vault.create(notePath, content);
@@ -31584,7 +31632,7 @@ var FrontmatterService = class {
   async syncNoteProperties(path, tags) {
     debugLog("syncNoteProperties called:", { path, tags });
     const file = this.vault.getAbstractFileByPath(path);
-    if (!(file instanceof import_obsidian6.TFile) || file.extension.toLowerCase() !== "md") {
+    if (!(file instanceof import_obsidian8.TFile) || file.extension.toLowerCase() !== "md") {
       debugLog("syncNoteProperties: file not found or not .md");
       return;
     }
@@ -31776,7 +31824,7 @@ ${hasFrontmatter ? body : content}`.replace(/\s+$/, "");
     const targetName = this.normalizeLink(targetLink);
     const targetFile = this.findFileByName(targetName);
     debugLog("addBacklinkToFile:", { targetLink, targetName, backlink, targetFile: targetFile == null ? void 0 : targetFile.path });
-    if (!targetFile || !(targetFile instanceof import_obsidian6.TFile)) {
+    if (!targetFile || !(targetFile instanceof import_obsidian8.TFile)) {
       debugLog("Target file not found!");
       return;
     }
@@ -31797,7 +31845,7 @@ ${hasFrontmatter ? body : content}`.replace(/\s+$/, "");
   async removeBacklinkFromFile(targetLink, backlink) {
     const targetName = this.normalizeLink(targetLink);
     const targetFile = this.findFileByName(targetName);
-    if (!targetFile || !(targetFile instanceof import_obsidian6.TFile)) {
+    if (!targetFile || !(targetFile instanceof import_obsidian8.TFile)) {
       return;
     }
     const currentTags = this.getAllTagsFromFrontmatter(targetFile);
@@ -31834,7 +31882,7 @@ ${hasFrontmatter ? body : content}`.replace(/\s+$/, "");
 };
 
 // src/services/fileHeaderService.ts
-var import_obsidian7 = require("obsidian");
+var import_obsidian9 = require("obsidian");
 var FileHeaderService = class {
   constructor(app, tagManager, getLocale, onOpenTagModal) {
     this.observer = null;
@@ -31871,7 +31919,7 @@ var FileHeaderService = class {
     }
   }
   addTagButtonToActiveLeaf() {
-    const activeLeaf = this.app.workspace.activeLeaf;
+    const activeLeaf = this.app.workspace.getMostRecentLeaf();
     if (!activeLeaf) return;
     const file = this.getFileFromLeaf(activeLeaf);
     if (!file) return;
@@ -31885,7 +31933,25 @@ var FileHeaderService = class {
     const btn = document.createElement("a");
     btn.className = "clickable-icon view-action lumina-header-tag-btn";
     btn.setAttribute("aria-label", "Manage tags (Lumina)");
-    btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>`;
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("width", "18");
+    svg.setAttribute("height", "18");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke", "currentColor");
+    svg.setAttribute("stroke-width", "2");
+    svg.setAttribute("stroke-linecap", "round");
+    svg.setAttribute("stroke-linejoin", "round");
+    const path1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path1.setAttribute("d", "M12 2L2 7l10 5 10-5-10-5z");
+    const path2 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path2.setAttribute("d", "M2 17l10 5 10-5");
+    const path3 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path3.setAttribute("d", "M2 12l10 5 10-5");
+    svg.appendChild(path1);
+    svg.appendChild(path2);
+    svg.appendChild(path3);
+    btn.appendChild(svg);
     btn.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -31899,11 +31965,11 @@ var FileHeaderService = class {
     const filePath = (_a = viewState == null ? void 0 : viewState.state) == null ? void 0 : _a.file;
     if (!filePath || typeof filePath !== "string") return null;
     const file = this.app.vault.getAbstractFileByPath(filePath);
-    return file instanceof import_obsidian7.TFile ? file : null;
+    return file instanceof import_obsidian9.TFile ? file : null;
   }
   showTagDropdown(file, buttonEl) {
     const tags = this.tagManager.getTags(file.path);
-    const menu = new import_obsidian7.Menu();
+    const menu = new import_obsidian9.Menu();
     if (tags.length === 0) {
       menu.addItem((item) => {
         item.setTitle("No tags");
@@ -31939,7 +32005,7 @@ var FileHeaderService = class {
 };
 
 // src/services/LuminaBlockProcessor.ts
-var import_obsidian8 = require("obsidian");
+var import_obsidian10 = require("obsidian");
 
 // src/components/LuminaBlockEditor.tsx
 var import_react7 = __toESM(require_react());
@@ -32104,7 +32170,7 @@ var LuminaBlockEditor = ({
   const parseQueryToTokens = (query) => {
     const tokens = [];
     if (!query.trim()) return tokens;
-    const regex = /(!?)(\[\[[^\]]+\]\]|#[\w\-\/]+)/g;
+    const regex = /(!?)(\[\[[^\]]+\]\]|#[\w\-/]+)/g;
     let match;
     let lastOperator = "AND";
     const isOrMode = query.toLowerCase().includes(" or ") || query.includes(" | ");
@@ -32121,7 +32187,7 @@ var LuminaBlockEditor = ({
           value,
           operator: isNot ? "NOT" : isOrMode ? "OR" : "AND"
         });
-      } else if (value.startsWith("#") || /^[\w\-\/]+$/.test(value)) {
+      } else if (value.startsWith("#") || /^[\w\-/]+$/.test(value)) {
         tokens.push({
           id: `${Date.now()}-${index}`,
           type: "tag",
@@ -32225,14 +32291,14 @@ var LuminaBlockEditor = ({
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("circle", { cx: "8.5", cy: "8.5", r: "1.5" }),
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("polyline", { points: "21 15 16 10 5 21" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "Lumina Block Editor" })
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "Lumina block editor" })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { className: "lumina-editor-close", onClick: onClose, children: "\xD7" })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-section", children: [
       /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-section-title", children: [
         /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "\u{1F50D}" }),
-        " Filter by Tags & Links"
+        " Filter by tags & links"
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-operator-toggle", children: [
         /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
@@ -32471,7 +32537,7 @@ var LuminaBlockEditor = ({
               onChange: (e) => setOptions({ ...options, showNames: e.target.checked })
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "Show filenames" })
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "Show file names" })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("label", { className: "lumina-checkbox", children: [
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
@@ -32489,7 +32555,7 @@ var LuminaBlockEditor = ({
     /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-section", children: [
       /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "lumina-editor-section-title", children: [
         /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "\u{1F4C1}" }),
-        " Specific Files (no tags)"
+        " Specific files (no tags)"
       ] }),
       options.files && options.files.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "lumina-files-list", children: options.files.map((file, index) => /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
         "div",
@@ -32604,13 +32670,23 @@ var LuminaBlockProcessor = class {
     el.addClass("lumina-block-gallery");
     el.addClass("lumina-block-editable");
     const editButton = el.createDiv({ cls: "lumina-block-edit-btn" });
-    editButton.innerHTML = `
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M12 20h9"/>
-        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-      </svg>
-      <span>Edit</span>
-    `;
+    const editSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    editSvg.setAttribute("width", "16");
+    editSvg.setAttribute("height", "16");
+    editSvg.setAttribute("viewBox", "0 0 24 24");
+    editSvg.setAttribute("fill", "none");
+    editSvg.setAttribute("stroke", "currentColor");
+    editSvg.setAttribute("stroke-width", "2");
+    const editPath1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    editPath1.setAttribute("d", "M12 20h9");
+    const editPath2 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    editPath2.setAttribute("d", "M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z");
+    editSvg.appendChild(editPath1);
+    editSvg.appendChild(editPath2);
+    editButton.appendChild(editSvg);
+    const editLabel = document.createElement("span");
+    editLabel.textContent = "Edit";
+    editButton.appendChild(editLabel);
     editButton.title = "Edit Lumina block settings";
     let editorContainer = null;
     let editorRoot = null;
@@ -32693,7 +32769,7 @@ var LuminaBlockProcessor = class {
    */
   async updateBlockSource(ctx, oldSource, newSource) {
     const file = this.app.vault.getAbstractFileByPath(ctx.sourcePath);
-    if (!(file instanceof import_obsidian8.TFile)) return;
+    if (!(file instanceof import_obsidian10.TFile)) return;
     try {
       const content = await this.app.vault.read(file);
       const blockRegex = /```lumina\n([\s\S]*?)```/g;
@@ -32746,7 +32822,7 @@ var LuminaBlockProcessor = class {
       tagSpan.classList.add("lumina-block-tag-hashtag");
     }
     textSpan.addEventListener("click", (e) => {
-      var _a, _b, _c, _d, _e;
+      var _a, _b, _c, _d;
       e.preventDefault();
       e.stopPropagation();
       if (isLink) {
@@ -32756,7 +32832,8 @@ var LuminaBlockProcessor = class {
         const action = this.plugin.settings.tagClickAction;
         const searchTag = tag.startsWith("#") ? tag : `#${tag}`;
         if (action === "obsidian") {
-          (_e = (_d = (_c = (_b = (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) == null ? void 0 : _b["global-search"]) == null ? void 0 : _c.instance) == null ? void 0 : _d.openGlobalSearch) == null ? void 0 : _e.call(_d, searchTag);
+          const internalPlugins = this.app.internalPlugins;
+          (_d = (_c = (_b = (_a = internalPlugins == null ? void 0 : internalPlugins.plugins) == null ? void 0 : _a["global-search"]) == null ? void 0 : _b.instance) == null ? void 0 : _c.openGlobalSearch) == null ? void 0 : _d.call(_c, searchTag);
         } else {
           this.openLuminaWithSearch(searchTag);
         }
@@ -32765,7 +32842,7 @@ var LuminaBlockProcessor = class {
     if (filePath) {
       const removeBtn = document.createElement("button");
       removeBtn.className = "lumina-block-tag-remove";
-      removeBtn.innerHTML = "\xD7";
+      removeBtn.textContent = "\xD7";
       removeBtn.title = "Remove tag";
       removeBtn.addEventListener("click", (e) => {
         e.preventDefault();
@@ -32790,7 +32867,7 @@ var LuminaBlockProcessor = class {
       }
     } else {
       const leaf = this.app.workspace.getLeaf(false);
-      leaf.setViewState({ type: "lumina-view", active: true }).then(() => {
+      void leaf.setViewState({ type: "lumina-view", active: true }).then(() => {
         this.app.workspace.revealLeaf(leaf);
         setTimeout(() => {
           const view = leaf.view;
@@ -32919,29 +32996,32 @@ var LuminaBlockProcessor = class {
               options.layout = value;
             }
             break;
-          case "columns":
+          case "columns": {
             const cols = parseInt(value, 10);
             if (cols >= 1 && cols <= 10) options.columns = cols;
             break;
+          }
           case "shownames":
             options.showNames = value === "true";
             break;
           case "showtags":
             options.showTags = value === "true";
             break;
-          case "maxitems":
+          case "maxitems": {
             const max = parseInt(value, 10);
             if (max > 0) options.maxItems = max;
             break;
+          }
           case "sortby":
             if (["date-desc", "date-asc", "name", "random"].includes(value)) {
               options.sortBy = value;
             }
             break;
-          case "size":
+          case "size": {
             const size = parseInt(value, 10);
             if (size >= 50 && size <= 1e3) options.size = size;
             break;
+          }
           case "date":
             if (value.startsWith("after:")) {
               options.dateAfter = value.substring(6).trim();
@@ -33242,7 +33322,7 @@ var LuminaBlockProcessor = class {
 };
 
 // src/services/VirtualSearchService.ts
-var import_obsidian9 = require("obsidian");
+var import_obsidian11 = require("obsidian");
 var VirtualSearchService = class {
   constructor(app, plugin, tagManager) {
     this.isEnabled = false;
@@ -33297,7 +33377,7 @@ var VirtualSearchService = class {
     return this.mediaExtensions.has(ext);
   }
   /**
-   * Get the search leaf and view
+   * Internal search view interface (undocumented Obsidian API)
    */
   getSearchView() {
     const searchLeaf = this.app.workspace.getLeavesOfType("search")[0];
@@ -33308,21 +33388,23 @@ var VirtualSearchService = class {
    * Setup observer for the search view - uses targeted observation
    */
   setupSearchObserver() {
-    const debouncedInject = (0, import_obsidian9.debounce)((query) => {
+    const debouncedInject = (0, import_obsidian11.debounce)((query) => {
       this.injectSearchResults(query);
     }, 400, true);
     this.searchObserver = new MutationObserver(() => {
-      var _a, _b, _c;
       const searchData = this.getSearchView();
       if (!searchData) return;
       const view = searchData.view;
-      const currentQuery = ((_a = view == null ? void 0 : view.searchQuery) == null ? void 0 : _a.query) || ((_b = view == null ? void 0 : view.getQuery) == null ? void 0 : _b.call(view)) || "";
+      const searchQuery = view.searchQuery;
+      const getQuery = view.getQuery;
+      const currentQuery = (searchQuery == null ? void 0 : searchQuery.query) || (getQuery == null ? void 0 : getQuery()) || "";
       if (currentQuery && currentQuery !== this.lastQuery) {
         this.lastQuery = currentQuery;
         debugLog("Search query from view:", currentQuery);
         debouncedInject(currentQuery);
       }
-      if (((_c = view == null ? void 0 : view.dom) == null ? void 0 : _c.resultDomLookup) && currentQuery) {
+      const dom = view.dom;
+      if ((dom == null ? void 0 : dom.resultDomLookup) && currentQuery) {
         const now = Date.now();
         if (now - this.lastInjectTime > 600) {
           this.lastInjectTime = now;
@@ -33383,7 +33465,7 @@ var VirtualSearchService = class {
     let cleanQuery = query.replace(/^tag:/i, "").trim();
     const searchTags = this.extractSearchTags(cleanQuery);
     const searchLinks = this.extractSearchLinks(cleanQuery);
-    const searchText = cleanQuery.replace(/#[\w\-\/]+/g, "").replace(/\[\[[^\]]+\]\]/g, "").trim().toLowerCase();
+    const searchText = cleanQuery.replace(/#[\w\-/]+/g, "").replace(/\[\[[^\]]+\]\]/g, "").trim().toLowerCase();
     const allTaggedPaths = this.tagManager.getAllTaggedPaths();
     debugLog("Searching media - Query:", cleanQuery, "Tags found:", searchTags, "Total tagged paths:", allTaggedPaths.length);
     for (const path of allTaggedPaths) {
@@ -33446,18 +33528,18 @@ var VirtualSearchService = class {
    * Inject search results into the search view
    */
   injectSearchResults(query) {
-    var _a, _b;
     const searchData = this.getSearchView();
     if (!searchData) {
       debugLog("No search leaf found");
       return;
     }
     const view = searchData.view;
+    const viewDom = view.dom;
     let resultsContainer = null;
-    if ((_a = view == null ? void 0 : view.dom) == null ? void 0 : _a.resultDom) {
-      resultsContainer = view.dom.resultDom;
-    } else if ((_b = view == null ? void 0 : view.dom) == null ? void 0 : _b.el) {
-      resultsContainer = view.dom.el.querySelector(".search-result-container, .search-results-children");
+    if (viewDom == null ? void 0 : viewDom.resultDom) {
+      resultsContainer = viewDom.resultDom;
+    } else if (viewDom == null ? void 0 : viewDom.el) {
+      resultsContainer = viewDom.el.querySelector(".search-result-container, .search-results-children");
     } else {
       const searchLeafEl = searchData.leaf.containerEl;
       if (searchLeafEl) {
@@ -33482,15 +33564,24 @@ var VirtualSearchService = class {
     section.className = "lumina-virtual-section";
     const header = document.createElement("div");
     header.className = "tree-item lumina-virtual-header";
-    header.innerHTML = `
-      <div class="tree-item-self is-clickable" style="padding: 8px 12px; margin-top: 12px; background: linear-gradient(135deg, var(--interactive-accent) 0%, var(--interactive-accent-hover) 100%); border-radius: 6px;">
-        <div class="tree-item-inner" style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 16px;">\u{1F4F7}</span>
-          <span style="font-weight: 600; color: white;">Lumina Media</span>
-          <span style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 10px; font-size: 11px; color: white;">${results.length}</span>
-        </div>
-      </div>
-    `;
+    const headerSelf = document.createElement("div");
+    headerSelf.className = "tree-item-self is-clickable lumina-virtual-header-self";
+    const headerInner = document.createElement("div");
+    headerInner.className = "tree-item-inner lumina-virtual-header-inner";
+    const iconSpan = document.createElement("span");
+    iconSpan.className = "lumina-virtual-header-icon";
+    iconSpan.textContent = "\u{1F4F7}";
+    const titleSpan = document.createElement("span");
+    titleSpan.className = "lumina-virtual-header-title";
+    titleSpan.textContent = "Lumina Media";
+    const countSpan = document.createElement("span");
+    countSpan.className = "lumina-virtual-header-count";
+    countSpan.textContent = String(results.length);
+    headerInner.appendChild(iconSpan);
+    headerInner.appendChild(titleSpan);
+    headerInner.appendChild(countSpan);
+    headerSelf.appendChild(headerInner);
+    header.appendChild(headerSelf);
     section.appendChild(header);
     const displayResults = results.slice(0, 15);
     for (const result of displayResults) {
@@ -33500,7 +33591,6 @@ var VirtualSearchService = class {
     if (results.length > 15) {
       const more = document.createElement("div");
       more.className = "lumina-virtual-more";
-      more.style.cssText = "padding: 8px 12px; color: var(--text-muted); font-size: 12px; text-align: center;";
       more.textContent = `... +${results.length - 15}`;
       section.appendChild(more);
     }
@@ -33531,23 +33621,45 @@ var VirtualSearchService = class {
     }
     const filename = result.path.split("/").pop() || result.path;
     const folder = result.path.includes("/") ? result.path.substring(0, result.path.lastIndexOf("/")) : "";
-    container.innerHTML = `
-      <div class="tree-item-self search-result-file-title is-clickable" style="padding: 8px 12px; border-left: 3px solid var(--interactive-accent); margin-left: 8px; margin-top: 4px; background: var(--background-secondary); border-radius: 0 6px 6px 0;">
-        <div class="tree-item-inner" style="display: flex; align-items: center; gap: 10px;">
-          <span style="font-size: 18px; background: ${iconBg}; padding: 4px; border-radius: 6px;">${icon}</span>
-          <div style="flex: 1; min-width: 0;">
-            <div style="font-weight: 500; color: var(--text-normal); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${filename}</div>
-            ${folder ? `<div style="font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${folder}</div>` : ""}
-          </div>
-        </div>
-        <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; padding-left: 36px;">
-          ${result.tags.slice(0, 4).map((tag) => `<span style="background: var(--background-modifier-hover); padding: 2px 8px; border-radius: 10px; font-size: 10px; color: var(--text-muted);">${tag}</span>`).join("")}
-          ${result.tags.length > 4 ? `<span style="font-size: 10px; color: var(--text-faint);">+${result.tags.length - 4}</span>` : ""}
-        </div>
-      </div>
-    `;
-    const clickable = container.querySelector(".tree-item-self");
-    clickable == null ? void 0 : clickable.addEventListener("click", (e) => {
+    const selfEl = document.createElement("div");
+    selfEl.className = "tree-item-self search-result-file-title is-clickable lumina-virtual-result-self";
+    const innerEl = document.createElement("div");
+    innerEl.className = "tree-item-inner lumina-virtual-result-inner";
+    const iconEl = document.createElement("span");
+    iconEl.className = "lumina-virtual-result-icon";
+    iconEl.textContent = icon;
+    const infoEl = document.createElement("div");
+    infoEl.className = "lumina-virtual-result-info";
+    const filenameEl = document.createElement("div");
+    filenameEl.className = "lumina-virtual-result-filename";
+    filenameEl.textContent = filename;
+    infoEl.appendChild(filenameEl);
+    if (folder) {
+      const folderEl = document.createElement("div");
+      folderEl.className = "lumina-virtual-result-folder";
+      folderEl.textContent = folder;
+      infoEl.appendChild(folderEl);
+    }
+    innerEl.appendChild(iconEl);
+    innerEl.appendChild(infoEl);
+    selfEl.appendChild(innerEl);
+    const tagsEl = document.createElement("div");
+    tagsEl.className = "lumina-virtual-result-tags";
+    result.tags.slice(0, 4).forEach((tag) => {
+      const tagSpan = document.createElement("span");
+      tagSpan.className = "lumina-virtual-result-tag";
+      tagSpan.textContent = tag;
+      tagsEl.appendChild(tagSpan);
+    });
+    if (result.tags.length > 4) {
+      const moreSpan = document.createElement("span");
+      moreSpan.className = "lumina-virtual-result-tag-more";
+      moreSpan.textContent = `+${result.tags.length - 4}`;
+      tagsEl.appendChild(moreSpan);
+    }
+    selfEl.appendChild(tagsEl);
+    container.appendChild(selfEl);
+    selfEl.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
       const clickAction = this.plugin.settings.virtualSearchClickAction || "obsidian";
@@ -33567,7 +33679,7 @@ var VirtualSearchService = class {
    * Extract #tags from search query
    */
   extractSearchTags(query) {
-    const tagRegex = /#[\w\-\/]+/g;
+    const tagRegex = /#[\w\-/]+/g;
     const matches = query.match(tagRegex) || [];
     const words = query.split(/\s+/).filter((w) => w.length > 1 && !w.startsWith("#") && !w.startsWith("[["));
     return [...matches, ...words];
@@ -33585,7 +33697,7 @@ var VirtualSearchService = class {
   openMediaInObsidian(path) {
     debugLog("Opening media in Obsidian:", path);
     const file = this.app.vault.getAbstractFileByPath(path);
-    if (file instanceof import_obsidian9.TFile) {
+    if (file instanceof import_obsidian11.TFile) {
       this.app.workspace.getLeaf("tab").openFile(file);
     } else {
       debugLog("File not found:", path);
@@ -33604,14 +33716,14 @@ var VirtualSearchService = class {
         window.dispatchEvent(new CustomEvent("lumina:open-file", { detail: { path } }));
       }, 100);
     } else {
-      (_a = this.app.workspace.getRightLeaf(false)) == null ? void 0 : _a.setViewState({
+      void ((_a = this.app.workspace.getRightLeaf(false)) == null ? void 0 : _a.setViewState({
         type: "lumina-gallery",
         active: true
       }).then(() => {
         setTimeout(() => {
           window.dispatchEvent(new CustomEvent("lumina:open-file", { detail: { path } }));
         }, 500);
-      });
+      }));
     }
   }
   /**
@@ -33619,7 +33731,7 @@ var VirtualSearchService = class {
    */
   showMediaContextMenu(event, path, tags) {
     const locale = this.plugin.settings.locale;
-    const menu = new import_obsidian9.Menu();
+    const menu = new import_obsidian11.Menu();
     menu.addItem((item) => {
       item.setTitle(t(locale, "openInObsidian")).setIcon("file").onClick(() => this.openMediaInObsidian(path));
     });
@@ -33628,7 +33740,9 @@ var VirtualSearchService = class {
     });
     menu.addSeparator();
     menu.addItem((item) => {
-      item.setTitle(t(locale, "copyPath")).setIcon("copy").onClick(() => navigator.clipboard.writeText(path));
+      item.setTitle(t(locale, "copyPath")).setIcon("copy").onClick(() => {
+        void navigator.clipboard.writeText(path);
+      });
     });
     if (tags.length > 0) {
       menu.addSeparator();
@@ -33662,13 +33776,13 @@ var VirtualSearchService = class {
 // src/main.ts
 function getWorkerUrl() {
   try {
-    const path = require("path");
-    return "file:///" + path.join(__dirname, "worker.js").replace(/\\/g, "/");
+    const dir = typeof __dirname === "string" ? __dirname : ".";
+    return "file:///" + (dir + "/worker.js").replace(/\\/g, "/");
   } catch (e) {
     return "./worker.js";
   }
 }
-var LuminaPlugin = class extends import_obsidian10.Plugin {
+var LuminaPlugin = class extends import_obsidian12.Plugin {
   constructor() {
     super(...arguments);
     this.workerUrl = getWorkerUrl();
@@ -33787,7 +33901,9 @@ var LuminaPlugin = class extends import_obsidian10.Plugin {
     this.app.workspace.onLayoutReady(() => {
       var _a;
       if (this.settings.enableStartupSync) {
-        setTimeout(() => this.syncAllFromFrontmatter(), 100);
+        setTimeout(() => {
+          this.syncAllFromFrontmatter();
+        }, 100);
       }
       this.virtualSearchService = new VirtualSearchService(this.app, this, this.tagManager);
       if (this.settings.enableVirtualSearch) {
@@ -33811,11 +33927,15 @@ var LuminaPlugin = class extends import_obsidian10.Plugin {
     });
     this.registerView(VIEW_TYPE_LUMINA, (leaf) => new LuminaView(leaf, this));
     const openLabel = t(this.settings.locale, "openLumina");
-    this.addRibbonIcon("image", openLabel, () => this.activateView());
+    this.addRibbonIcon("image", openLabel, () => {
+      void this.activateView();
+    });
     this.addCommand({
-      id: "open-lumina",
+      id: "open-gallery",
       name: openLabel,
-      callback: () => this.activateView()
+      callback: () => {
+        void this.activateView();
+      }
     });
     this.addCommand({
       id: "manage-tags",
@@ -33838,7 +33958,7 @@ var LuminaPlugin = class extends import_obsidian10.Plugin {
       }
     });
     this.addCommand({
-      id: "insert-lumina-block",
+      id: "insert-block",
       name: t(this.settings.locale, "insertLuminaBlock"),
       editorCallback: (editor) => {
         const cursor = editor.getCursor();
@@ -33848,7 +33968,7 @@ var LuminaPlugin = class extends import_obsidian10.Plugin {
     });
     this.registerEvent(
       this.app.workspace.on("file-menu", (menu, file) => {
-        if (file instanceof import_obsidian10.TFile) {
+        if (file instanceof import_obsidian12.TFile) {
           menu.addItem((item) => {
             item.setTitle(t(this.settings.locale, "manageTags")).setIcon("tag").onClick(() => {
               new TagManagerModal(
@@ -33865,7 +33985,7 @@ var LuminaPlugin = class extends import_obsidian10.Plugin {
     );
     this.registerEvent(
       this.app.workspace.on("files-menu", (menu, files) => {
-        const tFiles = files.filter((f) => f instanceof import_obsidian10.TFile);
+        const tFiles = files.filter((f) => f instanceof import_obsidian12.TFile);
         if (tFiles.length > 0) {
           menu.addItem((item) => {
             item.setTitle(t(this.settings.locale, "manageTags") + ` (${tFiles.length})`).setIcon("tag").onClick(() => {
@@ -33913,7 +34033,7 @@ var LuminaPlugin = class extends import_obsidian10.Plugin {
     this.registerEvent(
       this.app.vault.on("rename", (file, oldPath) => {
         var _a;
-        if (file instanceof import_obsidian10.TFile) {
+        if (file instanceof import_obsidian12.TFile) {
           this.tagManager.renamePath(oldPath, file.path);
           (_a = this.tagIndicatorService) == null ? void 0 : _a.updateIndicator(file.path);
         }
@@ -33921,7 +34041,7 @@ var LuminaPlugin = class extends import_obsidian10.Plugin {
     );
     this.registerEvent(
       this.app.vault.on("delete", (file) => {
-        if (file instanceof import_obsidian10.TFile) {
+        if (file instanceof import_obsidian12.TFile) {
           this.tagManager.clearTags(file.path);
         }
       })
@@ -33936,7 +34056,7 @@ var LuminaPlugin = class extends import_obsidian10.Plugin {
     );
     this.registerEvent(
       this.app.workspace.on("file-menu", (menu, file) => {
-        if (file instanceof import_obsidian10.TFile && file.extension.toLowerCase() === "md") {
+        if (file instanceof import_obsidian12.TFile && file.extension.toLowerCase() === "md") {
           menu.addItem((item) => {
             item.setTitle(t(this.settings.locale, "insertLuminaBlock"));
             item.setIcon("image");
@@ -33998,7 +34118,7 @@ var LuminaPlugin = class extends import_obsidian10.Plugin {
    * Supports multi-selection (Ctrl+click, Shift+click)
    */
   getSelectedFilesFromExplorer() {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e, _f, _g;
     const selectedFiles = [];
     const addedPaths = /* @__PURE__ */ new Set();
     const fileExplorerLeaf = this.app.workspace.getLeavesOfType("file-explorer")[0];
@@ -34010,7 +34130,7 @@ var LuminaPlugin = class extends import_obsidian10.Plugin {
           for (const [path] of selectedDoms) {
             if (!addedPaths.has(path)) {
               const file = this.app.vault.getAbstractFileByPath(path);
-              if (file instanceof import_obsidian10.TFile) {
+              if (file instanceof import_obsidian12.TFile) {
                 selectedFiles.push(file);
                 addedPaths.add(path);
               }
@@ -34021,18 +34141,20 @@ var LuminaPlugin = class extends import_obsidian10.Plugin {
       if (selectedFiles.length === 0 && view.selectedItems) {
         const items = Array.isArray(view.selectedItems) ? view.selectedItems : view.selectedItems instanceof Set ? Array.from(view.selectedItems) : view.selectedItems instanceof Map ? Array.from(view.selectedItems.values()) : [];
         for (const item of items) {
-          const file = (item == null ? void 0 : item.file) || item;
-          if (file instanceof import_obsidian10.TFile && !addedPaths.has(file.path)) {
+          const typedItem = item;
+          const file = (_b = typedItem == null ? void 0 : typedItem.file) != null ? _b : item;
+          if (file instanceof import_obsidian12.TFile && !addedPaths.has(file.path)) {
             selectedFiles.push(file);
             addedPaths.add(file.path);
           }
         }
       }
-      if (selectedFiles.length === 0 && ((_b = view.tree) == null ? void 0 : _b.selectedItems)) {
+      if (selectedFiles.length === 0 && ((_c = view.tree) == null ? void 0 : _c.selectedItems)) {
         const items = Array.isArray(view.tree.selectedItems) ? view.tree.selectedItems : view.tree.selectedItems instanceof Set ? Array.from(view.tree.selectedItems) : view.tree.selectedItems instanceof Map ? Array.from(view.tree.selectedItems.values()) : [];
         for (const item of items) {
-          const file = (item == null ? void 0 : item.file) || item;
-          if (file instanceof import_obsidian10.TFile && !addedPaths.has(file.path)) {
+          const typedItem = item;
+          const file = (_d = typedItem == null ? void 0 : typedItem.file) != null ? _d : item;
+          if (file instanceof import_obsidian12.TFile && !addedPaths.has(file.path)) {
             selectedFiles.push(file);
             addedPaths.add(file.path);
           }
@@ -34040,22 +34162,21 @@ var LuminaPlugin = class extends import_obsidian10.Plugin {
       }
       if (selectedFiles.length === 0 && view.fileItems) {
         for (const [path, item] of Object.entries(view.fileItems)) {
-          const typedItem = item;
-          const el = typedItem.el || typedItem.selfEl;
+          const el = (_e = item.el) != null ? _e : item.selfEl;
           const isSelected = (el == null ? void 0 : el.classList.contains("is-selected")) || (el == null ? void 0 : el.classList.contains("is-active")) || (el == null ? void 0 : el.hasAttribute("data-selected")) || (el == null ? void 0 : el.closest(".is-selected")) !== null;
-          if (isSelected && typedItem.file instanceof import_obsidian10.TFile) {
+          if (isSelected && item.file instanceof import_obsidian12.TFile) {
             if (!addedPaths.has(path)) {
-              selectedFiles.push(typedItem.file);
+              selectedFiles.push(item.file);
               addedPaths.add(path);
             }
           }
         }
       }
-      if (selectedFiles.length === 0 && view.file instanceof import_obsidian10.TFile) {
+      if (selectedFiles.length === 0 && view.file instanceof import_obsidian12.TFile) {
         selectedFiles.push(view.file);
         addedPaths.add(view.file.path);
       }
-      if (selectedFiles.length === 0 && ((_d = (_c = view.tree) == null ? void 0 : _c.focusedItem) == null ? void 0 : _d.file) instanceof import_obsidian10.TFile) {
+      if (selectedFiles.length === 0 && ((_g = (_f = view.tree) == null ? void 0 : _f.focusedItem) == null ? void 0 : _g.file) instanceof import_obsidian12.TFile) {
         selectedFiles.push(view.tree.focusedItem.file);
         addedPaths.add(view.tree.focusedItem.file.path);
       }
@@ -34084,7 +34205,7 @@ var LuminaPlugin = class extends import_obsidian10.Plugin {
         }
         if (filePath && !addedPaths.has(filePath)) {
           const file = this.app.vault.getAbstractFileByPath(filePath);
-          if (file instanceof import_obsidian10.TFile) {
+          if (file instanceof import_obsidian12.TFile) {
             selectedFiles.push(file);
             addedPaths.add(filePath);
           }
@@ -34182,7 +34303,7 @@ var LuminaPlugin = class extends import_obsidian10.Plugin {
   async writeSharedTagFile(tagMap) {
     try {
       const adapter = this.app.vault.adapter;
-      const sharedPath = ".obsidian/lumina-tags.json";
+      const sharedPath = `${this.app.vault.configDir}/lumina-tags.json`;
       const payload = JSON.stringify({
         version: 1,
         updatedAt: (/* @__PURE__ */ new Date()).toISOString(),
@@ -34194,31 +34315,26 @@ var LuminaPlugin = class extends import_obsidian10.Plugin {
     }
   }
   /**
-   * Write to an absolute or vault-relative path.
-   * Absolute paths (C:\... or /...) use Node fs; relative paths use the vault adapter.
+   * Write to a vault-relative path using Obsidian's Vault API.
+   * Creates parent directories as needed.
    */
   async writeFile(filePath, content) {
-    const isAbsolute = /^([a-zA-Z]:\\|\/)/.test(filePath);
-    if (isAbsolute) {
-      const fs = require("fs").promises;
-      const path = require("path");
-      await fs.mkdir(path.dirname(filePath), { recursive: true });
-      await fs.writeFile(filePath, content, "utf-8");
-    } else {
-      await this.app.vault.adapter.write(filePath, content);
+    const lastSlash = filePath.lastIndexOf("/");
+    if (lastSlash > 0) {
+      const dir = filePath.substring(0, lastSlash);
+      const existing = this.app.vault.getAbstractFileByPath(dir);
+      if (!existing) {
+        await this.app.vault.createFolder(dir).catch(() => {
+        });
+      }
     }
+    await this.app.vault.adapter.write(filePath, content);
   }
   /**
-   * Read from an absolute or vault-relative path.
+   * Read from a vault-relative path using Obsidian's Vault API.
    */
   async readFile(filePath) {
-    const isAbsolute = /^([a-zA-Z]:\\|\/)/.test(filePath);
-    if (isAbsolute) {
-      const fs = require("fs").promises;
-      return await fs.readFile(filePath, "utf-8");
-    } else {
-      return await this.app.vault.adapter.read(filePath);
-    }
+    return await this.app.vault.adapter.read(filePath);
   }
   /**
    * Export tags to a user-chosen backup file
@@ -34261,7 +34377,7 @@ var LuminaPlugin = class extends import_obsidian10.Plugin {
   /**
    * Import tags from already-parsed data (used by file picker in settings)
    */
-  async importTagBackupFromData(importedMap) {
+  importTagBackupFromData(importedMap) {
     let importCount = 0;
     for (const [path, tags] of Object.entries(importedMap)) {
       if (!Array.isArray(tags)) continue;
@@ -34353,7 +34469,7 @@ var LuminaPlugin = class extends import_obsidian10.Plugin {
     var _a;
     if (!this.frontmatterService) return;
     const sourceFile = this.app.vault.getAbstractFileByPath(sourcePath);
-    if (!(sourceFile instanceof import_obsidian10.TFile)) return;
+    if (!(sourceFile instanceof import_obsidian12.TFile)) return;
     const sourceBacklink = `[[${sourceFile.name}]]`;
     const removedLinks = oldLinks.filter((l) => !newLinks.includes(l));
     for (const link of removedLinks) {
@@ -34410,8 +34526,8 @@ var LuminaPlugin = class extends import_obsidian10.Plugin {
       clearTimeout(this._saveTimer);
       const tagData = this.tagManager.getData();
       const data = { ...this._cachedData, tagMap: tagData };
-      this.saveData(data);
-      this.writeSharedTagFile(tagData);
+      void this.saveData(data);
+      void this.writeSharedTagFile(tagData);
     }
     if (this._backupTimer) {
       clearInterval(this._backupTimer);

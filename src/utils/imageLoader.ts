@@ -3,6 +3,7 @@
  * Fallback sur le thread principal si le worker échoue (ex: app://).
  */
 
+import { requestUrl } from 'obsidian';
 import { getCachedBlob, setCachedBlob } from './imageCache';
 
 export type CachedImage = HTMLImageElement | ImageBitmap;
@@ -115,8 +116,8 @@ export function loadImage(
           loadFromBlobMain(blob, onLoad, onError);
           return;
         }
-        fetch(url)
-          .then((r) => (r.ok ? r.blob() : Promise.reject(new Error('fetch failed'))))
+        requestUrl({ url })
+          .then((response) => new Blob([response.arrayBuffer]))
           .then((blob) => {
             setCachedBlob(path, blob).catch(() => {});
             loadFromBlobMain(blob, onLoad, onError);

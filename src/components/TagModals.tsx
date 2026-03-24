@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Modal, TFile } from 'obsidian';
+import { type App, Modal, TFile } from 'obsidian';
 import { createRoot, type Root } from 'react-dom/client';
 import { TagInput, TagList } from './TagComponents';
 import { t, type LocaleKey } from '../i18n/locales';
 import type { TagManager } from '../services/tagManager';
+
+interface ObsidianAppWithMeta {
+  metadataCache?: { getTags?: () => Record<string, number> };
+  vault?: { getFiles?: () => TFile[] };
+}
 
 // ========================================
 // TAG MANAGER MODAL (single file)
@@ -16,7 +21,7 @@ interface TagManagerContentProps {
   locale: LocaleKey;
   onClose: () => void;
   fromLightbox?: boolean;
-  app: any;
+  app: ObsidianAppWithMeta;
 }
 
 const TagManagerContent: React.FC<TagManagerContentProps> = ({
@@ -175,7 +180,7 @@ export class TagManagerModal extends Modal {
   private fromLightbox: boolean;
 
   constructor(
-    app: any,
+    app: App,
     filePath: string,
     fileName: string,
     tagManager: TagManager,
@@ -228,7 +233,7 @@ interface BatchTagContentProps {
   tagManager: TagManager;
   locale: LocaleKey;
   onClose: () => void;
-  app: any;
+  app: ObsidianAppWithMeta;
 }
 
 const BatchTagContent: React.FC<BatchTagContentProps> = ({
@@ -381,7 +386,7 @@ export class BatchTagModal extends Modal {
   private locale: LocaleKey;
 
   constructor(
-    app: any,
+    app: App,
     filePaths: string[],
     tagManager: TagManager,
     locale: LocaleKey

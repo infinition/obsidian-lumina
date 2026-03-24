@@ -84,7 +84,7 @@ class IconPickerModal extends Modal {
     contentEl.empty();
     contentEl.addClass('lumina-icon-picker-modal');
 
-    contentEl.createEl('h3', { text: t(this.locale, 'iconPickerTitle') });
+    new Setting(contentEl).setName(t(this.locale, 'iconPickerTitle')).setHeading();
 
     const search = new SearchComponent(contentEl);
     search.setPlaceholder(t(this.locale, 'iconPickerSearchPlaceholder'));
@@ -118,7 +118,7 @@ class IconPickerModal extends Modal {
         const iconEl = document.createElement('span');
         iconEl.className = 'lumina-icon-picker-item-icon';
         try {
-          setIcon(iconEl, iconId as any);
+          setIcon(iconEl, iconId);
         } catch {
           setIcon(iconEl, 'tag');
         }
@@ -180,9 +180,9 @@ export class LuminaSettingTab extends PluginSettingTab {
 
   private resolveColorToRgba(value: string): { r: number; g: number; b: number; a: number } | null {
     const probe = document.createElement('span');
-    probe.style.color = '';
-    probe.style.color = value;
-    if (!probe.style.color) return null;
+    probe.style.setProperty('color', '');
+    probe.style.setProperty('color', value);
+    if (!probe.style.getPropertyValue('color')) return null;
 
     document.body.appendChild(probe);
     const computed = getComputedStyle(probe).color;
@@ -237,7 +237,7 @@ export class LuminaSettingTab extends PluginSettingTab {
   private updateIndicatorIconPreview(previewEl: HTMLElement, iconName: string): void {
     previewEl.empty();
     try {
-      setIcon(previewEl, iconName as any);
+      setIcon(previewEl, iconName);
     } catch {
       setIcon(previewEl, 'tag');
     }
@@ -247,9 +247,9 @@ export class LuminaSettingTab extends PluginSettingTab {
     const { containerEl } = this;
     const { locale } = this.plugin.settings;
     containerEl.empty();
-    containerEl.createEl('h2', { text: 'Lumina' });
+    new Setting(containerEl).setName('Lumina').setHeading();
 
-    containerEl.createEl('h3', { text: t(locale, 'generalSettings') });
+    new Setting(containerEl).setName(t(locale, 'generalSettings')).setHeading();
 
     new Setting(containerEl)
       .setName('Language / Langue / Sprache / Idioma / 语言')
@@ -288,7 +288,7 @@ export class LuminaSettingTab extends PluginSettingTab {
 
     // Tag options (only shown when tag system is enabled)
     if (this.plugin.settings.enableTagSystem) {
-      containerEl.createEl('h3', { text: t(locale, 'tagSettings') });
+      new Setting(containerEl).setName(t(locale, 'tagSettings')).setHeading();
 
       new Setting(containerEl)
         .setName(t(locale, 'showTagsIndicator'))
@@ -441,7 +441,7 @@ export class LuminaSettingTab extends PluginSettingTab {
         });
 
       // Virtual Search Integration
-      containerEl.createEl('h3', { text: t(locale, 'searchIntegration') });
+      new Setting(containerEl).setName(t(locale, 'searchIntegration')).setHeading();
 
       new Setting(containerEl)
         .setName(t(locale, 'enableVirtualSearch'))
@@ -476,7 +476,7 @@ export class LuminaSettingTab extends PluginSettingTab {
       }
 
       // Backlinks Section
-      containerEl.createEl('h3', { text: t(locale, 'backlinksSection') });
+      new Setting(containerEl).setName(t(locale, 'backlinksSection')).setHeading();
 
       new Setting(containerEl)
         .setName(t(locale, 'scanBacklinks'))
@@ -500,7 +500,7 @@ export class LuminaSettingTab extends PluginSettingTab {
     }
 
     // Gallery Settings
-    containerEl.createEl('h3', { text: t(locale, 'gallerySettings') });
+    new Setting(containerEl).setName(t(locale, 'gallerySettings')).setHeading();
 
     new Setting(containerEl)
       .setName(t(locale, 'blockImageClickAction'))
@@ -516,7 +516,7 @@ export class LuminaSettingTab extends PluginSettingTab {
       });
 
     // Gallery Defaults
-    containerEl.createEl('h3', { text: t(locale, 'galleryDefaults') });
+    new Setting(containerEl).setName(t(locale, 'galleryDefaults')).setHeading();
 
     new Setting(containerEl)
       .setName(t(locale, 'defaultLayout'))
@@ -573,7 +573,7 @@ export class LuminaSettingTab extends PluginSettingTab {
       });
 
     // Performance Settings
-    containerEl.createEl('h3', { text: t(locale, 'performanceSettings') });
+    new Setting(containerEl).setName(t(locale, 'performanceSettings')).setHeading();
 
     new Setting(containerEl)
       .setName(t(locale, 'thumbnailQuality'))
@@ -625,7 +625,7 @@ export class LuminaSettingTab extends PluginSettingTab {
       });
 
     // ── Backup & Restore ──
-    containerEl.createEl('h3', { text: t(locale, 'backupRestore') });
+    new Setting(containerEl).setName(t(locale, 'backupRestore')).setHeading();
 
     new Setting(containerEl)
       .setName(t(locale, 'autoBackup'))
@@ -703,7 +703,7 @@ export class LuminaSettingTab extends PluginSettingTab {
               if (!importedMap || typeof importedMap !== 'object') {
                 throw new Error('Invalid backup format');
               }
-              const count = await this.plugin.importTagBackupFromData(importedMap);
+              const count = this.plugin.importTagBackupFromData(importedMap);
               new Notice(t(locale, 'backupImported', { n: count }));
             } catch (e) {
               new Notice('Error: ' + (e as Error).message);

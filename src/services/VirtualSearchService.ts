@@ -84,12 +84,12 @@ export class VirtualSearchService {
   }
 
   /**
-   * Get the search leaf and view
+   * Internal search view interface (undocumented Obsidian API)
    */
-  private getSearchView(): { leaf: any; view: any } | null {
+  private getSearchView(): { leaf: { containerEl: HTMLElement; view: unknown }; view: Record<string, unknown> } | null {
     const searchLeaf = this.app.workspace.getLeavesOfType('search')[0];
     if (!searchLeaf) return null;
-    return { leaf: searchLeaf, view: searchLeaf.view };
+    return { leaf: searchLeaf as unknown as { containerEl: HTMLElement; view: unknown }, view: searchLeaf.view as unknown as Record<string, unknown> };
   }
 
   /**
@@ -105,10 +105,12 @@ export class VirtualSearchService {
       const searchData = this.getSearchView();
       if (!searchData) return;
 
-      const view = searchData.view as any;
+      const view = searchData.view;
 
       // Get the current search query from the search view
-      const currentQuery = view?.searchQuery?.query || view?.getQuery?.() || '';
+      const searchQuery = (view as { searchQuery?: { query?: string } }).searchQuery;
+      const getQuery = (view as { getQuery?: () => string }).getQuery;
+      const currentQuery = searchQuery?.query || getQuery?.() || '';
 
       if (currentQuery && currentQuery !== this.lastQuery) {
         this.lastQuery = currentQuery;
@@ -117,7 +119,8 @@ export class VirtualSearchService {
       }
 
       // Also check if results container exists and inject if needed
-      if (view?.dom?.resultDomLookup && currentQuery) {
+      const dom = (view as { dom?: { resultDomLookup?: unknown } }).dom;
+      if (dom?.resultDomLookup && currentQuery) {
         const now = Date.now();
         if (now - this.lastInjectTime > 600) {
           this.lastInjectTime = now;
@@ -189,7 +192,7 @@ export class VirtualSearchService {
     // Parse the query
     const searchTags = this.extractSearchTags(cleanQuery);
     const searchLinks = this.extractSearchLinks(cleanQuery);
-    const searchText = cleanQuery.replace(/#[\w\-\/]+/g, '').replace(/\[\[[^\]]+\]\]/g, '').trim().toLowerCase();
+    const searchText = cleanQuery.replace(/#[\w\-/]+/g, '').replace(/\[\[[^\]]+\]\]/g, '').trim().toLowerCase();
 
     // Get all tagged files from TagManager
     const allTaggedPaths = this.tagManager.getAllTaggedPaths();
@@ -277,16 +280,17 @@ export class VirtualSearchService {
       return;
     }
 
-    const view = searchData.view as any;
+    const view = searchData.view;
+    const viewDom = (view as { dom?: { resultDom?: HTMLElement; el?: HTMLElement } }).dom;
 
     // Find the DOM container for results
     let resultsContainer: HTMLElement | null = null;
 
     // Try different ways to find the results container
-    if (view?.dom?.resultDom) {
-      resultsContainer = view.dom.resultDom;
-    } else if (view?.dom?.el) {
-      resultsContainer = view.dom.el.querySelector('.search-result-container, .search-results-children');
+    if (viewDom?.resultDom) {
+      resultsContainer = viewDom.resultDom;
+    } else if (viewDom?.el) {
+      resultsContainer = viewDom.el.querySelector('.search-result-container, .search-results-children');
     } else {
       // Fallback: find in document
       const searchLeafEl = searchData.leaf.containerEl;
@@ -324,15 +328,24 @@ export class VirtualSearchService {
     // Create header
     const header = document.createElement('div');
     header.className = 'tree-item lumina-virtual-header';
-    header.innerHTML = `
-      <div class="tree-item-self is-clickable" style="padding: 8px 12px; margin-top: 12px; background: linear-gradient(135deg, var(--interactive-accent) 0%, var(--interactive-accent-hover) 100%); border-radius: 6px;">
-        <div class="tree-item-inner" style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 16px;">📷</span>
-          <span style="font-weight: 600; color: white;">Lumina Media</span>
-          <span style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 10px; font-size: 11px; color: white;">${results.length}</span>
-        </div>
-      </div>
-    `;
+    const headerSelf = document.createElement('div');
+    headerSelf.className = 'tree-item-self is-clickable lumina-virtual-header-self';
+    const headerInner = document.createElement('div');
+    headerInner.className = 'tree-item-inner lumina-virtual-header-inner';
+    const iconSpan = document.createElement('span');
+    iconSpan.className = 'lumina-virtual-header-icon';
+    iconSpan.textContent = '\u{1F4F7}';
+    const titleSpan = document.createElement('span');
+    titleSpan.className = 'lumina-virtual-header-title';
+    titleSpan.textContent = 'Lumina Media';
+    const countSpan = document.createElement('span');
+    countSpan.className = 'lumina-virtual-header-count';
+    countSpan.textContent = String(results.length);
+    headerInner.appendChild(iconSpan);
+    headerInner.appendChild(titleSpan);
+    headerInner.appendChild(countSpan);
+    headerSelf.appendChild(headerInner);
+    header.appendChild(headerSelf);
     section.appendChild(header);
 
     // Create result items (limit to 15)
@@ -346,7 +359,6 @@ export class VirtualSearchService {
     if (results.length > 15) {
       const more = document.createElement('div');
       more.className = 'lumina-virtual-more';
-      more.style.cssText = 'padding: 8px 12px; color: var(--text-muted); font-size: 12px; text-align: center;';
       more.textContent = `... +${results.length - 15}`;
       section.appendChild(more);
     }
@@ -385,25 +397,47 @@ export class VirtualSearchService {
       ? result.path.substring(0, result.path.lastIndexOf('/'))
       : '';
 
-    container.innerHTML = `
-      <div class="tree-item-self search-result-file-title is-clickable" style="padding: 8px 12px; border-left: 3px solid var(--interactive-accent); margin-left: 8px; margin-top: 4px; background: var(--background-secondary); border-radius: 0 6px 6px 0;">
-        <div class="tree-item-inner" style="display: flex; align-items: center; gap: 10px;">
-          <span style="font-size: 18px; background: ${iconBg}; padding: 4px; border-radius: 6px;">${icon}</span>
-          <div style="flex: 1; min-width: 0;">
-            <div style="font-weight: 500; color: var(--text-normal); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${filename}</div>
-            ${folder ? `<div style="font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${folder}</div>` : ''}
-          </div>
-        </div>
-        <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; padding-left: 36px;">
-          ${result.tags.slice(0, 4).map(tag => `<span style="background: var(--background-modifier-hover); padding: 2px 8px; border-radius: 10px; font-size: 10px; color: var(--text-muted);">${tag}</span>`).join('')}
-          ${result.tags.length > 4 ? `<span style="font-size: 10px; color: var(--text-faint);">+${result.tags.length - 4}</span>` : ''}
-        </div>
-      </div>
-    `;
+    const selfEl = document.createElement('div');
+    selfEl.className = 'tree-item-self search-result-file-title is-clickable lumina-virtual-result-self';
+    const innerEl = document.createElement('div');
+    innerEl.className = 'tree-item-inner lumina-virtual-result-inner';
+    const iconEl = document.createElement('span');
+    iconEl.className = 'lumina-virtual-result-icon';
+    iconEl.textContent = icon;
+    const infoEl = document.createElement('div');
+    infoEl.className = 'lumina-virtual-result-info';
+    const filenameEl = document.createElement('div');
+    filenameEl.className = 'lumina-virtual-result-filename';
+    filenameEl.textContent = filename;
+    infoEl.appendChild(filenameEl);
+    if (folder) {
+      const folderEl = document.createElement('div');
+      folderEl.className = 'lumina-virtual-result-folder';
+      folderEl.textContent = folder;
+      infoEl.appendChild(folderEl);
+    }
+    innerEl.appendChild(iconEl);
+    innerEl.appendChild(infoEl);
+    selfEl.appendChild(innerEl);
+    const tagsEl = document.createElement('div');
+    tagsEl.className = 'lumina-virtual-result-tags';
+    result.tags.slice(0, 4).forEach(tag => {
+      const tagSpan = document.createElement('span');
+      tagSpan.className = 'lumina-virtual-result-tag';
+      tagSpan.textContent = tag;
+      tagsEl.appendChild(tagSpan);
+    });
+    if (result.tags.length > 4) {
+      const moreSpan = document.createElement('span');
+      moreSpan.className = 'lumina-virtual-result-tag-more';
+      moreSpan.textContent = `+${result.tags.length - 4}`;
+      tagsEl.appendChild(moreSpan);
+    }
+    selfEl.appendChild(tagsEl);
+    container.appendChild(selfEl);
 
     // Add click handler
-    const clickable = container.querySelector('.tree-item-self');
-    clickable?.addEventListener('click', (e) => {
+    selfEl.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
       const clickAction = this.plugin.settings.virtualSearchClickAction || 'obsidian';
@@ -427,7 +461,7 @@ export class VirtualSearchService {
    * Extract #tags from search query
    */
   private extractSearchTags(query: string): string[] {
-    const tagRegex = /#[\w\-\/]+/g;
+    const tagRegex = /#[\w\-/]+/g;
     const matches = query.match(tagRegex) || [];
     // Also treat plain words as potential tags
     const words = query.split(/\s+/).filter(w => w.length > 1 && !w.startsWith('#') && !w.startsWith('[['));
@@ -471,7 +505,7 @@ export class VirtualSearchService {
         window.dispatchEvent(new CustomEvent('lumina:open-file', { detail: { path } }));
       }, 100);
     } else {
-      this.app.workspace.getRightLeaf(false)?.setViewState({
+      void this.app.workspace.getRightLeaf(false)?.setViewState({
         type: 'lumina-gallery',
         active: true,
       }).then(() => {
@@ -509,7 +543,7 @@ export class VirtualSearchService {
       item
         .setTitle(t(locale, 'copyPath'))
         .setIcon('copy')
-        .onClick(() => navigator.clipboard.writeText(path));
+        .onClick(() => { void navigator.clipboard.writeText(path); });
     });
 
     if (tags.length > 0) {

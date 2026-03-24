@@ -743,6 +743,128 @@
   flex-shrink: 0;
   vertical-align: middle;
   line-height: 1;
+  color: var(--lumina-indicator-color, var(--interactive-accent));
+  width: var(--lumina-indicator-size, 8px);
+  height: var(--lumina-indicator-size, 8px);
+  min-width: var(--lumina-indicator-size, 8px);
+  min-height: var(--lumina-indicator-size, 8px);
+}
+
+.lumina-tag-indicator.lumina-tag-indicator-dot {
+  background-color: var(--lumina-indicator-color, var(--interactive-accent));
+  border-radius: 50%;
+  box-shadow: 0 0 4px var(--lumina-indicator-color, var(--interactive-accent));
+}
+
+.lumina-tag-indicator.lumina-tag-indicator-icon {
+  background-color: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.lumina-tag-indicator.lumina-tag-indicator-icon svg {
+  stroke: var(--lumina-indicator-color, var(--interactive-accent));
+}
+
+/* Virtual search result styles */
+.lumina-virtual-header-self {
+  padding: 8px 12px;
+  margin-top: 12px;
+  background: linear-gradient(135deg, var(--interactive-accent) 0%, var(--interactive-accent-hover) 100%);
+  border-radius: 6px;
+}
+
+.lumina-virtual-header-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lumina-virtual-header-icon {
+  font-size: 16px;
+}
+
+.lumina-virtual-header-title {
+  font-weight: 600;
+  color: white;
+}
+
+.lumina-virtual-header-count {
+  background: rgba(255,255,255,0.2);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  color: white;
+}
+
+.lumina-virtual-more {
+  padding: 8px 12px;
+  color: var(--text-muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+.lumina-virtual-result-self {
+  padding: 8px 12px;
+  border-left: 3px solid var(--interactive-accent);
+  margin-left: 8px;
+  margin-top: 4px;
+  background: var(--background-secondary);
+  border-radius: 0 6px 6px 0;
+}
+
+.lumina-virtual-result-inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lumina-virtual-result-icon {
+  font-size: 18px;
+  padding: 4px;
+  border-radius: 6px;
+}
+
+.lumina-virtual-result-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.lumina-virtual-result-filename {
+  font-weight: 500;
+  color: var(--text-normal);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lumina-virtual-result-folder {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lumina-virtual-result-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+  padding-left: 36px;
+}
+
+.lumina-virtual-result-tag {
+  background: var(--background-modifier-hover);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.lumina-virtual-result-tag-more {
+  font-size: 10px;
+  color: var(--text-faint);
 }
 
 .lumina-tag-indicator svg {

@@ -36,11 +36,11 @@ export const createBridge = (plugin: LuminaPlugin): WebOSAPI => ({
   },
 
   getWorkerUrl() {
-    return (plugin as { workerUrl?: string }).workerUrl || './worker.js';
+    return plugin.workerUrl || './worker.js';
   },
 
   getLocale() {
-    return (plugin as { getLocale?: () => import('../i18n/locales').LocaleKey }).getLocale?.() ?? 'en';
+    return plugin.getLocale();
   },
 
   getTagManager() {

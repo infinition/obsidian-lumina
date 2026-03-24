@@ -17,10 +17,51 @@ import {
   type CachedImage,
 } from '../utils/imageLoader';
 import { t, type LocaleKey } from '../i18n/locales';
+import { Notice } from 'obsidian';
 import { GalleryContextMenu } from './GalleryContextMenu';
 import { BatchTagModal } from './TagModals';
 import { SearchBarWithTags } from './SearchBarWithTags';
 import { TagList } from './TagComponents';
+import { debugLog } from '../utils/debugLog';
+
+/**
+ * Shows a confirmation dialog using Obsidian-friendly DOM (avoids window.confirm).
+ * Returns a Promise that resolves to true (confirmed) or false (cancelled).
+ */
+function showConfirmDialog(message: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-container mod-confirmation';
+    const bg = document.createElement('div');
+    bg.className = 'modal-bg';
+    bg.style.opacity = '0.85';
+    bg.addEventListener('click', () => { overlay.remove(); resolve(false); });
+    const modal = document.createElement('div');
+    modal.className = 'modal mod-confirmation';
+    const content = document.createElement('div');
+    content.className = 'modal-content';
+    const msgEl = document.createElement('p');
+    msgEl.textContent = message;
+    content.appendChild(msgEl);
+    const btnRow = document.createElement('div');
+    btnRow.className = 'modal-button-container';
+    const cancelBtn = document.createElement('button');
+    cancelBtn.className = 'mod-cancel';
+    cancelBtn.textContent = 'Cancel';
+    cancelBtn.addEventListener('click', () => { overlay.remove(); resolve(false); });
+    const confirmBtn = document.createElement('button');
+    confirmBtn.className = 'mod-warning';
+    confirmBtn.textContent = 'Confirm';
+    confirmBtn.addEventListener('click', () => { overlay.remove(); resolve(true); });
+    btnRow.appendChild(cancelBtn);
+    btnRow.appendChild(confirmBtn);
+    content.appendChild(btnRow);
+    modal.appendChild(content);
+    overlay.appendChild(bg);
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+  });
+}
 
 const IMG_EXT = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'tiff', 'tif', 'ico', 'avif', 'apng'];
 const VIDEO_EXT = ['mp4', 'webm', 'mov', 'avi', 'mkv', 'ogv', 'm4v'];
@@ -139,13 +180,13 @@ function urlToEmbed(input: string): EmbedData | null {
     if (host === 'youtube.com' && u.pathname === '/watch' && u.searchParams.get('v')) {
       const id = u.searchParams.get('v')!;
       const embedSrc = `https://www.youtube.com/embed/${id}`;
-      const embedHtml = `<iframe width="560" height="315" src="${embedSrc}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+      const embedHtml = `<iframe width="560" height="315" src="${embedSrc}" title="YouTube video player"allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
       return { url, embedSrc, embedHtml };
     }
     if (host === 'youtu.be' && u.pathname.length > 1) {
       const id = u.pathname.slice(1).split('?')[0];
       const embedSrc = `https://www.youtube.com/embed/${id}`;
-      const embedHtml = `<iframe width="560" height="315" src="${embedSrc}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+      const embedHtml = `<iframe width="560" height="315" src="${embedSrc}" title="YouTube video player"allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
       return { url, embedSrc, embedHtml };
     }
     return null;
@@ -194,7 +235,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
 }) => {
   const stateId = instanceId || 'photo-gallery';
   const app = api.getObsidianApp() as ObsidianApp | null;
-  const locale = api.getLocale() as LocaleKey;
+  const locale = api.getLocale();
   const tagManager = api.getTagManager();
 
   const [settings, setSettings] = useState<GallerySettings>(DEFAULT_SETTINGS);
@@ -329,7 +370,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
 
   useEffect(() => {
     if (!app) return undefined;
-    const metadataCache = (app as any).metadataCache;
+    const metadataCache = (app as unknown as { metadataCache?: { getTags?: () => Record<string, number> } }).metadataCache;
     const vault = app.vault as unknown as {
       on?: (name: string, callback: () => void) => void;
       off?: (name: string, callback: () => void) => void;
@@ -1452,18 +1493,18 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
           const img = filteredImages[idx];
           if (!img) return;
           if (e.button === 2) {
-            console.log('[PhotoGallery] Right-click detected, isEditMode:', isEditMode);
+            debugLog('[PhotoGallery] Right-click detected, isEditMode:', isEditMode);
             if (isEditMode) {
               // En mode édition, afficher le menu contextuel
               const paths = selection.size > 0 && selection.has(img.path) 
                 ? Array.from(selection)
                 : [img.path];
-              console.log('[PhotoGallery] Showing context menu for paths:', paths);
+              debugLog('[PhotoGallery] Showing context menu for paths:', paths);
               setContextMenu({ x: e.clientX, y: e.clientY, paths });
               return;
             } else {
               // Hors mode édition, ouvrir le lightbox
-              console.log('[PhotoGallery] Opening lightbox');
+              debugLog('[PhotoGallery] Opening lightbox');
               setLightboxIndex(idx);
               setLightboxOpen(true);
             }
@@ -2774,7 +2815,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                 .filter(Boolean)
                 .join('\n');
               await navigator.clipboard.writeText(links);
-              alert(t(locale, 'copied'));
+              new Notice(t(locale, 'copied'));
             }}
           >
             {t(locale, 'copyLinks')}
@@ -2794,7 +2835,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
             type="button"
             className="gal-edit-toolbar-btn gal-edit-toolbar-btn-danger"
             onClick={async () => {
-              if (!confirm(t(locale, 'deleteConfirm', { n: selection.size }))) return;
+              if (!(await showConfirmDialog(t(locale, 'deleteConfirm', { n: selection.size })))) return;
               for (const path of selection) {
                 const file = app.vault.getAbstractFileByPath(path);
                 if (file) await app.vault.trash(file, true);
@@ -2892,7 +2933,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
           <div
             ref={detailViewRef}
             className="gal-detail-view"
-            style={{ flex: 1, width: '100%', height: '100%', overflowY: 'auto', overflowX: 'hidden', overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch' as any, background: 'var(--gal-bg)' }}
+            style={{ flex: 1, width: '100%', height: '100%', overflowY: 'auto', overflowX: 'hidden', overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch', background: 'var(--gal-bg)' }}
             onScroll={(e) => {
               const el = e.currentTarget;
               setDetailScrollInfo({ scrollTop: el.scrollTop, scrollHeight: el.scrollHeight, clientHeight: el.clientHeight });
@@ -3454,7 +3495,6 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                 <iframe
                   src={lightboxEmbed.embedSrc}
                   title="YouTube video player"
-                  frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"
                   allowFullScreen
@@ -3623,7 +3663,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                       className="gal-lightbox-action-btn"
                       onClick={async () => {
                         await navigator.clipboard.writeText(lightboxEmbed.embedHtml);
-                        alert(t(locale, 'copied'));
+                        new Notice(t(locale, 'copied'));
                       }}
                     >
                       {t(locale, 'copyEmbedHtml')}
@@ -3653,7 +3693,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                       className="gal-lightbox-action-btn"
                       onClick={async () => {
                         await navigator.clipboard.writeText(`![[${currentImage.name}]]`);
-                        alert(t(locale, 'copied'));
+                        new Notice(t(locale, 'copied'));
                       }}
                     >
                       {t(locale, 'copyLink')}
@@ -3695,7 +3735,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                       type="button"
                       className="gal-lightbox-action-btn gal-lightbox-btn-delete"
                       onClick={async () => {
-                        if (!confirm(t(locale, 'deleteConfirmSingle', { name: currentImage.name }))) return;
+                        if (!(await showConfirmDialog(t(locale, 'deleteConfirmSingle', { name: currentImage.name })))) return;
                         const file = app.vault.getAbstractFileByPath(currentImage.path);
                         if (file) {
                           await app.vault.trash(file, true);
@@ -3761,7 +3801,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
                               .filter(Boolean)
                               .join('\n');
                             await app.vault.modify(file, content + '\n' + links);
-                            alert(t(locale, 'addedToNote'));
+                            new Notice(t(locale, 'addedToNote'));
                           }
                           setNoteModal(false);
                           setIsEditMode(false);
@@ -3836,7 +3876,7 @@ export const PhotoGalleryWidget: React.FC<PhotoGalleryWidgetProps> = ({
           }}
           onDelete={async () => {
             const pathsToDelete = contextMenu.paths;
-            if (!confirm(t(locale, 'deleteConfirm', { n: pathsToDelete.length }))) {
+            if (!(await showConfirmDialog(t(locale, 'deleteConfirm', { n: pathsToDelete.length })))) {
               setContextMenu(null);
               return;
             }

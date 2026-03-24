@@ -139,7 +139,7 @@ export const SearchBarWithTags: React.FC<SearchBarWithTagsProps> = ({
         .filter(tag => tag.toLowerCase().includes(search))
         .filter(tag => !existing.has(tag.toLowerCase()));
     } else if (input.startsWith('[')) {
-      const search = lower.replace(/[\[\]]/g, '');
+      const search = lower.replace(/[[\]]/g, '');
       filtered = allNoteLinks
         .filter(link => link.toLowerCase().includes(search))
         .filter(link => !existing.has(link.toLowerCase()));
