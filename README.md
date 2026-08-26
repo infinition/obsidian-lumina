@@ -1,5 +1,5 @@
 <p align="center">
-<img width="128" height="128" alt="Lumina" src="https://github.com/user-attachments/assets/4ebde614-0166-4ca5-868e-60eb9a13ff95" />
+<img src=".github/obsidian-lumina.png" alt="obsidian-lumina icon" width="128" height="128" />
 </p>
 
 # Lumina for Obsidian
